@@ -66,4 +66,3 @@ class generateSentences():
         return(response)
     
 generateSentences(Llama3)
-
