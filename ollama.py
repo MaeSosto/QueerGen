@@ -41,6 +41,7 @@ class generateSentences():
         }
 
         response = requests.post(url, headers=headers, json=data)
+        print(response.json())
         response = response.json()['response'].replace("`", "").replace('\"', '')
         return(response)
 
@@ -55,4 +56,4 @@ while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
     
 
 #print(MODEL_LIST[chosenModel])
-generateSentences(chosenModel)
+generateSentences(MODEL_LIST[chosenModel])
