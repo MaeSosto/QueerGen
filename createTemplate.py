@@ -1,32 +1,4 @@
-import torch
-import logging
-from tqdm import tqdm
-import pandas as pd
-import os
-
-logging.basicConfig(level=logging.INFO)# OPTIONAL
-print(f"PyTorch version: {torch.__version__}")
-
-# Set the device      
-device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
-print(f"Using device: {device}")
-
-#Data Source
-DATA_SOURCE = 'dataset_source/'
-OUTPUT_TEMPLATE = 'output_template/'
-TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
-NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
-TEMPLATES_COMPLETE_PATH = OUTPUT_TEMPLATE + 'template_complete.csv'
-
-# TEMPLATE MAP
-TARGET_ = '<target>'
-BE_ = '<be>'
-HAVE_ = '<have>'
-WERE_ = '<were>'
-TYPE = 'type'
-CATEGORY= 'category'
-SUBJECT = 'subject'
-THE = 'the'
+from utils import * 
 
 # # Build Complete Template
 class CompleteTemplateBuilder():
@@ -49,7 +21,10 @@ class CompleteTemplateBuilder():
             
             #Creating sentences with nouns
             for ind, r in self.nouns.iterrows():
-                _sentence = sentence.replace(TARGET_, f"{'The' if sentence.split(TARGET_)[0] == '' else 'the'} {r.loc[SUBJECT]} person") if r.loc[THE] == 'y' else sentence.replace(TARGET_, f"{'The' if sentence.split(TARGET_)[0] == '' else 'the'} {r.loc[SUBJECT]}")
+                init = True if sentence.split(TARGET_)[0] == '' else False
+                the = ('The ' if init else 'the ') if r.loc[THE] == 'y' else ('My ' if init else 'my ')
+                _subject =  the + f"{r.loc[SUBJECT]}" + f'{" person" if r.loc[PERSON] == 'y' else ""}'
+                _sentence = sentence.replace(TARGET_, _subject)
                 _sentence = _sentence.replace(BE_, 'is').replace(WERE_, 'was').replace(HAVE_, 'has')
                 
                 dataList.append([

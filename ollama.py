@@ -1,25 +1,4 @@
-import torch
-import logging
-import requests
-from tqdm import tqdm
-import pandas as pd
-import os
-
-logging.basicConfig(level=logging.INFO)# OPTIONAL
-print(f"PyTorch version: {torch.__version__}")
-
-# Set the device      
-device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
-print(f"Using device: {device}")
-
-#Data Source
-OUTPUT_TEMPLATE = 'output_template/'
-TEMPLATES_COMPLETE_PATH = OUTPUT_TEMPLATE + 'template_complete.csv'
-DATA_SOURCE = 'dataset_source/'
-OUTPUT_PREDICTION = 'output_prediction/'
-url = "http://localhost:11434/api/generate"
-LLAMA3_MODEL = 'llama3'
-GEMMA2_MODEL = 'gemma2'
+from utils import * 
 
 class generateSentences():
     def __init__(self, modelName):
@@ -64,5 +43,16 @@ class generateSentences():
         response = requests.post(url, headers=headers, json=data)
         response = response.json()['response'].replace("`", "").replace('\"', '')
         return(response)
+
+
+
+chosenModel = -1
+while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
+    print('Select a model: ')
+    for idx, x in enumerate(MODEL_LIST):
+        print(f"[{idx}] -  {x}")
+    chosenModel = int(input())
     
-generateSentences(Llama3)
+
+#print(MODEL_LIST[chosenModel])
+generateSentences(LLAMA3_3)
