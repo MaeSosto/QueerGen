@@ -55,4 +55,4 @@ while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
     
 
 #print(MODEL_LIST[chosenModel])
-generateSentences(LLAMA3_3)
+generateSentences(chosenModel)
