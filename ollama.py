@@ -41,7 +41,6 @@ class generateSentences():
         }
 
         response = requests.post(url, headers=headers, json=data)
-        print(response.json())
         response = response.json()['response'].replace("`", "").replace('\"', '')
         return(response)
 
