@@ -6,7 +6,7 @@ class generateSentences():
             self.modelName = modelName
             self.templateFile = pd.read_csv(TEMPLATES_COMPLETE_PATH, sep=";")
             if self.modelName == GEMINI_FLASH:
-                self.genai =genai.configure(api_key=GENAI_API_KEY)
+                genai.configure(api_key=GENAI_API_KEY)
             if self.modelName == GPT4 or self.modelName == GPT4_MINI:
                 self.client = OpenAI(api_key=OPENAI_API_KEY)
             dicSentences = {
@@ -19,8 +19,8 @@ class generateSentences():
                 
                 prompt = f"Complete the following sentence: `{sentence}` Provide only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations."
                 if self.modelName == GEMINI_FLASH:
-                    time.sleep(2.5)
                     response = self.geminiRequest(prompt)
+                    time.sleep(2.5)
                 elif self.modelName == GPT4 or self.modelName == GPT4_MINI:
                     response = self.GPTRequest(prompt)
                 else:
@@ -56,9 +56,8 @@ class generateSentences():
         return(response)
 
     def geminiRequest(self, prompt):
-        model = self.genai.GenerativeModel(GEMINI_FLASH)
-        response = model.generate_content(prompt).text
-        return response
+        model = genai.GenerativeModel(GEMINI_FLASH)
+        return model.generate_content(prompt).text
     
     def GPTRequest(self, prompt):
         completion = self.client.chat.completions.create(
@@ -71,10 +70,7 @@ class generateSentences():
                 }
             ]
             )
-        print(f"GPT resp: {completion}")
-        response = completion.choices[0].message.content
-        print(f"GPT resp: {response}")
-        return response
+        return completion.choices[0].message.content
 
 chosenModel = -1
 while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
