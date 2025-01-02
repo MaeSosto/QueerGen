@@ -5,6 +5,7 @@ from tqdm import tqdm
 import pandas as pd
 import os
 import time
+import re
 import google.generativeai as genai
 from openai import OpenAI
 
@@ -32,6 +33,8 @@ CATEGORY= 'category'
 SUBJECT = 'subject'
 PERSON = 'person'
 THE = 'the'
+TEMPLATE = 'template'
+GENERATED = 'generated'
 
 #Data Source
 OUTPUT_TEMPLATE = 'output_template/'

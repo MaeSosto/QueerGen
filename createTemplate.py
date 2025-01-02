@@ -3,8 +3,8 @@ from utils import *
 # # Build Complete Template
 class CompleteTemplateBuilder():
     def __init__(self):
-        self.template = pd.read_csv(TEMPLATE_PATH, sep=";")
-        self.nouns = pd.read_csv(NOUNS_PATH, sep=';')
+        self.template = pd.read_csv(TEMPLATE_PATH)
+        self.nouns = pd.read_csv(NOUNS_PATH)
         self.template_builder()
 
     def plural_form(self, be, sentence):
@@ -16,8 +16,8 @@ class CompleteTemplateBuilder():
 
     def template_builder(self):
         dataList =[]
-        for index, row in tqdm(self.template.iterrows(), total=self.template.shape[0], desc='Creating template', unit=' sentences'):
-            sentence = row.loc['template']
+        for templateNum, row in tqdm(self.template.iterrows(), total=self.template.shape[0], desc='Creating template', unit=' sentences'):
+            sentence = row.loc[TEMPLATE]
             
             #Creating sentences with nouns
             for ind, r in self.nouns.iterrows():
@@ -28,18 +28,18 @@ class CompleteTemplateBuilder():
                 _sentence = _sentence.replace(BE_, 'is').replace(WERE_, 'was').replace(HAVE_, 'has')
                 
                 dataList.append([
-                    index,
+                    templateNum,
                     _sentence, #new template
                     r.loc[TYPE], #type
                     r.loc[CATEGORY], #category
                     r.loc[SUBJECT] #subject
                 ]) 
 
-        data_df = pd.DataFrame(dataList, columns=["index","template", TYPE, CATEGORY, SUBJECT])
+        data_df = pd.DataFrame(dataList, columns=[ "templateNum","template", TYPE, CATEGORY, SUBJECT])
         #display(data_df)
         print(data_df)
         os.makedirs(OUTPUT_TEMPLATE, exist_ok=True)
-        data_df.to_csv(TEMPLATES_COMPLETE_PATH, sep=';', index=False)
+        data_df.to_csv(TEMPLATES_COMPLETE_PATH, index_label = 'index')
 
 CompleteTemplateBuilder()
 
