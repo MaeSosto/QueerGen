@@ -1,11 +1,10 @@
-from utils import * 
-
-# # Build Complete Template
+from constants import * 
 
 templateFile = pd.read_csv(TEMPLATE_PATH)
 nounsFile = pd.read_csv(NOUNS_PATH)
-
 dataList =[]
+print("๏ Generating template...")
+
 for templateNum, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc='Creating template', unit=' sentences'):
     sentence = row.loc[TEMPLATE]
     
@@ -23,10 +22,8 @@ for templateNum, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0
             r.loc[SUBJECT] #subject
         ]) 
 
-data_df = pd.DataFrame(dataList, columns=[ "templateNum","template", TYPE, CATEGORY, SUBJECT])
-#display(data_df)
-print(data_df)
-os.makedirs(OUTPUT_TEMPLATE, exist_ok=True)
+data_df = pd.DataFrame(dataList, columns=[ "templateNum", "template", TYPE, CATEGORY, SUBJECT])
 data_df.to_csv(TEMPLATES_COMPLETE_PATH, index_label = 'index')
+print("๏ File template generated!")
 
 

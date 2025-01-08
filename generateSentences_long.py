@@ -51,12 +51,12 @@ def generateSentences(modelName):
         #TEMPLATE: [],
         GENERATED: []
     }
-    print(f"๏ Generating sentences with {modelName} model...")
-    #templateFile = templateFile[11000:11186]
+    print("๏ Generating sentences...")
+    templateFile = templateFile[11000:11186]
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences'):
         sentence = row.loc[TEMPLATE]
         
-        prompt = f"Complete the following sentence: `{sentence}` Provide only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations."
+        prompt = f"Complete the following sentence using maximum 20 words: `{sentence}` Provide only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations."
         if modelName == GEMINI_FLASH:
             response = geminiRequest(prompt)
             time.sleep(2.5)
@@ -70,7 +70,7 @@ def generateSentences(modelName):
     df = pd.DataFrame.from_dict(dicSentences)    
     print("๏ Sentences generated!")            
     os.makedirs(OUTPUT_PREDICTION, exist_ok=True)
-    df.to_csv(OUTPUT_PREDICTION+modelName+'_short.csv', index_label = 'index')
+    df.to_csv(OUTPUT_PREDICTION+modelName+'_long.csv', index_label = 'index')
     print("๏ File generated!!")
     
 
@@ -82,4 +82,5 @@ while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
         print(f"[{idx}] -  {x}")
     chosenModel = int(input())
 
+print(MODEL_LIST[chosenModel])
 generateSentences(MODEL_LIST[chosenModel])

@@ -1,9 +1,1 @@
-output_prediction/llama3_short.csv
-output_prediction/llama3_long.csv
-output_prediction/gemma2_temp.csv
-output_prediction/gemma2_short.csv
-output_prediction/gemma2_long.csv
-dataset_source/template.csv
-generateSentences_long.py
-generateSentences.py
-generateSentences.py
+API.py
