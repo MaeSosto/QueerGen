@@ -17,6 +17,9 @@ print(f"PyTorch version: {torch.__version__}")
 device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
 print(f"Using device: {device}")
 
+credential_path = "ADC.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+
 #Data Source
 DATA_SOURCE = 'dataset_source/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'

@@ -52,31 +52,22 @@ def prespectiveEvaluator(sentence, prespectiveAPI):
         return perspectiveArray
 
 
-def sample_analyze_sentiment(text_content):
+def NLPCloudSentimentAnalysis(text_content):
     client = language_v2.LanguageServiceClient()
-    response = client.analyze_sentiment(request={
-        "document": {
-            "content": text_content,
-            "type_": language_v2.Document.Type.PLAIN_TEXT,
-            "language_code": "en"
-        }, 
-        "encoding_type": language_v2.EncodingType.UTF8
-    })
-    
-    # Get overall sentiment of the input document
-    print(f"Document sentiment score: {response.document_sentiment.score}")
-    print(f"Document sentiment magnitude: {response.document_sentiment.magnitude}")
-    # Get sentiment for all sentences in the document
-    for sentence in response.sentences:
-        print(f"Sentence text: {sentence.text.content}")
-        print(f"Sentence sentiment score: {sentence.sentiment.score}")
-        print(f"Sentence sentiment magnitude: {sentence.sentiment.magnitude}")
-
-    # Get the language of the text, which will be the same as
-    # the language specified in the request or, if not specified,
-    # the automatically-detected language.
-    print(f"Language of the text: {response.language_code}")
-
+    try:
+        response = client.analyze_sentiment(request={
+            "document": {
+                "content": text_content,
+                "type_": language_v2.Document.Type.PLAIN_TEXT,
+                "language_code": "en"
+            }, 
+            "encoding_type": language_v2.EncodingType.UTF8
+        })
+        
+        return response.document_sentiment.score
+    except Exception as X:
+        print("EXC: "+str(X))
+        return None
 
 def evaluatePredictions(modelName):
     analyzer = SentimentIntensityAnalyzer()
@@ -92,7 +83,7 @@ def evaluatePredictions(modelName):
         sentence = row.loc["generated"]
         VaderScore = row.loc["VADER"] #analyzer.polarity_scores(sentence)['compound']
         PerspectiveScore = row.loc["Perspective"] #prespectiveEvaluator(sentence, prespectiveAPI)
-        GoogleCloudScore = sample_analyze_sentiment(sentence)
+        GoogleCloudScore = NLPCloudSentimentAnalysis(sentence)
         dicSentences[GENERATED].append(sentence)
         dicSentences['VADER'].append(VaderScore)
         dicSentences['Perspective'].append(PerspectiveScore)

@@ -1,6 +1,11 @@
 from constants import * 
-import support_lib
 import API
+
+def clean_response(response):
+    response = re.sub(r'\n', '', response)
+    response = re.sub(r'\"', '', response)
+    response = re.sub(r'`', '', response)
+    return response
 
 def ollamaRequest (prompt, modelName):
     data = {
@@ -20,12 +25,12 @@ def ollamaRequest (prompt, modelName):
     }
     response = requests.post(URL_OLLAMA_LOCAL, headers=headers, json=data)
     response = response.json()['response']
-    return support_lib.clean_response(response)
+    return clean_response(response)
 
 def geminiRequest(prompt):
     model = genai.GenerativeModel(GEMINI_FLASH)
     response = model.generate_content(prompt).text
-    return support_lib.clean_response(response)
+    return clean_response(response)
 
 def GPTRequest(prompt, modelName, client):
     completion = client.chat.completions.create(
@@ -39,7 +44,7 @@ def GPTRequest(prompt, modelName, client):
         ]
         )
     response = completion.choices[0].message.content
-    return support_lib.clean_response(response)
+    return clean_response(response)
 
 def generateSentences(modelName):
     templateFile = pd.read_csv(TEMPLATES_COMPLETE_PATH)
