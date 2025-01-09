@@ -4,8 +4,10 @@ import requests
 from tqdm import tqdm
 import pandas as pd
 import os
+import re
 import time
 import google.generativeai as genai
+from googleapiclient import discovery
 from openai import OpenAI
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
