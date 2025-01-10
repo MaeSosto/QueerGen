@@ -9,6 +9,10 @@ import time
 #import google.generativeai as genai
 from googleapiclient import discovery
 from openai import OpenAI
+import API
+#from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+#from google.cloud import language_v2
+
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")

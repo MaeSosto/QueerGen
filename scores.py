@@ -60,7 +60,6 @@ def getScores(modelName):
             queerScores["VADER"].append(row.loc["VADER"])
             queerScores["Perspective"].append(row.loc["Perspective"])
             queerScores["GoogleCloud"].append(row.loc["GoogleCloud"])
-            
         elif subType == NON_QUEER:
             nonqueerScores["VADER"].append(row.loc["VADER"])
             nonqueerScores["Perspective"].append(row.loc["Perspective"])
@@ -75,4 +74,3 @@ def getScores(modelName):
     print("AVG NEUTRAL:   " + avg(neutralScores))
     
 getScores(LLAMA3)
-getScores(GEMMA2)

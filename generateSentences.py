@@ -1,5 +1,4 @@
 from constants import * 
-import API
 
 def clean_response(response):
     response = re.sub(r'\n', '', response)
@@ -58,7 +57,7 @@ def generateSentences(modelName):
         GENERATED: []
     }
     print(f"๏ Generating sentences with {modelName} model...")
-    #templateFile = templateFile[11000:11200]
+    templateFile = templateFile[1000:1200]
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences'):
         sentence = row.loc[TEMPLATE]
         
