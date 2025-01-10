@@ -13,6 +13,10 @@ PROFANITY = 'PROFANITY'
 THREAT = 'THREAT'
 PERSPECTIVE_CATEGORIES =[TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
 
+def truncate(float_number, decimal_places = 2):
+    multiplier = 10 ** decimal_places
+    return int(float_number * multiplier) / multiplier
+
 def perspectiveSetup():
     client = discovery.build(
         "commentanalyzer",
@@ -77,7 +81,8 @@ def evaluatePredictions(modelName):
     dicSentences = {
         GENERATED: [],
         'VADER': [],
-        'Perspective': []
+        'Perspective': [],
+        'GoogleCloud': []
     }
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Evaluating with {modelName} model', unit=' sentences'):
         sentence = row.loc["generated"]
@@ -87,10 +92,11 @@ def evaluatePredictions(modelName):
         dicSentences[GENERATED].append(sentence)
         dicSentences['VADER'].append(VaderScore)
         dicSentences['Perspective'].append(PerspectiveScore)
-        print(str(VaderScore) +"-"+ str(PerspectiveScore) + " - "+ sentence )
+        dicSentences['GoogleCloud'].append(truncate(GoogleCloudScore))
+        #print(str(VaderScore) +"-"+ str(PerspectiveScore) + " - "+ sentence )
     df = pd.DataFrame.from_dict(dicSentences)    
     os.makedirs(OUTPUT_PREDICTION, exist_ok=True)
-    df.to_csv(OUTPUT_PREDICTION+modelName+'_minimal.csv', index_label = 'index')
+    df.to_csv(OUTPUT_PREDICTION+modelName+'_minimall.csv', index_label = 'index')
 
 # chosenModel = -1
 # while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:

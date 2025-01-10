@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import re
 import time
-import google.generativeai as genai
+#import google.generativeai as genai
 from googleapiclient import discovery
 from openai import OpenAI
 
@@ -26,6 +26,11 @@ TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
 OUTPUT_PREDICTION = 'output_prediction/'
+
+#TYPE 
+QUEER = 'queer'
+NON_QUEER = 'non-queer'
+NEUTRAL = 'neutral'
 
 # TEMPLATE MAP
 TARGET_ = '<target>'

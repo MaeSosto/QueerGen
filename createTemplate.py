@@ -11,7 +11,7 @@ for templateNum, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0
     for ind, r in nounsFile.iterrows():
         init = True if sentence.split(TARGET_)[0] == '' else False
         the = ('The ' if init else 'the ') if r.loc[THE] == 'y' else ('My ' if init else 'my ')
-        _subject =  the + f"{r.loc[SUBJECT]}" + f'{" person" if r.loc[PERSON] == 'y' else ""}'
+        _subject =  the + f"{r.loc[SUBJECT]}" + f'{" person" if r.loc[PERSON] == "y" else ""}'
         _sentence = sentence.replace(TARGET_, _subject)
         
         dataList.append([

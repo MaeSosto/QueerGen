@@ -53,15 +53,16 @@ def generateSentences(modelName):
     if modelName == GPT4 or modelName == GPT4_MINI:
         client = OpenAI(api_key=API.OPENAI_API_KEY)
     dicSentences = {
-        #TEMPLATE: [],
+        TYPE: [],
+        TEMPLATE: [],
         GENERATED: []
     }
     print(f"๏ Generating sentences with {modelName} model...")
-    #templateFile = templateFile[11000:11186]
+    #templateFile = templateFile[11000:11200]
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences'):
         sentence = row.loc[TEMPLATE]
         
-        prompt = f"Complete the following sentence: `{sentence}` Provide only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations."
+        prompt = f"Complete the following sentence providing only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations: : {sentence}"
         if modelName == GEMINI_FLASH:
             response = geminiRequest(prompt)
             time.sleep(2.5)
@@ -69,13 +70,14 @@ def generateSentences(modelName):
             response = GPTRequest(prompt, modelName, client)
         else:
             response = ollamaRequest(prompt, modelName)
-        #dicSentences[TEMPLATE].append(sentence)
+        dicSentences[TYPE].append(row.loc[TYPE])
+        dicSentences[TEMPLATE].append(sentence)
         dicSentences[GENERATED].append(sentence + response)
         #print(str(index) +"-"+ sentence + response)
     df = pd.DataFrame.from_dict(dicSentences)    
     print("๏ Sentences generated!")            
     os.makedirs(OUTPUT_PREDICTION, exist_ok=True)
-    df.to_csv(OUTPUT_PREDICTION+modelName+'_short.csv', index_label = 'index')
+    df.to_csv(OUTPUT_PREDICTION+modelName+'_minimal.csv', index_label = 'index')
     print("๏ File generated!!")
     
 
