@@ -83,21 +83,21 @@ def NLPCloudSentimentAnalysis(text_content):
 
 def getScores(templateFile):
     scores = {
-        QUEER : {
-            'VADER': [],
-            'Perspective': [],
-        #    'GoogleCloud': []
-        },
-        NON_QUEER : {
-            'VADER': [],
-            'Perspective': [],
-        #    'GoogleCloud': []
-        },
-        NEUTRAL : {
-            'VADER': [],
-            'Perspective': [],
-       #     'GoogleCloud': []
-        }  
+        # QUEER : {
+        #     'VADER': [],
+        #     'Perspective': [],
+        #     'GoogleCloud': []
+        # },
+        # NON_QUEER : {
+        #     'VADER': [],
+        #     'Perspective': [],
+        #     'GoogleCloud': []
+        # },
+        # NEUTRAL : {
+        #     'VADER': [],
+        #     'Perspective': [],
+        #     'GoogleCloud': []
+        # }  
     }
     
     for index,row in templateFile.iterrows():
@@ -106,49 +106,49 @@ def getScores(templateFile):
         
         scores[type]["VADER"].append(row.loc["VADER"])
         scores[row.loc[TYPE]]["Perspective"].append(row.loc["Perspective"])
-        #scores[row.loc[TYPE]]["GoogleCloud"].append(row.loc["GoogleCloud"])
+        scores[row.loc[TYPE]]["GoogleCloud"].append(row.loc["GoogleCloud"])
     
     print("AVG QUEER:     " + avg(scores[QUEER]))
     print("AVG NON-QUEER: " + avg(scores[NON_QUEER]))
     print("AVG NEUTRAL:   " + avg(scores[NEUTRAL]))
         
 def evaluatePredictions(modelName):
-    #analyzer = SentimentIntensityAnalyzer()
+    analyzer = SentimentIntensityAnalyzer()
     prespectiveAPI = perspectiveSetup()
 
-    templateFile = pd.read_csv(OUTPUT_PREDICTION+modelName+"_minimal.csv")
+    templateFile = pd.read_csv(OUTPUT_PREDICTION+modelName+".csv")
     dicSentences = {
         TYPE: [],
         GENERATED: [],
         'VADER': [],
-        'Perspective': []#,
-        #'GoogleCloud': []
+        'Perspective': [],
+        'GoogleCloud': []
     }
     
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Evaluating with {modelName} model', unit=' sentences'):
         VaderScore = row.loc["VADER"]#analyzer.polarity_scores(sentence)['compound']
         PerspectiveScore = row.loc["Perspective"]#prespectiveEvaluator(sentence, prespectiveAPI)
-        #GoogleCloudScore = NLPCloudSentimentAnalysis(sentence)
+        GoogleCloudScore = NLPCloudSentimentAnalysis(row.loc[GENERATED])
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[GENERATED].append(row.loc[GENERATED])
         dicSentences['VADER'].append(VaderScore)
         dicSentences['Perspective'].append(PerspectiveScore)
-        #dicSentences['GoogleCloud'].append(truncate(GoogleCloudScore))
+        dicSentences['GoogleCloud'].append(truncate(GoogleCloudScore))
         #print(str(VaderScore) +"-"+ str(PerspectiveScore) + " - "+ sentence )
     templateFile = pd.DataFrame.from_dict(dicSentences)    
-    os.makedirs(OUTPUT_PREDICTION, exist_ok=True)
-    templateFile.to_csv(OUTPUT_PREDICTION+modelName+'_minimal.csv', index_label = 'index')
+    os.makedirs(OUTPUT_EVALUATION, exist_ok=True)
+    templateFile.to_csv(OUTPUT_EVALUATION+modelName+'.csv', index_label = 'index')
     getScores(templateFile)
 
-# chosenModel = -1
-# while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
-#     print('๏ Select a model: ')
-#     for idx, x in enumerate(MODEL_LIST):
-#         print(f"[{idx}] -  {x}")
-#     chosenModel = int(input())
+chosenModel = -1
+while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
+    print('๏ Select a model: ')
+    for idx, x in enumerate(MODEL_LIST):
+        print(f"[{idx}] -  {x}")
+    chosenModel = int(input())
 
-# evaluatePredictions(MODEL_LIST[chosenModel])
+evaluatePredictions(MODEL_LIST[chosenModel])
 
-models = [LLAMA3]
-for m in models:
-    evaluatePredictions(m)
+# models = [LLAMA3]
+# for m in models:
+#     evaluatePredictions(m)

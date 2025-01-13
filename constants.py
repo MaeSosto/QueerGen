@@ -6,12 +6,12 @@ import pandas as pd
 import os
 import re
 import time
-#import google.generativeai as genai
+import google.generativeai as genai
 from googleapiclient import discovery
 from openai import OpenAI
 import API
-#from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-#from google.cloud import language_v2
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from google.cloud import language_v2
 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
@@ -30,6 +30,7 @@ TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
 OUTPUT_PREDICTION = 'output_prediction/'
+OUTPUT_EVALUATION = 'output_evaluation/'
 
 #TYPE 
 QUEER = 'queer'
