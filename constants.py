@@ -6,12 +6,9 @@ import pandas as pd
 import os
 import re
 import time
-import google.generativeai as genai
 from googleapiclient import discovery
 from openai import OpenAI
 import API
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from google.cloud import language_v2
 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
@@ -36,6 +33,7 @@ OUTPUT_EVALUATION = 'output_evaluation/'
 QUEER = 'queer'
 NON_QUEER = 'non-queer'
 NEUTRAL = 'neutral'
+SUBJECT_TYPES = [QUEER, NON_QUEER, NEUTRAL]
 
 # TEMPLATE MAP
 TARGET_ = '<target>'
