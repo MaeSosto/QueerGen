@@ -1,4 +1,5 @@
 from constants import * 
+print(sys.path)
 import google.generativeai as genai
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from google.cloud import language_v2
@@ -26,9 +27,14 @@ def getListFromString(text):
     return list(map(int, text.split(",")))
 
 def calcAverageScores(val):
-    val["Perspective"] = [sum(getListFromString(per)) for per in val["Perspective"]]
-    return [truncate(sum(val[met])/len(val[met])) for met in EVALUATION_TOOLS] #truncate(sum(val["VADER"])/len(val["VADER"])) , truncate(sum(summ) / len(summ)), truncate(sum(val["GoogleCloud"]) / len(val["GoogleCloud"]))
-
+    val[PERSPECTIVE] = [sum(getListFromString(per)) for per in val[PERSPECTIVE]]
+    #print(val[PERSPECTIVE])
+    scores = []
+    for met in EVALUATION_TOOLS:
+        scores.append(truncate(sum(val[met])/len(val[met])))
+     #   print(scores)
+    return scores
+    
 def truncate(float_number, decimal_places = 2):
     multiplier = 10 ** decimal_places
     return int(float_number * multiplier) / multiplier
@@ -119,8 +125,11 @@ def getScores(templateFile):
 def evaluatePredictions(modelName):
     analyzer = SentimentIntensityAnalyzer()
     prespectiveAPI = perspectiveSetup()
+    
+    inputPath = OUTPUT_PREDICTION+modelName+".csv"
+    outputPath = OUTPUT_EVALUATION+modelName+'.csv'
 
-    templateFile = pd.read_csv(OUTPUT_PREDICTION+modelName+".csv")
+    templateFile = pd.read_csv(inputPath)
     dicSentences = {
         TYPE: [],
         GENERATED: [],
@@ -128,28 +137,43 @@ def evaluatePredictions(modelName):
         PERSPECTIVE: [],
         GOOGLE_CLOUD_NL: []
     }
-    
-    #templateFile = templateFile[1000:1050]
-    for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Evaluating with {modelName} model', unit=' sentences'):
+    startingFrom = 0
+    df = pd.DataFrame.from_dict(dicSentences)    
+    os.makedirs(OUTPUT_EVALUATION, exist_ok=True)
+    if os.path.exists(outputPath):
+        df = pd.read_csv(outputPath, index_col=None)
+        print("๏ Starting from a pre-existing evaluation file")
+        startingFrom = df.shape[0]
+        for idx, row in df.iterrows():
+            sentence = row.loc[GENERATED]
+            VaderScore = row.loc["VADER"]
+            PerspectiveScore = row.loc["Perspective"]
+            GoogleCloudScore = row.loc["GoogleCloud"]
+            dicSentences[TYPE].append(row.loc[TYPE])
+            dicSentences[GENERATED].append(sentence)
+            dicSentences[VADER].append(VaderScore)
+            dicSentences[PERSPECTIVE].append(PerspectiveScore)
+            dicSentences[GOOGLE_CLOUD_NL].append(truncate(GoogleCloudScore))  
+    else:
+        print("๏ Starting from the prediction file")  
+        
+    templateFile = templateFile[startingFrom:]
+    for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Evaluating {modelName}\'s answers', unit=' sentences'):
         sentence = row.loc[GENERATED]
-        
-        # VaderScore = row.loc["VADER"]
-        # PerspectiveScore = row.loc["Perspective"]
-        # GoogleCloudScore = row.loc["GoogleCloud"]
-        
+        #print(f"{index} - {sentence}")
         VaderScore = analyzer.polarity_scores(sentence)['compound']
         PerspectiveScore = prespectiveEvaluator(sentence, prespectiveAPI)
         GoogleCloudScore = NLPCloudSentimentAnalysis(sentence)
+        
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[GENERATED].append(sentence)
         dicSentences[VADER].append(VaderScore)
         dicSentences[PERSPECTIVE].append(PerspectiveScore)
         dicSentences[GOOGLE_CLOUD_NL].append(truncate(GoogleCloudScore))
         #print(str(VaderScore) +"-"+ str(PerspectiveScore) + " - "+ sentence )
-    templateFile = pd.DataFrame.from_dict(dicSentences)    
-    os.makedirs(OUTPUT_EVALUATION, exist_ok=True)
-    templateFile.to_csv(OUTPUT_EVALUATION+modelName+'.csv', index_label = 'index')
-    getScores(templateFile)
+        df = pd.DataFrame.from_dict(dicSentences)    
+        df.to_csv(outputPath, index_label = 'index')
+    getScores(df)
 
 chosenModel = -1
 while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
