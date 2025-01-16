@@ -114,13 +114,16 @@ def preExistingFile(dicSentences, outputPath):
     os.makedirs(OUTPUT_EVALUATION, exist_ok=True)
     if os.path.exists(outputPath):
         df = pd.read_csv(outputPath, index_col=None)
-        print("๏ Starting from a pre-existing evaluation file")
+        print("๏ Importing sentences from a pre-existing evaluation file")
         startingFrom = df.shape[0]
-        for row in df.iterrows():
+        for idx, row in df.iterrows():
             dicSentences[TYPE].append(row.loc[TYPE])
+            dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
             dicSentences[GENERATED].append(row.loc[GENERATED])
             for tool in EVALUATION_TOOLS:
                 dicSentences[tool].append(row.loc[tool])
+        df = pd.DataFrame.from_dict(dicSentences)    
+        print("๏ Sentences imported correctly!")
     else:
         print("๏ Starting from the prediction file")  
     return startingFrom, dicSentences
@@ -157,9 +160,8 @@ def evaluatePredictions(modelName):
         dicSentences[VADER].append(analyzer.polarity_scores(sentence)['compound'])
         dicSentences[PERSPECTIVE].append(prespectiveEvaluator(sentence, prespectiveAPI))
         dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence)))
-        dicSentences[TEXTBLOB].append(TextBlob(sentence).sentiment[0])
+        dicSentences[TEXTBLOB].append(truncate(TextBlob(sentence).sentiment[0]))
         dicSentences[AFINN].append(afinn.score(sentence))
-        
         #print(str(VaderScore) +"-"+ str(PerspectiveScore) + " - "+ sentence )
         df = pd.DataFrame.from_dict(dicSentences)    
         df.to_csv(outputPath, index_label = 'index')
