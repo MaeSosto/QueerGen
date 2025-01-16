@@ -1,27 +1,7 @@
 from constants import * 
-print(sys.path)
-import google.generativeai as genai
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from google.cloud import language_v2
-
-MASKBERT_ = '\[MASK\]'
-
-#Perspective
-TOXICITY = 'TOXICITY'
-INSULT = 'INSULT'
-IDENTITY_ATTACK = 'IDENTITY_ATTACK'
-PROFANITY = 'PROFANITY'
-THREAT = 'THREAT'
-PERSPECTIVE_CATEGORIES =[TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
-
-#Evaluation tools
-VADER = 'VADER'
-PERSPECTIVE = 'Perspective'
-GOOGLE_CLOUD_NL = 'GoogleCloud'
-EVALUATION_TOOLS = [VADER, PERSPECTIVE, GOOGLE_CLOUD_NL]
 
 def getListFromString(text):
-    text = re.sub(r"'", "", text)
+    text = re.sub(r"'", "", str(text))
     text = re.sub(r'\]', '', text)
     text = re.sub(r'\[', '', text)
     return list(map(int, text.split(",")))
@@ -100,43 +80,35 @@ def getScores(templateFile):
         QUEER : {
             VADER: [],
             PERSPECTIVE: [],
-            GOOGLE_CLOUD_NL: []
+            GOOGLE_CLOUD_NL: [],
+            TEXTBLOB: [],
+            AFINN: []
         },
         NON_QUEER : {
             VADER: [],
             PERSPECTIVE: [],
-            GOOGLE_CLOUD_NL: []
+            GOOGLE_CLOUD_NL: [],
+            TEXTBLOB: [],
+            AFINN: []
         },
         NEUTRAL : {
             VADER: [],
             PERSPECTIVE: [],
-            GOOGLE_CLOUD_NL: []
+            GOOGLE_CLOUD_NL: [],
+            TEXTBLOB: [],
+            AFINN: []
         }  
     }
     
     for index,row in templateFile.iterrows():
         for eval in EVALUATION_TOOLS:
             scores[row[TYPE]][eval].append(row.loc[eval])
-    df = pd.DataFrame(columns=[VADER,PERSPECTIVE,GOOGLE_CLOUD_NL], index=SUBJECT_TYPES)
+    df = pd.DataFrame(columns=EVALUATION_TOOLS, index=SUBJECT_TYPES)
     for sub in SUBJECT_TYPES:
         df.loc[sub] = calcAverageScores(scores[sub])
     print(df)
-        
-def evaluatePredictions(modelName):
-    analyzer = SentimentIntensityAnalyzer()
-    prespectiveAPI = perspectiveSetup()
-    
-    inputPath = OUTPUT_PREDICTION+modelName+".csv"
-    outputPath = OUTPUT_EVALUATION+modelName+'.csv'
-
-    templateFile = pd.read_csv(inputPath)
-    dicSentences = {
-        TYPE: [],
-        GENERATED: [],
-        VADER: [],
-        PERSPECTIVE: [],
-        GOOGLE_CLOUD_NL: []
-    }
+      
+def preExistingFile(dicSentences, outputPath):
     startingFrom = 0
     df = pd.DataFrame.from_dict(dicSentences)    
     os.makedirs(OUTPUT_EVALUATION, exist_ok=True)
@@ -144,35 +116,54 @@ def evaluatePredictions(modelName):
         df = pd.read_csv(outputPath, index_col=None)
         print("๏ Starting from a pre-existing evaluation file")
         startingFrom = df.shape[0]
-        for idx, row in df.iterrows():
-            sentence = row.loc[GENERATED]
-            VaderScore = row.loc["VADER"]
-            PerspectiveScore = row.loc["Perspective"]
-            GoogleCloudScore = row.loc["GoogleCloud"]
+        for row in df.iterrows():
             dicSentences[TYPE].append(row.loc[TYPE])
-            dicSentences[GENERATED].append(sentence)
-            dicSentences[VADER].append(VaderScore)
-            dicSentences[PERSPECTIVE].append(PerspectiveScore)
-            dicSentences[GOOGLE_CLOUD_NL].append(truncate(GoogleCloudScore))  
+            dicSentences[GENERATED].append(row.loc[GENERATED])
+            for tool in EVALUATION_TOOLS:
+                dicSentences[tool].append(row.loc[tool])
     else:
         print("๏ Starting from the prediction file")  
-        
+    return startingFrom, dicSentences
+      
+def evaluatePredictions(modelName):
+    analyzer = SentimentIntensityAnalyzer()
+    prespectiveAPI = perspectiveSetup()
+    global afinn
+    afinn = Afinn()
+    
+    inputPath = OUTPUT_PREDICTION+modelName+".csv"
+    outputPath = OUTPUT_EVALUATION+modelName+'.csv'
+
+    templateFile = pd.read_csv(inputPath)
+    dicSentences = {
+        TYPE: [],
+        TEMPLATE: [],
+        GENERATED: [],
+        VADER: [],
+        PERSPECTIVE: [],
+        GOOGLE_CLOUD_NL: [],
+        TEXTBLOB: [],
+        AFINN: []
+    }
+
+    startingFrom, dicSentences = preExistingFile(dicSentences, outputPath)
+    startingFrom = 0
     templateFile = templateFile[startingFrom:]
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Evaluating {modelName}\'s answers', unit=' sentences'):
-        sentence = row.loc[GENERATED]
-        #print(f"{index} - {sentence}")
-        VaderScore = analyzer.polarity_scores(sentence)['compound']
-        PerspectiveScore = prespectiveEvaluator(sentence, prespectiveAPI)
-        GoogleCloudScore = NLPCloudSentimentAnalysis(sentence)
-        
+        sentence = re.sub(row.loc[TEMPLATE], "", row.loc[GENERATED])
         dicSentences[TYPE].append(row.loc[TYPE])
+        dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
         dicSentences[GENERATED].append(sentence)
-        dicSentences[VADER].append(VaderScore)
-        dicSentences[PERSPECTIVE].append(PerspectiveScore)
-        dicSentences[GOOGLE_CLOUD_NL].append(truncate(GoogleCloudScore))
+        dicSentences[VADER].append(analyzer.polarity_scores(sentence)['compound'])
+        dicSentences[PERSPECTIVE].append(prespectiveEvaluator(sentence, prespectiveAPI))
+        dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence)))
+        dicSentences[TEXTBLOB].append(TextBlob(sentence).sentiment[0])
+        dicSentences[AFINN].append(afinn.score(sentence))
+        
         #print(str(VaderScore) +"-"+ str(PerspectiveScore) + " - "+ sentence )
         df = pd.DataFrame.from_dict(dicSentences)    
         df.to_csv(outputPath, index_label = 'index')
+    print('๏ Get scores ')
     getScores(df)
 
 chosenModel = -1

@@ -7,9 +7,14 @@ import os
 import re
 import time
 import sys
-from googleapiclient import discovery
 from openai import OpenAI
+from googleapiclient import discovery
 import API
+import google.generativeai as genai
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from google.cloud import language_v2
+from textblob import TextBlob
+from afinn import Afinn
 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
@@ -21,6 +26,9 @@ print(f"Using device: {device}")
 
 credential_path = "ADC.json"
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+
+#Generate sentences
+MASKBERT_ = '\[MASK\]'
 
 #Data Source
 DATA_SOURCE = 'dataset_source/'
@@ -45,6 +53,22 @@ PERSON = 'person'
 THE = 'the'
 TEMPLATE = 'template'
 GENERATED = 'generated'
+
+#Perspective
+TOXICITY = 'TOXICITY'
+INSULT = 'INSULT'
+IDENTITY_ATTACK = 'IDENTITY_ATTACK'
+PROFANITY = 'PROFANITY'
+THREAT = 'THREAT'
+PERSPECTIVE_CATEGORIES =[TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
+
+#Evaluation tools
+VADER = 'VADER'
+PERSPECTIVE = 'Perspective'
+GOOGLE_CLOUD_NL = 'GoogleCloud'
+TEXTBLOB = 'textBlob'
+AFINN = 'afinn'
+EVALUATION_TOOLS = [VADER, PERSPECTIVE, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN]
 
 #Ollama Models
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
