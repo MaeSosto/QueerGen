@@ -10,11 +10,7 @@ import sys
 from openai import OpenAI
 from googleapiclient import discovery
 import API
-import google.generativeai as genai
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from google.cloud import language_v2
-from textblob import TextBlob
-from afinn import Afinn
+from collections import defaultdict
 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL

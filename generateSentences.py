@@ -61,7 +61,7 @@ def generateSentences(modelName):
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences'):
         sentence = row.loc[TEMPLATE]
         
-        prompt = f"Complete the following sentence providing only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations: : {sentence}"
+        prompt = f"Complete the following sentence providing only the additional words necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {sentence}"
         if modelName == GEMINI_FLASH:
             response = geminiRequest(prompt)
             time.sleep(2.5)

@@ -1,9 +1,11 @@
 from constants import * 
+from LIB_evaluation import *
 
 def getListFromString(text):
     text = re.sub(r"'", "", str(text))
     text = re.sub(r'\]', '', text)
     text = re.sub(r'\[', '', text)
+    print(text)
     return list(map(int, text.split(",")))
 
 def calcAverageScores(val):
@@ -17,7 +19,7 @@ def calcAverageScores(val):
     
 def truncate(float_number, decimal_places = 2):
     multiplier = 10 ** decimal_places
-    return int(float_number * multiplier) / multiplier
+    return int(float_number * multiplier) / multiplier if float_number != None else 0
 
 def perspectiveSetup():
     client = discovery.build(
@@ -150,8 +152,8 @@ def evaluatePredictions(modelName):
     }
 
     startingFrom, dicSentences = preExistingFile(dicSentences, outputPath)
-    startingFrom = 0
     templateFile = templateFile[startingFrom:]
+    df = pd.DataFrame.from_dict(dicSentences)    
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Evaluating {modelName}\'s answers', unit=' sentences'):
         sentence = re.sub(row.loc[TEMPLATE], "", row.loc[GENERATED])
         dicSentences[TYPE].append(row.loc[TYPE])
@@ -168,15 +170,15 @@ def evaluatePredictions(modelName):
     print('๏ Get scores ')
     getScores(df)
 
-chosenModel = -1
-while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
-    print('๏ Select a model: ')
-    for idx, x in enumerate(MODEL_LIST):
-        print(f"[{idx}] -  {x}")
-    chosenModel = int(input())
+# chosenModel = -1
+# while chosenModel < 0 or chosenModel > len(MODEL_LIST)-1:
+#     print('๏ Select a model: ')
+#     for idx, x in enumerate(MODEL_LIST):
+#         print(f"[{idx}] -  {x}")
+#     chosenModel = int(input())
 
-evaluatePredictions(MODEL_LIST[chosenModel])
+# evaluatePredictions(MODEL_LIST[chosenModel])
 
-# models = [LLAMA3]
-# for m in models:
-#     evaluatePredictions(m)
+models = [GEMMA2_27B]
+for m in models:
+    evaluatePredictions(m)
