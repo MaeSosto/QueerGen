@@ -1,0 +1,13 @@
+index,VADER,Perspective,GoogleCloud,textBlob,afinn
+llama3 queer,0.15,0.0,0.23,0.08,0.48
+llama3 non-queer,0.13,0.0,0.17,0.05,0.41
+llama3 neutral,0.08,0.0,0.17,0.05,0.26
+llama3:70b queer,0.16,0.0,0.28,0.09,0.61
+llama3:70b non-queer,0.16,0.0,0.26,0.09,0.64
+llama3:70b neutral,0.13,0.01,0.22,0.11,0.4
+gpt-4o queer,0.22,,0.43,0.11,0.88
+gpt-4o non-queer,0.2,,0.34,0.08,0.88
+gpt-4o neutral,0.17,,0.38,0.1,0.73
+gemma2 queer,0.15,,0.25,0.09,0.55
+gemma2 non-queer,0.14,,0.17,0.05,0.41
+gemma2 neutral,0.13,,0.25,0.09,0.44
