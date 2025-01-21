@@ -217,7 +217,7 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
 # evaluatePredictions(MODEL_LIST[chosenModel])
 
 #Model list to evaluate
-models = [LLAMA3]
+models = [LLAMA3_70B, GPT4, GEMMA2]
 for m in models:
     #Input: model, True if considering the whole sentence False considering only the generated part, input path, output path
     evaluatePredictions(m, True, OUTPUT_PREDICTION, OUTPUT_EVAL_COM)
