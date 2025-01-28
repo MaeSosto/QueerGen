@@ -1,4 +1,4 @@
-from LIB_constants import * 
+from lib.constants import * 
 
 def clean_response(response):
     response = re.sub(r'\n', '', response)
@@ -76,11 +76,9 @@ def generateSentences(modelName):
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[TEMPLATE].append(sentence)
         dicSentences[GENERATED].append(sentence + response)
-        #print(str(index) +"-"+ sentence + response)
-    df = pd.DataFrame.from_dict(dicSentences)    
-    print("๏ Sentences generated!")            
-    os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
-    df.to_csv(OUTPUT_SENTENCES+modelName+'.csv', index_label = 'index')
+        df = pd.DataFrame.from_dict(dicSentences)    
+        os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
+        df.to_csv(OUTPUT_SENTENCES+modelName+'.csv', index_label = 'index')
     print("๏ File generated!!")
     
 
