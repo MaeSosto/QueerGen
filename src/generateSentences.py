@@ -1,4 +1,4 @@
-from LIB_constants import * 
+from lib.constants import * 
 
 def clean_response(response):
     response = re.sub(r'\n', '', response)

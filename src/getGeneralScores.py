@@ -1,5 +1,4 @@
-from LIB_constants import * 
-
+from lib.constants import * 
 
 def truncate(float_number, decimal_places = 2):
     multiplier = 10 ** decimal_places

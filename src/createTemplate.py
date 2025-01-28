@@ -1,4 +1,4 @@
-from LIB_constants import * 
+from lib.constants import * 
 
 templateFile = pd.read_csv(TEMPLATE_PATH)
 nounsFile = pd.read_csv(NOUNS_PATH)

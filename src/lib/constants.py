@@ -1,3 +1,4 @@
+import lib.API
 import torch
 import logging
 import requests
@@ -9,7 +10,6 @@ import time
 import sys
 from openai import OpenAI
 from googleapiclient import discovery
-import API
 from collections import defaultdict
 from evaluate import load 
 
@@ -28,6 +28,7 @@ MASKBERT_ = '\[MASK\]'
 
 #Data Source
 DATA_SOURCE = 'dataset_source/'
+DATA_SOURCE_SMALL = 'dataset_source_small/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
