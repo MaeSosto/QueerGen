@@ -1,4 +1,4 @@
-from constants import * 
+from LIB_constants import * 
 
 
 def truncate(float_number, decimal_places = 2):
@@ -33,7 +33,7 @@ def getSubject(sentence, nounsFile):
 
 
 def getScores(modelName):
-    templateFile = pd.read_csv(OUTPUT_PREDICTION+modelName+"_minimall.csv")
+    templateFile = pd.read_csv(OUTPUT_SENTENCES+modelName+"_minimall.csv")
     nounsFile = pd.read_csv(NOUNS_PATH)
     
     queerScores = {

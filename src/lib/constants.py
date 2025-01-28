@@ -11,7 +11,7 @@ from openai import OpenAI
 from googleapiclient import discovery
 import API
 from collections import defaultdict
-
+from evaluate import load 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")
@@ -31,7 +31,7 @@ DATA_SOURCE = 'dataset_source/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
-OUTPUT_PREDICTION = 'output_prediction/'
+OUTPUT_SENTENCES = 'output_sentences/'
 OUTPUT_EVALUATION = 'output_evaluation/'
 
 #TYPE 
@@ -64,7 +64,8 @@ VADER = 'VADER'
 GOOGLE_CLOUD_NL = 'GoogleCloud'
 TEXTBLOB = 'textBlob'
 AFINN = 'afinn'
-EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN]
+PERPLEXITY = 'perplexity'
+EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY]
 
 #Ollama Models
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"

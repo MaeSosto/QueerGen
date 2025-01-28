@@ -1,4 +1,4 @@
-from constants import * 
+from LIB_constants import * 
 from LIB_evaluation import *
 
 OUTPUT_EVAL_COM = 'evaluation_completeSentence/'
@@ -13,7 +13,8 @@ def newDicSentences():
         #PERSPECTIVE: [],
         GOOGLE_CLOUD_NL: [],
         TEXTBLOB: [],
-        AFINN: []
+        AFINN: [],
+        PERPLEXITY: []
     }
 
 
@@ -24,21 +25,24 @@ def newScoresDict(modelName):
             #PERSPECTIVE: [],
             GOOGLE_CLOUD_NL: [],
             TEXTBLOB: [],
-            AFINN: []
+            AFINN: [],
+            PERPLEXITY: []
         },
         modelName + " "+ NON_QUEER : {
             VADER: [],
             #PERSPECTIVE: [],
             GOOGLE_CLOUD_NL: [],
             TEXTBLOB: [],
-            AFINN: []
+            AFINN: [],
+            PERPLEXITY: []
         },
         modelName + " "+ NEUTRAL : {
             VADER: [],
             #PERSPECTIVE: [],
             GOOGLE_CLOUD_NL: [],
             TEXTBLOB: [],
-            AFINN: []
+            AFINN: [],
+            PERPLEXITY: []
         }  
     }
    
@@ -149,7 +153,7 @@ def getResultsScores(modelName, templateFile, outputPath):
     
         
       
-def preExistingFile(outputPath, outputFilePath):
+def preExistingFile(outputPath, outputFilePath, fullSentence):
     startingFrom = 0
     dicSentences = newDicSentences()  
     
@@ -160,11 +164,24 @@ def preExistingFile(outputPath, outputFilePath):
         startingFrom = df.shape[0]
         print(f"๏ Importing sentences from a pre-existing evaluation file [{startingFrom} sentences imported]")
         for idx, row in df.iterrows():
+            if fullSentence:
+                sentence = row.loc[GENERATED]
+            else:
+                sentence = re.sub(row.loc[TEMPLATE], "", row.loc[GENERATED])
             dicSentences[TYPE].append(row.loc[TYPE])
             dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
             dicSentences[GENERATED].append(row.loc[GENERATED])
             for tool in EVALUATION_TOOLS:
                 dicSentences[tool].append(row.loc[tool])
+                # try:
+                #     dicSentences[tool].append(row.loc[tool])
+                # except:
+                #     dicSentences[VADER].append(vaderAnalyzer.polarity_scores(sentence)['compound']) if tool == VADER else None
+                #     dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence))) if tool == GOOGLE_CLOUD_NL else None
+                #     dicSentences[TEXTBLOB].append(truncate(TextBlob(sentence).sentiment[0])) if tool == TEXTBLOB else None
+                #     dicSentences[AFINN].append(afinnAnalyzer.score(sentence)) if tool == AFINN else None
+                #     dicSentences[PERPLEXITY].append(truncate(perplexityAnalyzer.compute(predictions=[f"\"{row.loc[GENERATED]}\""], model_id='gpt2')['mean_perplexity'])) if tool == PERPLEXITY else None
+        
         #df = pd.DataFrame.from_dict(dicSentences)    
         print("๏ Sentences imported correctly!")
     else:
@@ -172,10 +189,14 @@ def preExistingFile(outputPath, outputFilePath):
     return startingFrom, dicSentences
       
 def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_EVALUATION):
-    analyzer = SentimentIntensityAnalyzer()
+    global vaderAnalyzer
+    vaderAnalyzer = SentimentIntensityAnalyzer()
     #prespectiveAPI = perspectiveSetup()
-    global afinn
-    afinn = Afinn()
+    global afinnAnalyzer
+    afinnAnalyzer = Afinn()
+    
+    global perplexityAnalyzer 
+    perplexityAnalyzer = load("perplexity", module_type="metric")
     
     inputFilePath = inputPath+modelName+".csv"
     outputFilePath = outputPath+modelName+'.csv'
@@ -183,7 +204,7 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
     #dicSentences = newDicSentences()
 
     #Checking if there is an existing file with evaluations
-    startingFrom, dicSentences = preExistingFile(outputPath, outputFilePath)
+    startingFrom, dicSentences = preExistingFile(outputPath, outputFilePath, fullSentence)
     
     templateFile = pd.read_csv(inputFilePath)
     templateFile = templateFile[startingFrom:]
@@ -196,11 +217,12 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
         dicSentences[GENERATED].append(sentence)
-        dicSentences[VADER].append(analyzer.polarity_scores(sentence)['compound'])
+        dicSentences[VADER].append(vaderAnalyzer.polarity_scores(sentence)['compound'])
         #dicSentences[PERSPECTIVE].append(prespectiveEvaluator(sentence, prespectiveAPI))
         dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence)))
         dicSentences[TEXTBLOB].append(truncate(TextBlob(sentence).sentiment[0]))
-        dicSentences[AFINN].append(afinn.score(sentence))
+        dicSentences[AFINN].append(afinnAnalyzer.score(sentence))
+        dicSentences[PERPLEXITY].append(load("perplexity", module_type="metric").compute(predictions=row.loc[GENERATED], model_id='gpt2')['perplexities'])
         df = pd.DataFrame.from_dict(dicSentences)    
         os.makedirs(outputPath, exist_ok=True)
         df.to_csv(outputFilePath, index_label = 'index')
@@ -217,7 +239,14 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
 # evaluatePredictions(MODEL_LIST[chosenModel])
 
 #Model list to evaluate
-models = [LLAMA3_70B, GPT4, GEMMA2]
+models = [
+    LLAMA3 #+ "_temp0",
+    # LLAMA3 + "_temp1",
+    # LLAMA3 + "_temp2",
+    # LLAMA3 + "_1stShot",
+    # LLAMA3 + "_2ndShot",
+    # LLAMA3 + "_3rdShot",
+]
 for m in models:
     #Input: model, True if considering the whole sentence False considering only the generated part, input path, output path
-    evaluatePredictions(m, True, OUTPUT_PREDICTION, OUTPUT_EVAL_COM)
+    evaluatePredictions(m, True, OUTPUT_EVAL_GEN, OUTPUT_EVAL_GEN)

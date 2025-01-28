@@ -1,4 +1,4 @@
-from constants import * 
+from LIB_constants import * 
 
 def clean_response(response):
     response = re.sub(r'\n', '', response)
@@ -15,7 +15,10 @@ def ollamaRequest (prompt, modelName):
             "role": "user",
             "content": prompt
             }
-        ],   
+        ],
+        "options":{
+            "temperature":0
+        },
         "stream": False
     }
     
@@ -40,7 +43,8 @@ def GPTRequest(prompt, modelName, client):
                 "role": "user", 
                 "content": prompt
             }
-        ]
+        ],
+        temperature = 0   
         )
     response = completion.choices[0].message.content
     return clean_response(response)
@@ -75,8 +79,8 @@ def generateSentences(modelName):
         #print(str(index) +"-"+ sentence + response)
     df = pd.DataFrame.from_dict(dicSentences)    
     print("๏ Sentences generated!")            
-    os.makedirs(OUTPUT_PREDICTION, exist_ok=True)
-    df.to_csv(OUTPUT_PREDICTION+modelName+'.csv', index_label = 'index')
+    os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
+    df.to_csv(OUTPUT_SENTENCES+modelName+'.csv', index_label = 'index')
     print("๏ File generated!!")
     
 
