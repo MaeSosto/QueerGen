@@ -10,3 +10,6 @@ python3 -m textblob.download_corpora
 git clone https://github.com/fnielsen/afinn
 cd afinn
 python3 setup.py install
+
+pip install evaluate
+pip install lmppl

@@ -1,5 +1,5 @@
-from LIB_constants import * 
-from LIB_evaluation import *
+from lib.constants import * 
+from lib.evaluation import * 
 
 OUTPUT_EVAL_COM = 'evaluation_completeSentence/'
 OUTPUT_EVAL_GEN = 'evaluation_generatedPart/'
@@ -195,8 +195,8 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
     global afinnAnalyzer
     afinnAnalyzer = Afinn()
     
-    global perplexityAnalyzer 
-    perplexityAnalyzer = load("perplexity", module_type="metric")
+    # global perplexityAnalyzer 
+    # perplexityAnalyzer = load("perplexity", module_type="metric")
     
     inputFilePath = inputPath+modelName+".csv"
     outputFilePath = outputPath+modelName+'.csv'
@@ -222,7 +222,7 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
         dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence)))
         dicSentences[TEXTBLOB].append(truncate(TextBlob(sentence).sentiment[0]))
         dicSentences[AFINN].append(afinnAnalyzer.score(sentence))
-        dicSentences[PERPLEXITY].append(load("perplexity", module_type="metric").compute(predictions=row.loc[GENERATED], model_id='gpt2')['perplexities'])
+        #dicSentences[PERPLEXITY].append(load("perplexity", module_type="metric").compute(predictions=row.loc[GENERATED], model_id='gpt2')['perplexities'])
         df = pd.DataFrame.from_dict(dicSentences)    
         os.makedirs(outputPath, exist_ok=True)
         df.to_csv(outputFilePath, index_label = 'index')

@@ -1,3 +1,5 @@
+import lib.API as API
+from lib.utils import *
 import torch
 import logging
 import requests
@@ -9,9 +11,7 @@ import time
 import sys
 from openai import OpenAI
 from googleapiclient import discovery
-import API
 from collections import defaultdict
-from evaluate import load 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")
@@ -27,12 +27,15 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 MASKBERT_ = '\[MASK\]'
 
 #Data Source
-DATA_SOURCE = 'dataset_source/'
+DATA_SOURCE = './dataset_source/'
+OUTPUT_SENTENCES = './output_sentences/'
+OUTPUT_EVALUATION = './output_evaluation/'
+OUTPUT_COMPLETE_SENTENCE = './evaluation_completeSentence/'
+OUTPUT_GENERATED_PART = './evaluation_generatedPart/'
+
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
-OUTPUT_SENTENCES = 'output_sentences/'
-OUTPUT_EVALUATION = 'output_evaluation/'
 
 #TYPE 
 QUEER = 'queer'
