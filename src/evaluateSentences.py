@@ -1,5 +1,5 @@
-from LIB_constants import * 
-from LIB_evaluation import *
+from lib.constants import *
+from lib.evaluation import *
 
 OUTPUT_EVAL_COM = 'evaluation_completeSentence/'
 OUTPUT_EVAL_GEN = 'evaluation_generatedPart/'

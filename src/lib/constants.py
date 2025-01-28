@@ -1,3 +1,4 @@
+import lib.API as API
 import torch
 import logging
 import requests
@@ -9,9 +10,7 @@ import time
 import sys
 from openai import OpenAI
 from googleapiclient import discovery
-import API
 from collections import defaultdict
-from evaluate import load 
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")
