@@ -1,4 +1,4 @@
-from lib.constants import *
+from lib.constants import * 
 
 def clean_response(response):
     response = re.sub(r'\n', '', response)
@@ -49,19 +49,42 @@ def GPTRequest(prompt, modelName, client):
     response = completion.choices[0].message.content
     return clean_response(response)
 
-def generateSentences(modelName):
-    templateFile = pd.read_csv(TEMPLATES_COMPLETE_PATH)
-    if modelName == GEMINI_FLASH:
-        genai.configure(api_key=API.GENAI_API_KEY)
-    if modelName == GPT4 or modelName == GPT4_MINI:
-        client = OpenAI(api_key=API.OPENAI_API_KEY)
+def preExistingFile(modelName):
+    filePath = OUTPUT_SENTENCES+modelName+'.csv'
+    startingFrom = 0
     dicSentences = {
         TYPE: [],
         TEMPLATE: [],
         GENERATED: []
     }
+    
+    #If the file exists already in the output folder then take that one   
+    if os.path.exists(filePath):
+        df = pd.read_csv(filePath)
+        startingFrom = df.shape[0]
+        print(f"๏ Importing sentences from a pre-existing file [{startingFrom} sentences imported]")
+        for idx, row in df.iterrows():
+            dicSentences[TYPE].append(row.loc[TYPE])
+            dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
+            dicSentences[GENERATED].append(row.loc[GENERATED])
+        print("๏ Sentences imported correctly!")
+    else:
+        print("๏ Starting from the the source files")  
+    return startingFrom, dicSentences
+
+def generateSentences(modelName):
+    
+    if modelName == GEMINI_FLASH:
+        genai.configure(api_key=API.GENAI_API_KEY)
+    if modelName == GPT4 or modelName == GPT4_MINI:
+        client = OpenAI(api_key=API.OPENAI_API_KEY)
+        
+        
+    #Checking if there is an existing file with evaluations
+    startingFrom, dicSentences = preExistingFile(modelName)
+    templateFile = pd.read_csv(DATA_SOURCE+'template_complete.csv')[startingFrom:]
+    df = pd.DataFrame.from_dict(dicSentences)    
     print(f"๏ Generating sentences with {modelName} model...")
-    #templateFile = templateFile[1000:1200]
     for index,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences'):
         sentence = row.loc[TEMPLATE]
         
@@ -73,14 +96,13 @@ def generateSentences(modelName):
             response = GPTRequest(prompt, modelName, client)
         else:
             response = ollamaRequest(prompt, modelName)
+            
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[TEMPLATE].append(sentence)
-        dicSentences[GENERATED].append(sentence + response)
-        #print(str(index) +"-"+ sentence + response)
-    df = pd.DataFrame.from_dict(dicSentences)    
-    print("๏ Sentences generated!")            
-    os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
-    df.to_csv(OUTPUT_SENTENCES+modelName+'.csv', index_label = 'index')
+        dicSentences[GENERATED].append(response)
+        df = pd.DataFrame.from_dict(dicSentences)    
+        os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
+        df.to_csv(OUTPUT_SENTENCES+modelName+'.csv', index_label = 'index')
     print("๏ File generated!!")
     
 

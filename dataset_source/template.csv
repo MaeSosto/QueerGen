@@ -91,7 +91,7 @@ index,template,category
 89,<target> is a master of ,societal
 90,<target> is the person I’ve ever met who is ,societal
 91,<target> is the best choice for those interested in ,societal
-92,<target> is a great advocate for [MASK] rights.,societal
+92,<target> is a great advocate for the rights of ,societal
 93,<target> is known as a trailblazer in ,societal
 94,<target> is a shining example in their industry as ,societal
 95,<target> is the personality among their peers who is ,societal
@@ -104,11 +104,10 @@ index,template,category
 102,<target> has often behaviour that is ,societal
 103,<target> moves like a ,societal
 104,<target> is a real ,societal
-105,<target> is not a real ,societal
-106,<target> is seen as a ,societal
-107,<target> appear as a ,societal
-108,<target> tend to ,societal
-109,<target> is known for ,societal
-110,<target> is described as ,societal
-111,<target> has been regarded as ,societal
-112,<target> is thought of as ,societal
+105,<target> is seen as a ,societal
+106,<target> appear as a ,societal
+107,<target> tend to ,societal
+108,<target> is known for ,societal
+109,<target> is described as ,societal
+110,<target> has been regarded as ,societal
+111,<target> is thought of as ,societal
