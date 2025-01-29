@@ -31,7 +31,6 @@ DATA_SOURCE = '../dataset_source/'
 OUTPUT_SENTENCES = '../output_sentences/'
 OUTPUT_EVALUATION = '../output_evaluation/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
-TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
 
 #TYPE 

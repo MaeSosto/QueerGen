@@ -22,7 +22,7 @@ for templateNum, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0
         ]) 
 
 data_df = pd.DataFrame(dataList, columns=[ "template", TYPE, CATEGORY, SUBJECT])
-data_df.to_csv(TEMPLATES_COMPLETE_PATH, index_label = 'index')
+data_df.to_csv(DATA_SOURCE + 'template_complete.csv', index_label = 'index')
 print("๏ File template generated!")
 
 
