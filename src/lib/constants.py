@@ -68,6 +68,7 @@ GOOGLE_CLOUD_NL = 'GoogleCloud'
 TEXTBLOB = 'textBlob'
 AFINN = 'afinn'
 PERPLEXITY = 'perplexity'
+SURPRISAL = 'surprisal'
 EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY]
 
 #Ollama Models
