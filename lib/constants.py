@@ -1,4 +1,5 @@
-import lib.API
+import lib.API as API
+from lib.utils import *
 import torch
 import logging
 import requests
@@ -12,6 +13,11 @@ from openai import OpenAI
 from googleapiclient import discovery
 from collections import defaultdict
 from evaluate import load 
+from surprisal import AutoHuggingFaceModel
+import numpy as np
+import statistics as s
+from sklearn.model_selection import train_test_split
+#import google.generativeai as genai
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")
@@ -28,12 +34,14 @@ MASKBERT_ = '\[MASK\]'
 
 #Data Source
 DATA_SOURCE = 'dataset_source/'
-DATA_SOURCE_SMALL = 'dataset_source_small/'
+OUTPUT_SENTENCES = 'output_sentences/'
+OUTPUT_EVALUATION = 'output_evaluation/'
+OUTPUT_SENTENCES_SMALL = 'output_sentences_small/'
+OUTPUT_EVAL_COM = 'evaluation_completeSentence/'
+OUTPUT_EVAL_GEN = 'evaluation_generatedPart/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
-OUTPUT_SENTENCES = 'output_sentences/'
-OUTPUT_EVALUATION = 'output_evaluation/'
 
 #TYPE 
 QUEER = 'queer'
@@ -66,6 +74,7 @@ GOOGLE_CLOUD_NL = 'GoogleCloud'
 TEXTBLOB = 'textBlob'
 AFINN = 'afinn'
 PERPLEXITY = 'perplexity'
+SURPRISAL = 'surprisal'
 EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY]
 
 #Ollama Models

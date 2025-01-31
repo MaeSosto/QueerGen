@@ -1,5 +1,8 @@
 from lib.constants import * 
-from lib.evaluation import * 
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from afinn import Afinn
+from google.cloud import language_v2
+from textblob import TextBlob
 
 OUTPUT_EVAL_COM = 'evaluation_completeSentence/'
 OUTPUT_EVAL_GEN = 'evaluation_generatedPart/'
@@ -14,7 +17,8 @@ def newDicSentences():
         GOOGLE_CLOUD_NL: [],
         TEXTBLOB: [],
         AFINN: [],
-        PERPLEXITY: []
+        PERPLEXITY: [],
+        SURPRISAL: []
     }
 
 
@@ -46,23 +50,12 @@ def newScoresDict(modelName):
         }  
     }
    
-
-def getListFromString(text):
-    text = re.sub(r"'", "", str(text))
-    text = re.sub(r'\]', '', text)
-    text = re.sub(r'\[', '', text)
-    return list(map(int, text.split(",")))
-
 def calcAverageScores(val):
     #val[PERSPECTIVE] = [sum(getListFromString(per)) for per in val[PERSPECTIVE]]
     scores = []
     for met in EVALUATION_TOOLS:
         scores.append(truncate(sum(val[met])/len(val[met])))
     return scores
-    
-def truncate(float_number, decimal_places = 2):
-    multiplier = 10 ** decimal_places
-    return int(float_number * multiplier) / multiplier if float_number != None else 0
 
 # def perspectiveSetup():
 #     client = discovery.build(
@@ -102,6 +95,19 @@ def truncate(float_number, decimal_places = 2):
 #             #perspectiveArray = []
 #         return perspectiveArray
 
+def getSurprisalScore(predictions):
+    print("๏ Calculating surprisal score...")
+    surprisalTool = AutoHuggingFaceModel.from_pretrained('gpt2')
+    surprisalList = surprisalTool.surprise(list(predictions))
+    surprisalScores = [truncate(s.mean([val for val in res.surprisals if val != np.inf])) for res in surprisalList]
+    return surprisalScores
+
+def getPerplexityScore(predictions):     
+    print("๏ Calculating perplexity score...")
+    perplexityTool = load("perplexity", module_type="metric")
+    perplexityList = perplexityTool.compute(predictions=predictions, model_id='gpt2')['perplexities']
+    perplexityScores = [truncate(per) for per in perplexityList]
+    return perplexityScores
 
 def NLPCloudSentimentAnalysis(text_content):
     client = language_v2.LanguageServiceClient()
@@ -173,16 +179,7 @@ def preExistingFile(outputPath, outputFilePath, fullSentence):
             dicSentences[GENERATED].append(row.loc[GENERATED])
             for tool in EVALUATION_TOOLS:
                 dicSentences[tool].append(row.loc[tool])
-                # try:
-                #     dicSentences[tool].append(row.loc[tool])
-                # except:
-                #     dicSentences[VADER].append(vaderAnalyzer.polarity_scores(sentence)['compound']) if tool == VADER else None
-                #     dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence))) if tool == GOOGLE_CLOUD_NL else None
-                #     dicSentences[TEXTBLOB].append(truncate(TextBlob(sentence).sentiment[0])) if tool == TEXTBLOB else None
-                #     dicSentences[AFINN].append(afinnAnalyzer.score(sentence)) if tool == AFINN else None
-                #     dicSentences[PERPLEXITY].append(truncate(perplexityAnalyzer.compute(predictions=[f"\"{row.loc[GENERATED]}\""], model_id='gpt2')['mean_perplexity'])) if tool == PERPLEXITY else None
-        
-        #df = pd.DataFrame.from_dict(dicSentences)    
+            
         print("๏ Sentences imported correctly!")
     else:
         print("๏ Starting from the prediction file")  
@@ -222,10 +219,10 @@ def evaluatePredictions(modelName, fullSentence, inputPath, outputPath = OUTPUT_
         dicSentences[GOOGLE_CLOUD_NL].append(truncate(NLPCloudSentimentAnalysis(sentence)))
         dicSentences[TEXTBLOB].append(truncate(TextBlob(sentence).sentiment[0]))
         dicSentences[AFINN].append(afinnAnalyzer.score(sentence))
-        dicSentences[PERPLEXITY].append(load("perplexity", module_type="metric").compute(predictions=row.loc[GENERATED], model_id='gpt2')['perplexities'])
         df = pd.DataFrame.from_dict(dicSentences)    
         os.makedirs(outputPath, exist_ok=True)
         df.to_csv(outputFilePath, index_label = 'index')
+    
     print('๏ Get scores ')
     getResultsScores(modelName, df, outputPath)
 
@@ -249,4 +246,4 @@ models = [
 ]
 for m in models:
     #Input: model, True if considering the whole sentence False considering only the generated part, input path, output path
-    evaluatePredictions(m, True, OUTPUT_EVAL_GEN, OUTPUT_EVAL_GEN)
+    evaluatePredictions(m, True, OUTPUT_SENTENCES_SMALL, OUTPUT_EVAL_GEN)

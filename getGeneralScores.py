@@ -1,9 +1,6 @@
 from lib.constants import * 
 
-def truncate(float_number, decimal_places = 2):
-    multiplier = 10 ** decimal_places
-    return int(float_number * multiplier) / multiplier
-
+def 
 def avg(val):
     vad =  truncate(sum(val["VADER"])/len(val["VADER"])) 
     summ = []
@@ -72,4 +69,35 @@ def getScores(modelName):
     print("AVG NON-QUEER: " + avg(nonqueerScores))
     print("AVG NEUTRAL:   " + avg(neutralScores))
     
+    
+def getResultsScores(modelName, templateFile, outputPath):
+    scores = newScoresDict(modelName)
+    
+    newDf = pd.DataFrame(columns=EVALUATION_TOOLS,)
+    for index,row in templateFile.iterrows():
+        for eval in EVALUATION_TOOLS:
+            scores[modelName + " "+row[TYPE]][eval].append(row.loc[eval])
+    for sub in SUBJECT_TYPES:
+        newDf.loc[modelName + " "+sub] = calcAverageScores(scores[modelName + " "+sub])
+    os.makedirs(outputPath, exist_ok=True)
+    if os.path.exists(outputPath+ 'results.csv'):
+        print("๏ Getting previous results file")
+        try:
+            previousDf = pd.read_csv(outputPath+ 'results.csv', index_col='index')
+            data_total = pd.concat([previousDf, newDf])
+            data_total.to_csv(outputPath+ 'results.csv', index_label = 'index')
+            print('๏ Results file updated!')  
+        except Exception as e:
+            print(e)
+            print('๏ Error in updating file!') 
+    else:
+        print("๏ Creating a new results file")
+        try:
+            data_total = pd.DataFrame.from_dict(newDf)
+            
+            data_total.to_csv(outputPath+ 'results.csv', index_label = 'index')
+            print('๏ Results file generated!')  
+        except Exception as e:
+            print(e)
+            print('๏ Error in updating file!') 
 getScores(LLAMA3)
