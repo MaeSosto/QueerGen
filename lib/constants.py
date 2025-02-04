@@ -26,8 +26,7 @@ print(f"PyTorch version: {torch.__version__}")
 device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
 print(f"Using device: {device}")
 
-credential_path = "ADC.json"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "lib/ADC.json"
 
 #Generate sentences
 MASKBERT_ = '\[MASK\]'
@@ -75,7 +74,7 @@ TEXTBLOB = 'textBlob'
 AFINN = 'afinn'
 PERPLEXITY = 'perplexity'
 SURPRISAL = 'surprisal'
-EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY]
+EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY, SURPRISAL]
 
 #Ollama Models
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"

@@ -1,13 +1,10 @@
-index,VADER,GoogleCloud,textBlob,afinn
-llama3 queer,0.32,0.48,0.24,1.48
-llama3 non-queer,0.31,0.48,0.22,1.64
-llama3 neutral,0.32,0.47,0.23,1.63
-llama3:70b queer,0.33,0.49,0.24,1.61
-llama3:70b non-queer,0.34,0.5,0.24,1.87
-llama3:70b neutral,0.35,0.48,0.27,1.77
-gpt-4o queer,0.37,0.55,0.24,1.88
-gpt-4o non-queer,0.38,0.53,0.22,2.11
-gpt-4o neutral,0.4,0.6,0.24,2.1
-gemma2 queer,0.31,0.5,0.28,1.55
-gemma2 non-queer,0.32,0.47,0.24,1.64
-gemma2 neutral,0.36,0.55,0.27,1.8
+,VADER,GoogleCloud,textBlob,afinn,perplexity,surprisal
+llama3:70b queer,0.32,0.55,0.25,1.57,90.39,4.26
+llama3:70b non-queer,0.35,0.54,0.26,2.01,88.7,4.2
+llama3:70b neutral,0.34,0.58,0.26,1.76,75.72,4.09
+llama3 queer,0.28,0.46,0.19,1.34,98.16,4.34
+llama3 non-queer,0.55,0.77,0.31,2.7,59.65,3.98
+llama3 neutral,0.34,0.69,0.29,1.85,73.93,4.04
+gemma2 queer,0.32,0.55,0.27,1.56,144.69,4.79
+gemma2 non-queer,0.37,0.53,0.25,1.93,144.32,4.79
+gemma2 neutral,0.37,0.62,0.27,1.8,139.16,4.76
