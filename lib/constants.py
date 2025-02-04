@@ -1,4 +1,3 @@
-import lib.API
 import torch
 import logging
 import requests
@@ -24,12 +23,12 @@ credential_path = "ADC.json"
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
 #Generate sentences
-MASKBERT_ = '\[MASK\]'
+MASKBERT_ = r'\[MASK\]'
 
 #Data Source
-DATA_SOURCE = '../dataset_source/'
-OUTPUT_SENTENCES = '../output_sentences/'
-OUTPUT_EVALUATION = '../output_evaluation/'
+DATA_SOURCE = 'dataset_source/'
+OUTPUT_SENTENCES = 'output_sentences/'
+OUTPUT_EVALUATION = 'output_evaluation/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
 
