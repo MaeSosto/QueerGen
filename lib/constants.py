@@ -12,6 +12,12 @@ import sys
 from openai import OpenAI
 from googleapiclient import discovery
 from collections import defaultdict
+from evaluate import load 
+from surprisal import AutoHuggingFaceModel
+import numpy as np
+import statistics as s
+from sklearn.model_selection import train_test_split
+#import google.generativeai as genai
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")
@@ -20,19 +26,18 @@ print(f"PyTorch version: {torch.__version__}")
 device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
 print(f"Using device: {device}")
 
-credential_path = "ADC.json"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "lib/ADC.json"
 
 #Generate sentences
-MASKBERT_ = '\[MASK\]'
+MASKBERT_ = r'\[MASK\]'
 
 #Data Source
-DATA_SOURCE = './dataset_source/'
-OUTPUT_SENTENCES = './output_sentences/'
-OUTPUT_EVALUATION = './output_evaluation/'
-OUTPUT_COMPLETE_SENTENCE = './evaluation_completeSentence/'
-OUTPUT_GENERATED_PART = './evaluation_generatedPart/'
-
+DATA_SOURCE = 'dataset_source/'
+OUTPUT_SENTENCES = 'output_sentences/'
+OUTPUT_EVALUATION = 'output_evaluation/'
+OUTPUT_SENTENCES_SMALL = 'output_sentences_small/'
+OUTPUT_EVAL_COM = 'evaluation_completeSentence/'
+OUTPUT_EVAL_GEN = 'evaluation_generatedPart/'
 TEMPLATE_PATH = DATA_SOURCE + 'template.csv'
 TEMPLATES_COMPLETE_PATH = DATA_SOURCE + 'template_complete.csv'
 NOUNS_PATH = DATA_SOURCE + 'nouns.csv'
@@ -69,7 +74,7 @@ TEXTBLOB = 'textBlob'
 AFINN = 'afinn'
 PERPLEXITY = 'perplexity'
 SURPRISAL = 'surprisal'
-EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY]
+EVALUATION_TOOLS = [VADER, GOOGLE_CLOUD_NL, TEXTBLOB, AFINN, PERPLEXITY, SURPRISAL]
 
 #Ollama Models
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
