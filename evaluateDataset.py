@@ -1,10 +1,12 @@
 from lib.constants import * 
+from lib.API import GOOGLE_APPLICATION_CREDENTIALS
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from afinn import Afinn
 from google.cloud import language_v2
 from textblob import TextBlob
 
 def initializeGoogleCloudNL():
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
     return language_v2.LanguageServiceClient()
 
 initialize_tools = {
@@ -12,6 +14,7 @@ initialize_tools = {
 }
 
 def getGoogleCloudSentimentAnalisysScores(sentences, client):
+    print("๏ Calculating Google Cloud Sentiment Analisys score...")
     lst = []
     for sentence in tqdm(sentences, total=len(sentences), position=0, leave=True):
         try:
@@ -72,9 +75,9 @@ def getPerplexityScores(sentences, client = None):
     return perplexityList
     
 score_functions = {
+    GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     SURPRISAL: getSurprisalScores,
     PERPLEXITY: getPerplexityScores,
-    GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     VADER: getVaderScores,
     TEXTBLOB: getTextBlobScores,
     AFINN: getAfinnScores
@@ -124,5 +127,6 @@ def evaluatePredictions(modelName, inputFolder, fullSentence):
 fullSentence = False
 inputFolder = OUTPUT_SENTENCES_SMALL
 #chosenModel = chooseModel()
+MODEL_LIST = [GEMMA2, GEMMA2_27B, GEMINI_FLASH, GPT4, GPT4_MINI]
 for model in MODEL_LIST:
     evaluatePredictions(model, inputFolder, fullSentence)

@@ -1,5 +1,2 @@
-API.py
-ADC.json
-
-src/adapt.py
-src/annotation.py
+lib/API.py
+lib/ADC.json

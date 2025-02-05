@@ -40,5 +40,5 @@ def overallScores(folderPath):
 # :param folderPath: The `folderPath` parameter in the `overallScores` function is a string that
 # represents the path to a directory where files are stored. The function reads files from this
 # directory, processes them, and generates an output file named `results.csv` in the same directory
-folderPath = OUTPUT_EVAL_COM
+folderPath = OUTPUT_EVAL_GEN
 overallScores(folderPath)

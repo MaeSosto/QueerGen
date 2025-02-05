@@ -26,10 +26,8 @@ print(f"PyTorch version: {torch.__version__}")
 device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
 print(f"Using device: {device}")
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "lib/ADC.json"
-
 #Generate sentences
-MASKBERT_ = '\[MASK\]'
+MASKBERT_ = r'\[MASK\]'
 
 #Data Source
 DATA_SOURCE = 'dataset_source/'
