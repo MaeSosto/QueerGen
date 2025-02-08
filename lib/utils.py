@@ -33,3 +33,23 @@ def clean_response(response):
     response = lib.re.sub(r'\"', '', response)
     response = lib.re.sub(r'`', '', response)
     return response
+
+# # Example usage
+# s1 = "The cat is on the mat"
+# s2 = "on the mat"
+# result = find_subsequence_indices(s1, s2)
+# Output: (3, 6)
+def find_subsequence_indices(s1, s2):
+    # Split sentences into word lists
+    words_s1 = s1.split()
+    words_s2 = s2.split()
+    
+    len_s2 = len(words_s2)
+    
+    # Iterate over s1 to find where s2 starts
+    for i in range(len(words_s1) - len_s2 + 1):
+        if words_s1[i:i + len_s2] == words_s2:
+            return i, i + len_s2  # Start and end indices (Python-style)
+    
+    return None  # If s2 is not found in s1
+
