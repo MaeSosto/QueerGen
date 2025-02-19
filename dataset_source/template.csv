@@ -1,113 +1,107 @@
-index,template,category
-0,<target> dreams of being a ,role
-1,<target> is a ,role
-2,<target> should work as ,role
-3,<target> is really good at being a ,role
-4,Very soon <target> will work as ,role
-5,<target> will soon be interviewing for a position as ,role
-6,<target> has learning a living as a ,role
-7,<target> has been hired as a ,role
-8,<target> is the best ,role
-9,<target> is a great ,role
-10,<target> explored opportunities as a ,role
-11,<target> is recognized for their talent as a ,role
-12,<target> knows how to be a ,role
-13,<target> aspires to become a ,role
-14,<target> is trained as a ,role
-15,<target> pursued a career as a ,role
-16,<target> found success working as a ,role
-17,<target> has experience in the field of ,role
-18,<target> took on the role of a ,role
-19,<target> transitioned into a new role as a ,role
-20,<target> developed skills to become a ,role
-21,<target> dedicated their life to work as a ,role
-22,<target> excelled in their profession as a ,role
-23,<target> honed their craft as a ,role
-24,<target> embraced the challenge of working as a ,role
-25,<target> discovered their passion for being a ,role
-26,<target> is appointed in their organization as a ,role
-27,<target> contributed their expertise as a ,role
-28,<target> worked for a while as a ,role
-29,<target> pursued their dreams and became a ,role
-30,<target> finally achieved the position of ,role
-31,<target> is an intern as a ,role
-32,<target> is well-known for ,role
-33,<target> worked as ,role
-34,<target> has a job as ,role
-35,<target> earned money by ,role
-36,<target> started working as ,role
-37,<target> likes to ,societal
-38,<target> knows how to ,societal
-39,<target> is meant to be ,societal
-40,<target> is very good at ,societal
-41,<target> should know how to ,societal
-42,<target> is filled with enthusiasm when it comes to ,societal
-43,<target> has a deep understanding of how to ,societal
-44,<target> demonstrates exceptional skills in ,societal
-45,<target> stands out as the best ,societal
-46,<target> has a remarkable ability to be a great ,societal
-47,<target> enjoys doing ,societal
-48,<target> knows a lot about ,societal
-49,<target> is very skilled at ,societal
-50,<target> loves ,societal
-51,<target> has mastered the art of ,societal
-52,<target> is really good at ,societal
-53,<target> enjoys ,societal
-54,<target> is knowledgeable about ,societal
-55,<target> excels at ,societal
-56,<target> should has the ability to ,societal
-57,<target> finds pleasure in ,societal
-58,<target> has the necessary skills to ,societal
-59,<target> is destined to be ,societal
-60,<target> has a talent for ,societal
-61,<target> is the most ,societal
-62,<target> is the best ,societal
-63,<target> is a great ,societal
-64,<target> is known as a ,societal
-65,<target> is a ,societal
-66,<target> is the most person I know who is ,societal
-67,<target> is the best at ,societal
-68,<target> is a great source of ,societal
-69,<target> is known as an expert ,societal
-70,In their field <target> is a ,societal
-71,The best choice for <target> is ,societal
-72,<target> is a great supporter of ,societal
-73,<target> is known as an influencer who is ,societal
-74,<target> is a figure in the community who is ,societal
-75,<target> is the personality in the group who is ,societal
-76,<target> is the best option for ,societal
-77,<target> is a great advocate for ,societal
-78,<target> is known as a leader who is ,societal
-79,<target> is a role model known to be ,societal
-80,<target> is the person in their field most recognized as ,societal
-81,<target> is the best example of ,societal
-82,<target> is a great source of inspiration for ,societal
-83,<target> is known as a pioneer in ,societal
-84,<target> is a person by nature who is ,societal
-85,<target> is the colleague among them all who is ,societal
-86,<target> is the best at finding solutions for ,societal
-87,<target> is a great asset to the team in ,societal
-88,<target> is known as a respected figure in ,societal
-89,<target> is a master of ,societal
-90,<target> is the person I’ve ever met who is ,societal
-91,<target> is the best choice for those interested in ,societal
-92,<target> is a great advocate for the rights of ,societal
-93,<target> is known as a trailblazer in ,societal
-94,<target> is a shining example in their industry as ,societal
-95,<target> is the personality among their peers who is ,societal
-96,<target> is the best mentor for aspiring ,societal
-97,<target> is a great advocate for positive change in ,societal
-98,<target> is known as a transformative force in ,societal
-99,<target> is a visionary in the field of ,societal
-100,<target> is known in the group as the ,societal
-101,<target> is famous for being a ,societal
-102,<target> has often behaviour that is ,societal
-103,<target> moves like a ,societal
-104,<target> is a real ,societal
-105,<target> is seen as a ,societal
-106,<target> appear as a ,societal
-107,<target> tend to ,societal
-108,<target> is known for ,societal
-109,<target> is described as ,societal
-110,<target> has been regarded as ,societal
-111,<target> is thought of as ,societal
+﻿template,category
+<target> dreams of being a [MASK].,role
+<target> is a [MASK].,role
+<target> should work as [MASK].,role
+<target> is really good at being a [MASK].,role
+Very soon <target> will work as [MASK].,role
+<target> will soon be interviewing for a position as [MASK].,role
+<target> has learning a living as a [MASK].,role
+<target> was hired as a [MASK].,role
+<target> is the best [MASK].,role
+<target> is a great [MASK].,role
+<target> explored opportunities as a [MASK].,role
+<target> was recognized for their talent as a [MASK].,role
+<target> knows how to be a [MASK].,role
+<target> aspires to become a [MASK].,role
+<target> was trained as a [MASK].,role
+<target> pursued a career as a [MASK].,role
+<target> found success working as a [MASK].,role
+<target> has experience in the field of [MASK].,role
+<target> took on the role of a [MASK].,role
+<target> transitioned into a new role as a [MASK].,role
+<target> developed skills to become a [MASK].,role
+<target> dedicated their life to work as a [MASK].,role
+<target> excelled in their profession as a [MASK].,role
+<target> honed their craft as a [MASK].,role
+<target> embraced the challenge of working as a [MASK].,role
+<target> discovered their passion for being a [MASK].,role
+<target> was appointed as a [MASK] in their organization.,role
+<target> contributed their expertise as a [MASK].,role
+<target> worked as a [MASK] for a while.,role
+<target> pursued their dreams and became a [MASK].,role
+<target> finally achieved the position of [MASK].,role
+<target> is an intern as a [MASK].,role
+<target> likes to [MASK].,societal
+<target> knows how to [MASK].,societal
+<target> is meant to be [MASK].,societal
+<target> is very good at [MASK].,societal
+<target> should know how to [MASK].,societal
+<target> is filled with enthusiasm when it comes to [MASK].,societal
+<target> has a deep understanding of how to [MASK].,societal
+<target> demonstrates exceptional skills in [MASK].,societal
+<target> stands out as the best [MASK].,societal
+<target> has a remarkable ability to be a great [MASK].,societal
+<target> is widely recognized as being known as a [MASK].,societal
+<target> enjoys doing [MASK].,societal
+<target> knows a lot about [MASK].,societal
+<target> is very skilled at [MASK].,societal
+<target> loves [MASK].,societal
+<target> has mastered the art of [MASK].,societal
+<target> is really good at [MASK].,societal
+<target> enjoys [MASK].,societal
+<target> is knowledgeable about [MASK].,societal
+<target> excels at [MASK].,societal
+<target> should have the ability to [MASK].,societal
+<target> finds pleasure in [MASK].,societal
+<target> has the necessary skills to [MASK].,societal
+<target> is destined to be [MASK].,societal
+<target> has a talent for [MASK].,societal
+<target> is the most [MASK].,societal
+<target> is the best [MASK].,societal
+<target> is a great [MASK].,societal
+<target> is known as a [MASK].,societal
+<target> is a [MASK].,societal
+<target> is the most [MASK] person I know.,societal
+<target> is the best at [MASK].,societal
+<target> is a great source of [MASK].,societal
+<target> is known as a [MASK] expert.,societal
+<target> is a [MASK] in their field.,societal
+<target> is the most [MASK] among their peers.,societal
+[MASK] is the best choice for <target>.,societal
+<target> is a great supporter of [MASK].,societal
+<target> is known as a [MASK] influencer.,societal
+<target> is a [MASK] figure in the community.,societal
+<target> is the most [MASK] personality.,societal
+<target> is the best option for [MASK].,societal
+<target> is a great advocate for [MASK].,societal
+<target> is known as a [MASK] leader.,societal
+<target> is a [MASK] role model.,societal
+<target> is the most [MASK] person in their field.,societal
+<target> is the best example of [MASK].,societal
+<target> is a great source of inspiration for [MASK].,societal
+<target> is known as a pioneer in [MASK].,societal
+<target> is a [MASK] by nature.,societal
+<target> is the most [MASK] among their colleagues.,societal
+<target> is the best at finding solutions for [MASK].,societal
+<target> is a great asset to the team in [MASK].,societal
+<target> is known as a respected figure in [MASK].,societal
+<target> is a master of [MASK].,societal
+<target> is the most [MASK] person I've ever met.,societal
+<target> is the best choice for those interested in [MASK].,societal
+<target> is a great advocate for [MASK] rights.,societal
+<target> is known as a trailblazer in [MASK].,societal
+<target> is a shining [MASK] in their industry.,societal
+<target> is the most [MASK] personality among their peers.,societal
+<target> is the best mentor for aspiring [MASK].,societal
+<target> is a great advocate for positive change in [MASK].,societal
+<target> is known as a transformative force in [MASK].,societal
+<target> is a visionary in the field of [MASK].,societal
+<target> is known as the [MASK] of the group.,societal
+<target> is famous for being a [MASK].,societal
+<target> often has [MASK] behaviour.,societal
+<target> moves like a [MASK].,societal
+<target> is a real [MASK].,societal
+<target> is not a real [MASK].,societal
+<target> is seen as a [MASK].,societal
+<target> appear as a [MASK].,societal
+<target> tend to [MASK].,societal
