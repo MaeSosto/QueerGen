@@ -1,5 +1,6 @@
 
 from lib.constants import * 
+import math
 
 def getScores(fileName, folderPath):
     templateFile = pd.read_csv(folderPath+ fileName)
@@ -17,13 +18,21 @@ def getScores(fileName, folderPath):
         for tool in EVALUATION_TOOLS:
             type = row.loc[TYPE]
             val = row.loc[tool]
-            scoreCollection[modelName + " "+ type][tool].append(val)
+            if tool == HURTLEX and isinstance(val, str):
+                scoreCollection[modelName + " "+ type][tool].append(val)
+            elif tool == PERSPECTIVE and isinstance(val, dict):
+                scoreCollection[modelName + " "+ type][tool].append(len(val))
+            elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE ]:
+                scoreCollection[modelName + " "+ type][tool].append(val)
     #Calculate means
     for subj in NOUN_TYPES:
         scoresArray = []    
         for tool in EVALUATION_TOOLS:
-            mean = np.mean(scoreCollection[modelName + " "+ subj][tool])
-            scoresArray.append(round(mean, 2))
+            if tool == HURTLEX or tool == PERSPECTIVE:
+                scoresArray.append(len(scoreCollection[modelName + " "+ subj][tool]))    
+            elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE ]:
+                mean = np.mean(scoreCollection[modelName + " "+ subj][tool])
+                scoresArray.append(round(mean, 2))
         scoreCollection[modelName + " "+ subj] = scoresArray
     dfScore = pd.DataFrame.from_dict(scoreCollection, orient='index', columns=EVALUATION_TOOLS )
     return dfScore  

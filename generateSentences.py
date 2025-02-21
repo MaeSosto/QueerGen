@@ -6,6 +6,8 @@ from openai import OpenAI
 from transformers import AutoModel, BertTokenizer, BertForMaskedLM, AutoTokenizer, RobertaTokenizer, RobertaForMaskedLM, AlbertTokenizer, AlbertForMaskedLM
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
 
+NUM_PREDICTION = 1
+
 MODEL_NAME = {
     BERT_BASE: 'bert-base-uncased',
     BERT_LARGE: 'bert-large-uncased',
@@ -22,13 +24,14 @@ MODEL_NAME = {
     GPT4 : 'gpt-4o'
 }
 
-def preExistingFile(modelName, numPrediction):
-    filePath = f'{OUTPUT_SENTENCES+modelName}_{numPrediction}.csv'
+def preExistingFile(modelName):
+    filePath = f'{OUTPUT_SENTENCES+modelName}.csv'
     startingFrom, dicSentences = 0, {
         TYPE: [],
         TEMPLATE: [],
         GENERATED: [],
-        CATEGORY: []
+        CATEGORY: [],
+        ORIGINAL:[]
     }
     
     #If the file exists already in the output folder then take that one   
@@ -41,6 +44,7 @@ def preExistingFile(modelName, numPrediction):
             dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
             dicSentences[GENERATED].append(row.loc[GENERATED])
             dicSentences[CATEGORY].append(row.loc[CATEGORY])
+            dicSentences[ORIGINAL].append(row.loc[ORIGINAL])
         print("๏ Sentences imported correctly!")
     else:
         print("๏ Starting from the the source files")  
@@ -67,7 +71,7 @@ def initializeBERTweet(modelName):
     return AutoModel.from_pretrained(MODEL_NAME[modelName]), AutoTokenizer.from_pretrained(MODEL_NAME[modelName], use_fast=False)
 
 
-def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence = None, numPrediction = 1):
+def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence = None):
     response = requests.post(URL_OLLAMA_LOCAL, headers={
         "Content-Type": 'application/json'
     }, json={
@@ -86,12 +90,12 @@ def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence =
     })
     return clean_response(response.json()['response'])
 
-def geminiRequest(prompt, modelName, model, tokenizer = None, sentence = None, numPrediction = 1):
+def geminiRequest(prompt, modelName, model, tokenizer = None, sentence = None):
     resp =  clean_response(model.generate_content(prompt).text)
     time.sleep(2.5)
-    return list(resp.lower())
+    return resp.lower()
 
-def GPTRequest(prompt, modelName, model, tokenizer = None, sentence = None, numPrediction = 1):
+def GPTRequest(prompt, modelName, model, tokenizer = None, sentence = None):
     completion = model.chat.completions.create(
         model= modelName,
         store=True,
@@ -104,7 +108,7 @@ def GPTRequest(prompt, modelName, model, tokenizer = None, sentence = None, numP
     response = completion.choices[0].message.content
     return clean_response(response)
 
-def BERTRequest(prompt, modelName, model, tokenizer, sentence, numPrediction):
+def BERTRequest(prompt, modelName, model, tokenizer, sentence):
     sentence = "[CLS] %s [SEP]"%sentence
     tokenized_text = tokenizer.tokenize(sentence)
     masked_index = tokenized_text.index(MASKBERT)
@@ -115,7 +119,7 @@ def BERTRequest(prompt, modelName, model, tokenizer, sentence, numPrediction):
         predictions = output[0]
 
     probs = torch.nn.functional.softmax(predictions[0, masked_index], dim=-1)
-    top_k_weights, top_k_indices = torch.topk(probs, numPrediction, sorted=True)
+    top_k_weights, top_k_indices = torch.topk(probs, NUM_PREDICTION, sorted=True)
 
     predictionList = []
     for i, pred_idx in enumerate(top_k_indices):
@@ -123,9 +127,9 @@ def BERTRequest(prompt, modelName, model, tokenizer, sentence, numPrediction):
         if ((modelName == ALBERT_BASE) or (modelName == ALBERT_LARGE)):
             predicted_token = predicted_token.replace(r'▁', '')
         predictionList.append(predicted_token)
-    return predictionList  
+    return predictionList[0]  
 
-def RoBERTaRequest(prompt, modelName, model, tokenizer, sentence, numPrediction):
+def RoBERTaRequest(prompt, modelName, model, tokenizer, sentence):
     sentence = sentence.replace(MASKBERT, MASKROBERT)
     sentence = "<s> %s </s>"%sentence
     tokenized_text = tokenizer.tokenize(sentence)
@@ -137,13 +141,13 @@ def RoBERTaRequest(prompt, modelName, model, tokenizer, sentence, numPrediction)
         predictions = output[0]
 
     probs = torch.nn.functional.softmax(predictions[0, masked_index], dim=-1)
-    top_k_weights, top_k_indices = torch.topk(probs, numPrediction, sorted=True)
+    top_k_weights, top_k_indices = torch.topk(probs, NUM_PREDICTION, sorted=True)
 
     predictionList = []
     for i, pred_idx in enumerate(top_k_indices):
         predicted_token = tokenizer.convert_ids_to_tokens([pred_idx])[0]
         predictionList.append(predicted_token.replace('Ġ', ''))
-    return predictionList  
+    return predictionList[0]  
 
 initialize_models = {
     BERT_BASE: initializeBERT,
@@ -178,25 +182,26 @@ request_models = {
     BERTTWEET_LARGE: RoBERTaRequest
 }
 
-def generateSentences(modelName, numPrediction):
+def generateSentences(modelName):
     model, tokenizer = (initialize_models[modelName](modelName)) if modelName in initialize_models else (None, None)
     #Checking if there is an existing file with evaluations
-    startingFrom, dicSentences = preExistingFile(modelName, numPrediction)
+    startingFrom, dicSentences = preExistingFile(modelName)
     templateFile = pd.read_csv(DATA_SOURCE+'template_complete.csv')[startingFrom:]
     os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
     print(f"๏ Generating sentences with {modelName} model...")
     for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences', position=0, leave=True):
         prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {row.loc[TEMPLATE]}"
-        response = request_models[modelName](prompt, modelName, model, tokenizer, row.loc[TEMPLATE], numPrediction)
+        response = request_models[modelName](prompt, modelName, model, tokenizer, row.loc[TEMPLATE])
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
         dicSentences[CATEGORY].append(row.loc[CATEGORY])
+        dicSentences[ORIGINAL].append(row.loc[ORIGINAL])
         dicSentences[GENERATED].append(response)
         df = pd.DataFrame.from_dict(dicSentences)    
-        df.to_csv(f'{OUTPUT_SENTENCES+modelName}_{numPrediction}.csv', index_label = 'index')
+        df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
     print("๏ File generated!!")
 
 predictionNumber = 1
-MODEL_LIST = [LLAMA3, GPT4]
+MODEL_LIST = [GEMMA2]
 for mod in MODEL_LIST:
     generateSentences(mod, predictionNumber)

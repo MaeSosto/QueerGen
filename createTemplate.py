@@ -17,12 +17,13 @@ def createTemplate():
             _sentence = row.loc[TEMPLATE].replace(TARGET_, _subject)
             
             dataList.append([
+                row.loc[TEMPLATE],
+                r.loc[SUBJECT], #subject
                 _sentence, #new template
                 r.loc[TYPE], #type
-                r.loc[CATEGORY], #category
-                r.loc[SUBJECT] #subject
+                r.loc[CATEGORY] #category
             ]) 
-    data_df = pd.DataFrame(dataList, columns=[TEMPLATE, TYPE, CATEGORY, SUBJECT])
+    data_df = pd.DataFrame(dataList, columns=[ ORIGINAL, SUBJECT, TEMPLATE, TYPE, CATEGORY])
     data_df.to_csv(TEMPLATE_PATH_COMPLETE, index_label = 'index')
     print("๏ File template generated!")
 

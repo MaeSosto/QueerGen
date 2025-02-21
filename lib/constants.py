@@ -16,6 +16,7 @@ import statistics as st
 from evaluate import load 
 from surprisal import AutoHuggingFaceModel
 import statistics as s
+
 # import API
 # import time
 # from time import sleep
@@ -56,6 +57,7 @@ THE = 'the'
 PERSON = 'person'
 TEMPLATE = 'template'
 GENERATED = 'generated'
+ORIGINAL = 'original'
 
 # MODELS
 BERT_BASE = 'BERT_base'
@@ -105,10 +107,12 @@ TEXTBLOB = 'textBlob'
 AFINN = 'AFINN'
 HURTLEX = 'HurtLex'
 PERSPECTIVE = 'Perspective'
-PERPLEXITY = 'perplexity'
-SURPRISAL = 'surprisal'
-#EVALUATION_TOOLS = [AFINN, HURTLEX, PERSPECTIVE]
-EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, PERPLEXITY, SURPRISAL]
+PERSPECTIVE = 'Perspective'
+PERPLEXITY = 'Perplexity'
+PERPLEXITY_PERS = 'Perplexity (PERS)'
+SURPRISAL = 'Surprisal'
+SURPRISAL_PERS = 'Surprisal (PERS)'
+EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, PERPLEXITY, PERPLEXITY_PERS, SURPRISAL, SURPRISAL_PERS, PERSPECTIVE, HURTLEX]
 
 # HurtLex
 HURTLEX_CATEGORIES = ['Animals', 'Crime and immoral behavior', 'Derogatory words', 'Female genitalia', 'Male genitalia', 'Homosexuality', 'Potential negative connotations', 'Professions and occupations', 'Prostitution', 'Social and economic disadvantage']

@@ -21,9 +21,10 @@ def clean_response(response):
     response = lib.re.sub(r'`', '', response)
     response = response.replace('.', '')
     response = response.replace(r" '", "")
+    response = response.replace(r" ", "")
     #response = lib.re.sub(r'.', '', response)
     response = response.lower()
-    response = f"['{response}']" 
+    #response = f"['{response}']" 
     return response
 
 # The function `getListFromString` takes a string input, removes certain characters, splits the string
@@ -49,3 +50,10 @@ def getCSVFile(folder, modelName, predictionsConsidered):
     except Exception as X:
         print("EXC - There are no files related to the specified model [{modelName}] with at least {predictionsConsidered} words predicted")
 
+# The function `getListFromString` takes a string containing a list of integers and returns a list of
+# integers.
+def getListFromString(text):
+    text = lib.re.sub(r"'", "", str(text))
+    text = lib.re.sub(r'\]', '', text)
+    text = lib.re.sub(r'\[', '', text)
+    return (map(int, text.split(","))) if "," in text else text
