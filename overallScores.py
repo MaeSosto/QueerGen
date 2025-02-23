@@ -1,6 +1,6 @@
-
 from lib.constants import * 
 import math
+from evaluate import load 
 
 def getScores(fileName, folderPath):
     templateFile = pd.read_csv(folderPath+ fileName)
@@ -24,17 +24,32 @@ def getScores(fileName, folderPath):
                 scoreCollection[modelName + " "+ type][tool].append(len(val))
             elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE ]:
                 scoreCollection[modelName + " "+ type][tool].append(val)
-    #Calculate means
+    
+    honestSetup = load("honest", "en")
+    regardSetup = load("regard")
+    toxicitySetup = load("toxicity")
+    completion = [([row.loc[GENERATED] for _, row in pd.read_csv(OUTPUT_EVALUATION+ fileName).iterrows() if row.loc[TYPE] ==subj]) for subj in NOUN_TYPES]
+    honest_result = honestSetup.compute(predictions=completion, groups=NOUN_TYPES)['honest_score_per_group']
+
+    #Calculate overall scores
     for subj in NOUN_TYPES:
         scoresArray = []    
-        for tool in EVALUATION_TOOLS:
-            if tool == HURTLEX or tool == PERSPECTIVE:
+        for tool in EVALUATION_TOOLS + [TOXICITY, HONEST, REGARD]:
+            if tool == REGARD:
+                completion = [re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in pd.read_csv(OUTPUT_EVALUATION+ fileName).iterrows() if row.loc[TYPE] ==subj]
+                scores = regardSetup.compute(data = subj, aggregation = "average")["average_regard"]
+                scoresArray.append(scores)
+            if tool == HONEST:
+                scoresArray.append(round(honest_result[subj],2))
+            elif tool == TOXICITY:
+                completion = [re.sub(MASKBERT_+".", row.loc[GENERATED], re.sub(TARGET_+" ", "",row.loc[ORIGINAL])) for _, row in pd.read_csv(OUTPUT_EVALUATION+ fileName).iterrows() if row.loc[TYPE] ==subj]
+                scoresArray.append(round(toxicitySetup.compute(predictions=completion, aggregation="ratio")["toxicity_ratio"],2))
+            elif tool == HURTLEX or tool == PERSPECTIVE:
                 scoresArray.append(len(scoreCollection[modelName + " "+ subj][tool]))    
-            elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE ]:
-                mean = np.mean(scoreCollection[modelName + " "+ subj][tool])
-                scoresArray.append(round(mean, 2))
+            elif tool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE, REGARD, HONEST, TOXICITY]]:
+                scoresArray.append(round(np.mean(scoreCollection[modelName + " "+ subj][tool]), 2))
         scoreCollection[modelName + " "+ subj] = scoresArray
-    dfScore = pd.DataFrame.from_dict(scoreCollection, orient='index', columns=EVALUATION_TOOLS )
+    dfScore = pd.DataFrame.from_dict(scoreCollection, orient='index', columns=EVALUATION_TOOLS + [TOXICITY, HONEST, REGARD])
     return dfScore  
 
 def overallScores(folderPath):
@@ -43,7 +58,7 @@ def overallScores(folderPath):
         dfModel = getScores(file, folderPath)
         dfOverall = dfModel if dfOverall.empty else pd.concat([dfOverall, dfModel])
         dfOverall.to_csv(folderPath + 'results.csv')
-        print("๏ File resutls.csv generated!")
+    print("๏ File resutls.csv generated!")
 
 # The function `overallScores` reads scores from files in a specified folder, combines them into a
 # DataFrame, and saves the results to a CSV file.
