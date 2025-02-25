@@ -57,3 +57,16 @@ def getListFromString(text):
     text = lib.re.sub(r'\]', '', text)
     text = lib.re.sub(r'\[', '', text)
     return (map(int, text.split(","))) if "," in text else text
+
+def getTemplateFile(modelName, inputFolder, outputFolder):
+    print("๏ Getting the CSV file...")
+    templateFile = lib.pd.read_csv(f"{inputFolder+modelName}.csv")
+    #If the file exists already in the output folder then take that one   
+    if lib.os.path.exists(outputFolder+modelName+".csv"):
+        preTemplateFile = lib.pd.read_csv(outputFolder+modelName+".csv")
+        startingFrom = preTemplateFile.shape[0]
+        print(f"๏ Importing sentences from a pre-existing evaluation file [{startingFrom} imported]")
+        return preTemplateFile, templateFile[startingFrom:]
+    else:
+        print("๏ Starting from the prediction file")  
+    return lib.pd.DataFrame(), templateFile[0:]

@@ -13,16 +13,6 @@ from collections import defaultdict
 import json
 import numpy as np
 import statistics as st
-from evaluate import load 
-from surprisal import AutoHuggingFaceModel
-import statistics as s
-
-# import API
-# import time
-# from time import sleep
-# np.random.seed(42)
-# import math
-# import ast
 
 logging.basicConfig(level=logging.INFO)# OPTIONAL
 print(f"PyTorch version: {torch.__version__}")
@@ -40,6 +30,7 @@ OUTPUT_GRAPHS = 'output_graphs/'
 OUTPUT_PREDICTION = 'output_prediction/'
 OUTPUT_SENTENCES = 'output_sentences/'
 OUTPUT_EVALUATION = 'output_evaluation/'
+EVALUATION_PATH = '.venv/evaluate-main/measurements/'
 
 # TEMPLATE MAP
 BE_ = '<be>'
@@ -106,7 +97,7 @@ VADER = 'VADER'
 TEXTBLOB = 'textBlob'
 AFINN = 'AFINN'
 HURTLEX = 'HurtLex'
-PERSPECTIVE = 'Perspective'
+GOOGLE_CLOUD_NL = 'GoogleCloud'
 PERSPECTIVE = 'Perspective'
 PERPLEXITY = 'Perplexity'
 PERPLEXITY_PERS = 'Perplexity (PERS)'
@@ -115,7 +106,7 @@ SURPRISAL_PERS = 'Surprisal (PERS)'
 HONEST = 'HONEST'
 TOXICITY = 'toxicity'
 REGARD = 'Regard'
-EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, PERPLEXITY, PERPLEXITY_PERS, SURPRISAL, SURPRISAL_PERS, PERSPECTIVE, HURTLEX]
+EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, GOOGLE_CLOUD_NL, REGARD, TOXICITY, PERSPECTIVE, HURTLEX, HONEST, PERPLEXITY, PERPLEXITY_PERS, SURPRISAL, SURPRISAL_PERS]
 
 # HurtLex
 HURTLEX_CATEGORIES = ['Animals', 'Crime and immoral behavior', 'Derogatory words', 'Female genitalia', 'Male genitalia', 'Homosexuality', 'Potential negative connotations', 'Professions and occupations', 'Prostitution', 'Social and economic disadvantage']

@@ -4,9 +4,9 @@ import lib.API as API
 import google.generativeai as genai
 from openai import OpenAI
 from transformers import AutoModel, BertTokenizer, BertForMaskedLM, AutoTokenizer, RobertaTokenizer, RobertaForMaskedLM, AlbertTokenizer, AlbertForMaskedLM
-URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
 
 NUM_PREDICTION = 1
+URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
 
 MODEL_NAME = {
     BERT_BASE: 'bert-base-uncased',
@@ -72,7 +72,7 @@ def initializeBERTweet(modelName):
 
 
 def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence = None):
-    response = requests.post(URL_OLLAMA_LOCAL, headers={
+    response = requests.post(API.URL_OLLAMA_LOCAL, headers={
         "Content-Type": 'application/json'
     }, json={
         "model": modelName,
@@ -88,7 +88,10 @@ def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence =
         },
         "stream": False
     })
-    return clean_response(response.json()['response'])
+    tmp = response.json()
+    tmp = tmp['response']
+    tmp = clean_response(tmp)
+    return tmp
 
 def geminiRequest(prompt, modelName, model, tokenizer = None, sentence = None):
     resp =  clean_response(model.generate_content(prompt).text)
@@ -201,7 +204,6 @@ def generateSentences(modelName):
         df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
     print("๏ File generated!!")
 
-predictionNumber = 1
-MODEL_LIST = [GEMMA2]
+MODEL_LIST = []
 for mod in MODEL_LIST:
-    generateSentences(mod, predictionNumber)
+    generateSentences(mod)

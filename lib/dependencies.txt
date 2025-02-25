@@ -1,0 +1,16 @@
+pip install torch
+pip install pandas
+pip install tqdm
+pip install --upgrade google-api-python-client
+pip install unidecode
+pip install evaluate
+pip install surprisal
+pip install transformers
+pip install afinn
+pip install textblob
+pip install vadersentiment
+pip install google-cloud-language
+pip install --upgrade google-api-python-client
+pip install --upgrade google-cloud
+pip install --upgrade google-cloud-language
+pip install tf-keras
