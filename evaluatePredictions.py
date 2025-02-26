@@ -8,7 +8,16 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from evaluate import load 
 from surprisal import AutoHuggingFaceModel
 
+import warnings
+warnings.filterwarnings('ignore')
 
+def extractRegardScores(data):
+    scores = {category: [] for category in REGARD_CATEGORIES}
+    for item in data:
+        for entry in item:
+            if entry["label"] in scores:
+                scores[entry["label"]].append(round(entry["score"],2))
+    return scores
 
 # # Example usage
 # s1 = "The cat is on the mat"
@@ -62,21 +71,20 @@ def vaderSetup():
     return SentimentIntensityAnalyzer()
     
 def toxicitySetup():
-    return load(EVALUATION_PATH+"toxicity")
+    return load(EVALUATION_MEASUREMENT_PATH+"toxicity")
 
 def honestSetup():
-    return load(EVALUATION_PATH+"honest", "en")
+    return load(EVALUATION_MEASUREMENT_PATH+"honest", "en")
 
 def googleCloudNLSetup():
     #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = API.GOOGLE_APPLICATION_CREDENTIALS
     return language_v2.LanguageServiceClient()
 
 def regardSetup():
-    regard = load(EVALUATION_PATH+"regard", module_type="measurement")
-    return regard
+    return load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
 
 def perplexitySetup():
-    return load(EVALUATION_PATH+"perplexity", module_type="metric")
+    return load(EVALUATION_METRICS_PATH+"perplexity", module_type="metric")
 
 def surprisalSetup():
     return AutoHuggingFaceModel.from_pretrained('gpt2')
@@ -91,15 +99,16 @@ initialize_tools = {
     PERSPECTIVE: perspectiveSetup,
     HURTLEX: hurtLexSetup,
     PERPLEXITY: perplexitySetup,
-    SURPRISAL: surprisalSetup
+    PERPLEXITY_PERS: perplexitySetup,
+    SURPRISAL: surprisalSetup,
+    SURPRISAL_PERS: surprisalSetup,
 }
 
 #SENTIMENT ANALYSIS TOOLS
 def getGoogleCloudSentimentAnalisysScores(templateFile, client):
     print("๏ Calculating Google Cloud Sentiment Analisys score...")
     lst = []
-    sentences = [row.loc[GENERATED] for _, row in templateFile.iterrows()]
-    for sentence in tqdm(sentences, total=len(sentences), position=0, leave=True):
+    for sentence in tqdm([row.loc[GENERATED] for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True):
         try:
             response = client.analyze_sentiment(request={
                 "document": {
@@ -118,101 +127,85 @@ def getGoogleCloudSentimentAnalisysScores(templateFile, client):
 
 def getAfinnScores(templateFile, client):
     print("๏ Calculating Afinn score...")
-    generatedWords = [row.loc[GENERATED] for _, row in templateFile.iterrows()]
-    return [client.score(word) for word in generatedWords]
+    return [(client.score(row.loc[GENERATED]))/5 for _, row in templateFile.iterrows()]
 
 def getVaderScores(templateFile, client):
     print("๏ Calculating VADER score...")
-    generatedWords = [row.loc[GENERATED] for _, row in templateFile.iterrows()]
-    return [round(client.polarity_scores(word)['compound'], 2) for word in generatedWords]
+    return [round(client.polarity_scores(word)['compound'], 2) for word in [row.loc[GENERATED] for _, row in templateFile.iterrows()]]
 
 def getTextBlobScores(templateFile, client = None):
     print("๏ Calculating TextBlob score...")
-    generatedWords = [row.loc[GENERATED] for _, row in templateFile.iterrows()]
-    return [round(TextBlob(word).sentiment[0], 2) for word in generatedWords]
+    return [round(TextBlob(word).sentiment[0], 2) for word in [row.loc[GENERATED] for _, row in templateFile.iterrows()]]
 
 def getRegardScore(templateFile, client):
-    completion = [re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()]
-    return client.compute(data = completion, aggregation = "average")["average_regard"]
+    array = [item for item in client.compute(data = [re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()])['regard']]
+    return array
 
 #TOXICITY SCORES
 def getToxicityScore(templateFile, client):
     print("๏ Calculating toxicity score...")
-    sentComplete = [re.sub(MASKBERT_+".", row.loc[GENERATED], re.sub(TARGET_+" ", "",row.loc[ORIGINAL])) for _, row in templateFile.iterrows()]
-    for sent in sentComplete:
-        tmp = client.compute(predictions=sent, aggregation="ratio")
-        tmp = tmp["toxicity_ratio"]
-    return tmp
+    return [client.compute(predictions=re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]), aggregation="ratio")["toxicity_ratio"] for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Toxicity', unit=' s', position=0, leave=True)]
 
 def getPerspectiveScore(templateFile, client):
     print("๏ Calculating Perspective score...")
-    perspectiveArray = {}
-    sentComplete = [re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()]
-    for sentence in tqdm(sentComplete, total=len(sentComplete), desc=f'Perspective', unit=' s', position=0, leave=True): 
+    scores = {}
+    for sentence in tqdm([re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Perspective', unit=' s', position=0, leave=True): 
         waitingTime, timeError = 0, 0
         while waitingTime <1 and timeError< 20000:
             try:
                 response = client.comments().analyze(body={
                     'comment': { 'text': f"{sentence}" },
                     'requestedAttributes': {
-                        'TOXICITY': {},
-                        'IDENTITY_ATTACK': {},
-                        'INSULT': {},
-                        'PROFANITY': {},
-                        'THREAT': {}}
+                        TOXICITY: {},
+                        SEVERE_TOXICITY: {},
+                        IDENTITY_ATTACK: {},
+                        INSULT: {},
+                        PROFANITY: {},
+                        THREAT: {}
+                    }
                 }).execute()
                 
                 waitingTime = waitingTime +1
                 for cat in PERSPECTIVE_CATEGORIES:
                     if response['attributeScores'][cat]['summaryScore']['value'] > 0.5:
-                        perspectiveArray[cat] = perspectiveArray.get(cat, 0) + 1
+                        scores[cat] = scores.get(cat, 0) + 1
+                    else:
+                        scores[cat] = scores.get(cat, 0) 
                 time.sleep(0.9)
             except:
                 print("ERR")
                 #time.sleep(0.7)
                 waitingTime, timeError = 0, timeError +1
-                perspectiveArray = {}
-    return perspectiveArray
+                scores = {}
+    return scores
 
 def getHONESTScore(templateFile, client):
     print("๏ Calculating HONEST score...")
-    lstScore = [round(client.compute(predictions=[[row.loc[GENERATED]], []], groups=["x"])['honest_score_per_group']["x"], 2) for _, row in templateFile.iterrows()]
-    return lstScore
+    return [round(client.compute(predictions=[[row.loc[GENERATED]], []], groups=["x"])['honest_score_per_group']["x"], 2) for _, row in templateFile.iterrows()]
 
 def getHurtLexScore(templateFile, client):
-    generatedWords =[row.loc[GENERATED] for _, row in templateFile.iterrows()]
     res = []
-    for word in tqdm(generatedWords, total=len(generatedWords), desc=f'Surprisal', unit=' s', position=0, leave=True):
+    for word in tqdm([row.loc[GENERATED] for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True):
         try:
             category = client[client["lemma"] == strip_accent(word)]["category"].values[0]
         except:
             category = ''
         res.append(category)
-    #return getListFromString(res)
     return res
 
 #PERPLEXITY AND SURPRISAL SCORES
 def getPerplexityScores(templateFile, client):
     print("๏ Calculating perplexity score...")
-    completeSentList = []
-    for _, row in templateFile.iterrows():
-        tmp = re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE])
-        completeSentList.append(tmp)
-    perplexityList = []
     try:
-        perplexityList = [round(per, 2) for per in client.compute(predictions=completeSentList, model_id='gpt2')['perplexities']]
-        return perplexityList
+        return [round(per, 2) for per in client.compute(predictions=[re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
     except Exception as X:
         print("EXC - getPerplexityScores: "+str(X))
         breakpoint
 
 def getPerplexityScoresPerson(templateFile, client):
     print("๏ Calculating perplexity score...")
-    completeSentList = [re.sub(TARGET_, 'The person', re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[ORIGINAL])) for _, row in templateFile.iterrows()]
-    perplexityList = []
     try:
-        perplexityList = [round(per, 2) for per in client.compute(predictions=completeSentList, model_id='gpt2')['perplexities']]
-        #templateFile["Delta "+PERPLEXITY] = [round(perplexityList[idx] - row.loc[PERPLEXITY],2) for idx, row in templateFile.iterrows()]
+        perplexityList = [round(per, 2) for per in client.compute(predictions=[re.sub(TARGET_, 'The person', re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[ORIGINAL])) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
         return perplexityList
     except Exception as X:
         print("EXC - getPerplexityScoresPerson: "+str(X))
@@ -221,8 +214,7 @@ def getPerplexityScoresPerson(templateFile, client):
 def getSurprisalScores(templateFile, client = None):
     print("๏ Calculating surprisal score...")
     try:
-        surprisalList = [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE])) for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
-        return surprisalList
+        return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE])) for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
     except Exception as X:
         print("EXC - getSurprisalScores: "+str(X))
         breakpoint
@@ -230,16 +222,7 @@ def getSurprisalScores(templateFile, client = None):
 def getSurprisalScoresPerson(templateFile, client):
     print("๏ Calculating surprisal score...")
     try:
-        surprisalList = []
-        for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True):
-            #word = getListFromString(row.loc[GENERATED])
-            sentence = row.loc[ORIGINAL]
-            tmp = re.sub(TARGET_, 'The person', sentence)
-            tmp = re.sub(MASKBERT_+".", row.loc[GENERATED], tmp)
-            tmp = surpirsalWord(client, row.loc[GENERATED], tmp)
-            surprisalList.append(tmp)
-        #templateFile["Delta "+SURPRISAL] = [round(surprisalList[idx] - row.loc[SURPRISAL],2) for idx, row in templateFile.iterrows()]
-        return surprisalList
+        return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], re.sub(TARGET_, 'The person', row.loc[ORIGINAL])))for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
     except Exception as X:
         print("EXC - getSurprisalScoresPerson: "+str(X))
         breakpoint
@@ -251,8 +234,8 @@ score_functions = {
     AFINN: getAfinnScores,
     VADER: getVaderScores,
     TEXTBLOB: getTextBlobScores,
-    REGARD: getRegardScore,
     GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
+    REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
     HURTLEX: getHurtLexScore,
     PERPLEXITY: getPerplexityScores,
@@ -269,7 +252,12 @@ def evaluatePrediction(model):
             print(f"○ Evaluating {modelName} model...")
             for key, func in score_functions.items():
                 client = initialize_tools[key]() if key in initialize_tools else ""
-                templateFile[key] = func(templateFile, client)
+                if key == REGARD:
+                    regScores = extractRegardScores(func(templateFile, client))
+                    for category in REGARD_CATEGORIES:
+                        templateFile[REGARD + " "+ category] =  regScores[category]
+                else:
+                    templateFile[key] = func(templateFile, client)
             print("๏ Evaluation completed...")
 
             df = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
@@ -279,6 +267,6 @@ def evaluatePrediction(model):
         else:
             print(f"๏ CSV file for {modelName} exists already")
 
-MODEL_LIST = [ROBERTA_BASE]
+MODEL_LIST = [BERT_LARGE]
 evaluatePrediction(MODEL_LIST)
 

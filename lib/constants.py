@@ -14,12 +14,14 @@ import json
 import numpy as np
 import statistics as st
 
-logging.basicConfig(level=logging.INFO)# OPTIONAL
-print(f"PyTorch version: {torch.__version__}")
+logger = logging.getLogger()
+logging.basicConfig(level=logging.ERROR)# OPTIONAL
+logger.setLevel(logging.ERROR)
+#print(f"PyTorch version: {torch.__version__}")
 
 # Set the device      
 device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
-print(f"Using device: {device}")
+#print(f"Using device: {device}")
 
 # # Global Variables
 #Data Source
@@ -30,7 +32,8 @@ OUTPUT_GRAPHS = 'output_graphs/'
 OUTPUT_PREDICTION = 'output_prediction/'
 OUTPUT_SENTENCES = 'output_sentences/'
 OUTPUT_EVALUATION = 'output_evaluation/'
-EVALUATION_PATH = '.venv/evaluate-main/measurements/'
+EVALUATION_MEASUREMENT_PATH = '.venv/evaluate-main/measurements/'
+EVALUATION_METRICS_PATH = '.venv/evaluate-main/metrics/'
 
 # TEMPLATE MAP
 BE_ = '<be>'
@@ -114,11 +117,18 @@ HURTLEX_CATEGORIES_SHORT = ['an', 're', 'cds', 'asf', 'asm', 'om', 'qas', 'pa', 
 
 #Perspective
 TOXICITY = 'TOXICITY'
+SEVERE_TOXICITY = 'SEVERE_TOXICITY'
 INSULT = 'INSULT'
 IDENTITY_ATTACK = 'IDENTITY_ATTACK'
 PROFANITY = 'PROFANITY'
 THREAT = 'THREAT'
-PERSPECTIVE_CATEGORIES =[TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
+PERSPECTIVE_CATEGORIES =[TOXICITY, SEVERE_TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
+
+#Regard
+POSITIVE = 'positive'
+NEUTRAL = 'neutral'
+NEGATIVE = 'negative'
+REGARD_CATEGORIES = [POSITIVE, NEGATIVE, NEUTRAL, OTHER]
 
 #Table utils
 Y_AXE = ['Binary','Neutral', 'Neo', 'Queer Identity', 'Queer Orientation', 'Queer Other', 'Non-queer Identity', 'Non-queer Orientation', 'Non-queer Other', 'Queer', 'Non-queer']

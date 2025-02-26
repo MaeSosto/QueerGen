@@ -29,6 +29,7 @@ def getScores(fileName, folderPath):
     for subj in NOUN_TYPES:
         scoresArray = []    
         for tool in EVALUATION_TOOLS + [TOXICITY, HONEST, REGARD]:
+            
             if tool == HURTLEX or tool == PERSPECTIVE:
                 scoresArray.append(len(scoreCollection[modelName + " "+ subj][tool]))    
             elif tool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE]]:
