@@ -14,3 +14,6 @@ pip install --upgrade google-api-python-client
 pip install --upgrade google-cloud
 pip install --upgrade google-cloud-language
 pip install tf-keras
+pip install seaborn
+pip install -U scikit-learn scipy matplotlib
+pip install wordcloud

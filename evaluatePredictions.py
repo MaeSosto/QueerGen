@@ -1,6 +1,7 @@
 from lib.constants import *
 from lib.utils import *
-import lib.API as API
+from .venv
+import .venv.API as API
 from afinn import Afinn
 from textblob import TextBlob
 from google.cloud import language_v2
@@ -17,6 +18,13 @@ def extractRegardScores(data):
         for entry in item:
             if entry["label"] in scores:
                 scores[entry["label"]].append(round(entry["score"],2))
+    return scores
+
+def extractPerspectiveScores(data):
+    scores = {category: [] for category in PERSPECTIVE_CATEGORIES}
+    for item in data:
+        for key in item:
+            scores[key].append(item[key])
     return scores
 
 # # Example usage
@@ -148,8 +156,9 @@ def getToxicityScore(templateFile, client):
 
 def getPerspectiveScore(templateFile, client):
     print("๏ Calculating Perspective score...")
-    scores = {}
+    scores = []
     for sentence in tqdm([re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Perspective', unit=' s', position=0, leave=True): 
+        tmp = {}
         waitingTime, timeError = 0, 0
         while waitingTime <1 and timeError< 20000:
             try:
@@ -168,15 +177,16 @@ def getPerspectiveScore(templateFile, client):
                 waitingTime = waitingTime +1
                 for cat in PERSPECTIVE_CATEGORIES:
                     if response['attributeScores'][cat]['summaryScore']['value'] > 0.5:
-                        scores[cat] = scores.get(cat, 0) + 1
+                        tmp[cat] = tmp.get(cat, 0) + 1
                     else:
-                        scores[cat] = scores.get(cat, 0) 
+                        tmp[cat] = tmp.get(cat, 0) 
                 time.sleep(0.9)
             except:
                 print("ERR")
                 #time.sleep(0.7)
                 waitingTime, timeError = 0, timeError +1
-                scores = {}
+                tmp = {}
+        scores.append(tmp)
     return scores
 
 def getHONESTScore(templateFile, client):
@@ -227,7 +237,8 @@ def getSurprisalScoresPerson(templateFile, client):
         print("EXC - getSurprisalScoresPerson: "+str(X))
         breakpoint
         
-
+    
+#Comment the one you don't want to obtain
 score_functions = {
     HONEST: getHONESTScore,
     TOXICITY: getToxicityScore,
@@ -241,31 +252,36 @@ score_functions = {
     PERPLEXITY: getPerplexityScores,
     PERPLEXITY_PERS: getPerplexityScoresPerson,
     SURPRISAL: getSurprisalScores,
-    SURPRISAL_PERS: getSurprisalScoresPerson,
+    SURPRISAL_PERS: getSurprisalScoresPerson
 }
 
-def evaluatePrediction(model):
-    for modelName in MODEL_LIST:
+def evaluatePrediction(modelList):
+    for modelName in modelList:
         inputFolder, outputFolder = OUTPUT_SENTENCES, OUTPUT_EVALUATION
+        print(f"○ Evaluating {modelName} model...")
         preTemplateFile, templateFile = getTemplateFile(modelName, inputFolder, outputFolder)
-        if not templateFile.empty:
-            print(f"○ Evaluating {modelName} model...")
-            for key, func in score_functions.items():
+        templateFile = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
+        os.makedirs(outputFolder, exist_ok=True)
+        for key, func in score_functions.items():
                 client = initialize_tools[key]() if key in initialize_tools else ""
                 if key == REGARD:
-                    regScores = extractRegardScores(func(templateFile, client))
-                    for category in REGARD_CATEGORIES:
-                        templateFile[REGARD + " "+ category] =  regScores[category]
-                else:
+                    if not any(key + " "+ category in templateFile.columns for category in REGARD_CATEGORIES):
+                        regScores = extractRegardScores(func(templateFile, client))
+                        for category in REGARD_CATEGORIES:
+                            templateFile[REGARD + " "+ category] =  regScores[category]
+                    else:
+                        continue
+                elif key == PERSPECTIVE:
+                    if any((key + " "+ category) in templateFile.columns for category in PERSPECTIVE_CATEGORIES):
+                        perspScore = extractPerspectiveScores(func(templateFile, client))
+                        for category in PERSPECTIVE_CATEGORIES:
+                            templateFile[PERSPECTIVE + " "+ category] =  perspScore[category]
+                    else:
+                        continue
+                elif key not in templateFile.columns:
                     templateFile[key] = func(templateFile, client)
-            print("๏ Evaluation completed...")
-
-            df = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
-            os.makedirs(outputFolder, exist_ok=True)
-            df.to_csv(outputFolder+modelName+'.csv', index=False)
-            print("๏ File CSV generated!")
-        else:
-            print(f"๏ CSV file for {modelName} exists already")
+                templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
+        print("๏ Evaluation completed...")
 
 MODEL_LIST = [BERT_LARGE]
 evaluatePrediction(MODEL_LIST)
