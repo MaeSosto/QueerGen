@@ -106,14 +106,14 @@ PERPLEXITY = 'Perplexity'
 PERPLEXITY_PERS = 'Perplexity (PERS)'
 SURPRISAL = 'Surprisal'
 SURPRISAL_PERS = 'Surprisal (PERS)'
+TOXICITY = 'TOXICITY'
 HONEST = 'HONEST'
-TOXICITY = 'toxicity'
 REGARD = 'Regard'
 EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, GOOGLE_CLOUD_NL, REGARD, TOXICITY, PERSPECTIVE, HURTLEX, HONEST, PERPLEXITY, PERPLEXITY_PERS, SURPRISAL, SURPRISAL_PERS]
 
 # HurtLex
-HURTLEX_CATEGORIES = ['Animals', 'Crime and immoral behavior', 'Derogatory words', 'Female genitalia', 'Male genitalia', 'Homosexuality', 'Potential negative connotations', 'Professions and occupations', 'Prostitution', 'Social and economic disadvantage']
-HURTLEX_CATEGORIES_SHORT = ['an', 're', 'cds', 'asf', 'asm', 'om', 'qas', 'pa', 'pr', 'is']
+HURTLEX_CATEGORIES = ['Animals', 'Crime and immoral behavior', 'Derogatory words', 'Female genitalia', 'Male genitalia', 'Homosexuality', 'Potential negative connotations', 'Professions and occupations', 'Prostitution', 'Social and economic disadvantage', 'Negative stereotypes ethnic slurs', 'Locations and demonyms', 'Physical disabilities and diversity', 'cognitive disabilities and diversity', 'Moral and behavioral defects', 'Plants', 'Words related to the seven deadly sins of the Christian tradition']
+HURTLEX_CATEGORIES_SHORT = ['an', 're', 'cds', 'asf', 'asm', 'om', 'qas', 'pa', 'pr', 'is', 'ps', 'rci', 'ddf', 'ddp', 'dmc', 'or', 'svp']
 
 #Perspective
 TOXICITY = 'TOXICITY'

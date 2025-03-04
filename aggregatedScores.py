@@ -12,30 +12,61 @@ def getScores(fileName, folderPath):
     for subj in NOUN_TYPES:
         scoreCollection[modelName + " "+ subj] = {}
         for tool in EVALUATION_TOOLS:
-            scoreCollection[modelName + " "+ subj][tool] = []
+            if tool == PERSPECTIVE:
+                for cat in PERSPECTIVE_CATEGORIES:
+                    scoreCollection[modelName + " "+ subj][tool+ " "+ cat] = []
+            if tool == REGARD:
+                for cat in REGARD_CATEGORIES:
+                    scoreCollection[modelName + " "+ subj][tool+ " "+ cat] = []
+            else:
+                scoreCollection[modelName + " "+ subj][tool] = []
     #Fill scoreCollection      
-    for idx, row in templateFile.iterrows():
+    for _, row in templateFile.iterrows():
         for tool in EVALUATION_TOOLS:
             type = row.loc[TYPE]
-            val = row.loc[tool]
-            if tool == HURTLEX and isinstance(val, str):
-                scoreCollection[modelName + " "+ type][tool].append(val)
-            elif tool == PERSPECTIVE and isinstance(val, dict):
-                scoreCollection[modelName + " "+ type][tool].append(len(val))
-            elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE ]:
-                scoreCollection[modelName + " "+ type][tool].append(val)
+            if tool == REGARD:
+                for cat in REGARD_CATEGORIES:
+                    scoreCollection[modelName + " "+ type][tool+ " " + cat].append(row.loc[tool+ " " + cat])
+            elif tool == HURTLEX and isinstance(val, str):
+                scoreCollection[modelName + " "+ type][tool].append(row.loc[tool])
+            elif tool == PERSPECTIVE:
+               for cat in PERSPECTIVE_CATEGORIES:
+                    val = row.loc[tool+ " " + cat]
+                    scoreCollection[modelName + " "+ type][tool+ " " + cat].append(val)
+                #scoreCollection[modelName + " "+ type][tool].append(len(val))
+            elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE and ev!= REGARD ]:
+                scoreCollection[modelName + " "+ type][tool].append(row.loc[tool])
 
     #Calculate overall scores
     for subj in NOUN_TYPES:
-        scoresArray = []    
-        for tool in EVALUATION_TOOLS + [TOXICITY, HONEST, REGARD]:
-            
-            if tool == HURTLEX or tool == PERSPECTIVE:
+        scoresArray = [] 
+        columnHeader = []
+        for tool in EVALUATION_TOOLS:
+            if tool == REGARD:
+                for cat in REGARD_CATEGORIES:
+                    columnHeader.append(tool+ " "+ cat)
+            elif tool == PERSPECTIVE:
+                for cat in PERSPECTIVE_CATEGORIES:
+                    columnHeader.append(tool+ " "+ cat)
+            else:
+                columnHeader.append(tool)
+        for tool in EVALUATION_TOOLS:
+            if tool == HURTLEX:
                 scoresArray.append(len(scoreCollection[modelName + " "+ subj][tool]))    
-            elif tool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE]]:
+            elif tool == REGARD:
+                score = [np.mean(scoreCollection[modelName + " "+ subj][tool+ " " + cat]) for cat in REGARD_CATEGORIES] 
+                #score = np.mean(score)
+                [scoresArray.append(round(s,2)) for s in score] 
+            elif tool == PERSPECTIVE:
+                score = [sum(scoreCollection[modelName + " "+ subj][tool+ " " + cat]) for cat in PERSPECTIVE_CATEGORIES]
+                #score = sum(score)
+                [scoresArray.append(round(s,2)) for s in score] 
+            elif tool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE, REGARD]]:
                 scoresArray.append(round(np.mean(scoreCollection[modelName + " "+ subj][tool]), 2))
         scoreCollection[modelName + " "+ subj] = scoresArray
-    dfScore = pd.DataFrame.from_dict(scoreCollection, orient='index', columns=EVALUATION_TOOLS + [TOXICITY, HONEST, REGARD])
+    print(scoreCollection)
+
+    dfScore = pd.DataFrame.from_dict(scoreCollection, orient='index', columns=columnHeader)
     return dfScore  
 
 def overallScores(folderPath):

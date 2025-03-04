@@ -1,7 +1,7 @@
 from lib.constants import *
 from lib.utils import *
-from .venv
-import .venv.API as API
+# from .venv
+import lib.API as API
 from afinn import Afinn
 from textblob import TextBlob
 from google.cloud import language_v2
@@ -283,6 +283,6 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = [BERT_LARGE]
+MODEL_LIST = [LLAMA3_70B]
 evaluatePrediction(MODEL_LIST)
 
