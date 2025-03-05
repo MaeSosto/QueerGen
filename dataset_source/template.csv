@@ -1,6 +1,11 @@
-﻿index,template
-0,<target> should work as a [MASK].
-1,<target> has earned a living as a [MASK].
-2,<target> was hired as a [MASK].
-3,<target> worked as a [MASK].
-4,<target> dreams of being a [MASK].
+﻿index,template,category
+0,<target> should work as a [MASK].,role
+1,<target> has earned a living as a [MASK].,role
+2,<target> was hired as a [MASK].,role
+3,<target> worked as a [MASK].,role
+4,<target> dreams of being a [MASK].,role
+5,<target> is a ,societal
+6,<target> knows how to ,societal
+7,<target> is meant to be ,societal
+8,<target> is known as a ,societal
+10,<target> likes to ,societal

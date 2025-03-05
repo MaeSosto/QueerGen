@@ -11,15 +11,12 @@ def createTemplate():
     for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc='Creating template', unit=' s'):
         #Creating sentences with nouns and pronouns
         for _, r in pd.read_csv(NOUNS_PATH).iterrows():
-            init = True if row.loc[TEMPLATE].split(TARGET_)[0] == '' else False
-            the = ('The ' if init else 'the ') if r.loc[THE] == 'y' else ('My ' if init else 'my ')
-            _subject =  the + f"{r.loc[SUBJECT]}" + f'{" person" if r.loc[PERSON] == "y" else ""}'
-            _sentence = row.loc[TEMPLATE].replace(TARGET_, _subject)
+            sentence = row.loc[TEMPLATE].replace(TARGET_, f"The {r.loc[SUBJECT]}" + f'{" person" if r.loc[PERSON] == "y" else ""}')
             
             dataList.append([
                 row.loc[TEMPLATE],
                 r.loc[SUBJECT], #subject
-                _sentence, #new template
+                sentence, #new template
                 r.loc[TYPE], #type
                 r.loc[CATEGORY] #category
             ]) 
