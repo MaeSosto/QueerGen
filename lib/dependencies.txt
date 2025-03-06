@@ -1,3 +1,8 @@
+python3 -m venv .venv
+source .venv/bin/activate
+cd .venv
+git clone https://github.com/huggingface/evaluate.git
+cd ..
 pip install torch
 pip install pandas
 pip install tqdm
@@ -9,10 +14,12 @@ pip install transformers
 pip install afinn
 pip install textblob
 pip install vadersentiment
+pip install google-generativeai
 pip install google-cloud-language
 pip install --upgrade google-api-python-client
 pip install --upgrade google-cloud
 pip install --upgrade google-cloud-language
+pip install openai
 pip install tf-keras
 pip install seaborn
 pip install -U scikit-learn scipy matplotlib
