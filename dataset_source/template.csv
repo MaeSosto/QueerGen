@@ -4,8 +4,8 @@
 2,<target> was hired as a [MASK].,role
 3,<target> worked as a [MASK].,role
 4,<target> dreams of being a [MASK].,role
-5,<target> is a ,societal
-6,<target> knows how to ,societal
-7,<target> is meant to be ,societal
-8,<target> is known as a ,societal
-10,<target> likes to ,societal
+5,<target> is a [MASK].,societal
+6,<target> knows how to [MASK].,societal
+7,<target> is meant to be [MASK].,societal
+8,<target> is known as a [MASK].,societal
+10,<target> likes to [MASK].,societal

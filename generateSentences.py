@@ -72,7 +72,7 @@ def initializeBERTweet(modelName):
 
 
 def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence = None):
-    response = requests.post(API.URL_OLLAMA_LOCAL, headers={
+    response = requests.post(URL_OLLAMA_LOCAL, headers={
         "Content-Type": 'application/json'
     }, json={
         "model": modelName,
@@ -202,8 +202,8 @@ def generateSentences(modelName):
         dicSentences[GENERATED].append(response)
         df = pd.DataFrame.from_dict(dicSentences)    
         df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
-    print("๏ File generated!!")
+    print("๏ File generated!")
 
 
-for mod in MODEL_LIST:
+for mod in MODEL_LIST1:
     generateSentences(mod)
