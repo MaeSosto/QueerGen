@@ -272,7 +272,7 @@ def evaluatePrediction(modelList):
                     else:
                         continue
                 elif key == PERSPECTIVE:
-                    if any((key + " "+ category) in templateFile.columns for category in PERSPECTIVE_CATEGORIES):
+                    if not any((key + " "+ category) in templateFile.columns for category in PERSPECTIVE_CATEGORIES):
                         perspScore = extractPerspectiveScores(func(templateFile, client))
                         for category in PERSPECTIVE_CATEGORIES:
                             templateFile[PERSPECTIVE + " "+ category] =  perspScore[category]
@@ -283,6 +283,6 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = [LLAMA3_70B]
-evaluatePrediction(MODEL_LIST)
+#MODEL_LIST = [LLAMA3_70B]
+evaluatePrediction(MODEL_LIST1)
 
