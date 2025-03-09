@@ -67,7 +67,7 @@ def perspectiveSetup():
     return lib.discovery.build(
         "commentanalyzer",
         "v1alpha1",
-        developerKey=API.PERSPECTIVE_API_KEY1,
+        developerKey=API.PERSPECTIVE_API_KEY,
         discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
         static_discovery=False,
     )
@@ -261,6 +261,7 @@ def evaluatePrediction(modelList):
         print(f"○ Evaluating {modelName} model...")
         preTemplateFile, templateFile = getTemplateFile(modelName, inputFolder, outputFolder)
         templateFile = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
+        templateFile = templateFile
         os.makedirs(outputFolder, exist_ok=True)
         for key, func in score_functions.items():
                 client = initialize_tools[key]() if key in initialize_tools else ""
@@ -285,7 +286,7 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = [LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
+MODEL_LIST = [BERT_LARGE]#, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
 #MODEL_LIST1 = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
 # MODEL_LIST2 = [LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B]
 # MODEL_LIST3 = [LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
