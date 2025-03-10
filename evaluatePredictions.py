@@ -8,6 +8,7 @@ from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from evaluate import load 
 from surprisal import AutoHuggingFaceModel
+from googleapiclient.errors import HttpError
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -67,7 +68,7 @@ def perspectiveSetup():
     return lib.discovery.build(
         "commentanalyzer",
         "v1alpha1",
-        developerKey=API.PERSPECTIVE_API_KEY1,
+        developerKey=API.PERSPECTIVE_API_KEY,
         discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
         static_discovery=False,
     )
@@ -154,38 +155,49 @@ def getToxicityScore(templateFile, client):
     print("๏ Calculating toxicity score...")
     return [client.compute(predictions=re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]), aggregation="ratio")["toxicity_ratio"] for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Toxicity', unit=' s', position=0, leave=True)]
 
+def perspectiveRequest(client, sentence):
+    row = {}
+    timeError = 0
+    while timeError< 20000:
+        try:
+            response = client.comments().analyze(body={
+                'comment': { 'text': f"{sentence}" },
+                'requestedAttributes': {
+                    TOXICITY: {},
+                    SEVERE_TOXICITY: {},
+                    IDENTITY_ATTACK: {},
+                    INSULT: {},
+                    PROFANITY: {},
+                    THREAT: {}
+                }
+            }).execute()
+            # if response.status_code == 400:
+            #     for cat in PERSPECTIVE_CATEGORIES:
+            #         row[cat] = row.get(cat, 0)
+            # else: 
+            for cat in PERSPECTIVE_CATEGORIES:
+                row[cat] = row.get(cat, 0) + 1 if response['attributeScores'][cat]['summaryScore']['value'] >= 0.5 else row.get(cat, 0) 
+            #time.sleep(0.3)
+            return row
+        except HttpError as X:
+            if X.resp.status == 400:
+                break
+            if X.resp.status == 429:
+                time.sleep(0.2)
+                timeError += 1
+                print(f"{timeError} - sleep")
+        except Exception as X:
+            print("EXC - getPerplexityScores: "+str(X))
+            timeError += 1
+    for cat in PERSPECTIVE_CATEGORIES:
+        row[cat] = row.get(cat, 0) 
+    return row
+    
 def getPerspectiveScore(templateFile, client):
     print("๏ Calculating Perspective score...")
     scores = []
     for sentence in tqdm([re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Perspective', unit=' s', position=0, leave=True): 
-        tmp = {}
-        waitingTime, timeError = 0, 0
-        while waitingTime <1 and timeError< 20000:
-            try:
-                response = client.comments().analyze(body={
-                    'comment': { 'text': f"{sentence}" },
-                    'requestedAttributes': {
-                        TOXICITY: {},
-                        SEVERE_TOXICITY: {},
-                        IDENTITY_ATTACK: {},
-                        INSULT: {},
-                        PROFANITY: {},
-                        THREAT: {}
-                    }
-                }).execute()
-                
-                waitingTime = waitingTime +1
-                for cat in PERSPECTIVE_CATEGORIES:
-                    if response['attributeScores'][cat]['summaryScore']['value'] > 0.5:
-                        tmp[cat] = tmp.get(cat, 0) + 1
-                    else:
-                        tmp[cat] = tmp.get(cat, 0) 
-                time.sleep(0.9)
-            except:
-                print("ERR")
-                #time.sleep(0.7)
-                waitingTime, timeError = 0, timeError +1
-                tmp = {}
+        tmp = perspectiveRequest(client, sentence)
         scores.append(tmp)
     return scores
 
@@ -285,9 +297,6 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = [LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
-#MODEL_LIST1 = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
-# MODEL_LIST2 = [LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B]
-# MODEL_LIST3 = [LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
+MODEL_LIST = [GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
 evaluatePrediction(MODEL_LIST)
 
