@@ -38,9 +38,9 @@ def createTemplate():
                     r.loc[SUBJECT], #subject
                     sentence, #template
                     r.loc[TYPE], #type
-                    r.loc[CATEGORY] #category
+                    #r.loc[CATEGORY] #category
                 ]) 
-    data_df = pd.DataFrame(dataList, columns=[ ORIGINAL, SUBJECT, TEMPLATE, TYPE, CATEGORY])
+    data_df = pd.DataFrame(dataList, columns=[ ORIGINAL, SUBJECT, TEMPLATE, TYPE])
     data_df.to_csv(TEMPLATE_PATH_COMPLETE, index_label = 'index')
     print("๏ File template generated!")
 

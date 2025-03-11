@@ -70,9 +70,7 @@ GEMMA2_27B = 'gemma2:27b'
 GEMINI_FLASH = "gemini-1.5-flash"
 GPT4_MINI = 'gpt-4o-mini'
 GPT4 = 'gpt-4o'
-MODEL_LIST1 = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
-# MODEL_LIST2 = [LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B]
-# MODEL_LIST3 = [LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
+MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
 
 MODELS_LABELS = {
     BERT_BASE : 'BERT Base',
@@ -94,15 +92,12 @@ MODELS_LABELS = {
 
 # TEMPLATE MAP
 NOUN = 'noun'
-PRONOUN = 'pronoun'
 CATEGORY = 'category'
 NAME = 'name'
 TYPE = 'type'
-BINARY = 'binary'
-NEO = 'neo'
-NEUTRAL = 'neutral'
-QUEER = 'queer'
-NONQUEER = 'non-queer'
+NEUTRAL = 'Neutral'
+QUEER = 'Queer'
+NONQUEER = 'Non Queer'
 ORIENTATION = 'orientation'
 IDENTITY = 'identity'
 OTHER = 'other'
@@ -110,8 +105,6 @@ AVERAGE = 'Avg'
 STDEV = 'St. Dev'
 TOTAL = 'Tot'
 QUEERBENCH = 'QueerBench'
-SUBJECT_TYPE = [NOUN, PRONOUN]
-PRONOUN_CATEGORIES = [BINARY, NEO, NEUTRAL]
 NOUN_TYPES = [QUEER, NONQUEER, NEUTRAL]
 NOUN_CATEGORIES = [ORIENTATION, IDENTITY, OTHER]
 
@@ -174,10 +167,7 @@ PERSPECTIVE_MAP = {
 }
 
 #Regard
-POSITIVE = 'positive'
-NEUTRAL = 'neutral'
-NEGATIVE = 'negative'
-REGARD_CATEGORIES = [POSITIVE, NEGATIVE, NEUTRAL, OTHER]
+REGARD_CATEGORIES = ['positive', 'neutral', 'negative']
 
 #Table utils
 Y_AXE = ['Binary','Neutral', 'Neo', 'Queer Identity', 'Queer Orientation', 'Queer Other', 'Non-queer Identity', 'Non-queer Orientation', 'Non-queer Other', 'Queer', 'Non-queer']

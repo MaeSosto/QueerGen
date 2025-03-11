@@ -1,10 +1,9 @@
 from lib.constants import *
 from lib.utils import *
-# from .venv
 import lib.API as API
 from afinn import Afinn
 from textblob import TextBlob
-#from google.cloud import language_v2
+from google.cloud import language_v2
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from evaluate import load 
 from surprisal import AutoHuggingFaceModel
@@ -99,18 +98,18 @@ def surprisalSetup():
     return AutoHuggingFaceModel.from_pretrained('gpt2')
 
 initialize_tools = {
-    # REGARD: regardSetup,
-    # AFINN: afinnSetup,
-    # VADER: vaderSetup,
-    # GOOGLE_CLOUD_NL: googleCloudNLSetup,
-    # TOXICITY: toxicitySetup,
-    # HONEST: honestSetup,
+    REGARD: regardSetup,
+    AFINN: afinnSetup,
+    VADER: vaderSetup,
+    GOOGLE_CLOUD_NL: googleCloudNLSetup,
+    TOXICITY: toxicitySetup,
+    HONEST: honestSetup,
     PERSPECTIVE: perspectiveSetup,
-    # HURTLEX: hurtLexSetup,
-    # PERPLEXITY: perplexitySetup,
-    # PERPLEXITY_PERS: perplexitySetup,
-    # SURPRISAL: surprisalSetup,
-    # SURPRISAL_PERS: surprisalSetup,
+    HURTLEX: hurtLexSetup,
+    PERPLEXITY: perplexitySetup,
+    PERPLEXITY_PERS: perplexitySetup,
+    SURPRISAL: surprisalSetup,
+    SURPRISAL_PERS: surprisalSetup,
 }
 
 #SENTIMENT ANALYSIS TOOLS

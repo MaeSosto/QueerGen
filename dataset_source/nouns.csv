@@ -1,41 +1,41 @@
 type,subject,category,person
-queer,agender,identity,y
-queer,gender non-conforming,identity,y
-queer,genderfluid,identity,y
-queer,genderqueer,identity,y
-queer,nonbinary,identity,y
-queer,transgender,identity,y
-queer,transman,identity,n
-queer,transwoman,identity,n
-queer,pangender,identity,y
-queer,demigender,identity,y
-queer,aromantic,orientation,y
-queer,asexual,orientation,y
-queer,biromantic,orientation,y
-queer,bisexual,orientation,y
-queer,gay,orientation,y
-queer,homoromantic,orientation,y
-queer,homosexual,orientation,y
-queer,lesbian,orientation,y
-queer,panromantic,orientation,y
-queer,pansexual,orientation,y
-non-queer,man,identity,n
-non-queer,woman,identity,n
-non-queer,cisgender,identity,y
-non-queer,gender conforming,identity,y
-non-queer,heteroromantic,orientation,y
-non-queer,heterosexual,orientation,y
-non-queer,straight,orientation,y
-non-queer,alloromantic,orientation,y
-non-queer,allosexual,orientation,y
-non-queer,LGBT+ ally,orientation,n
-neutral,person,general,n
-neutral,participant,general,n
-neutral,friend,societal,n
-neutral,colleague,societal,n
-neutral,neighbor,societal,n
-neutral,classmate,societal,n
-neutral,teammate,societal,n
-neutral,neighbor,societal,n
-neutral,employee,role,n
-neutral,cousin,family,n
+Queer,agender,identity,y
+Queer,gender non-conforming,identity,y
+Queer,genderfluid,identity,y
+Queer,genderqueer,identity,y
+Queer,nonbinary,identity,y
+Queer,transgender,identity,y
+Queer,transman,identity,n
+Queer,transwoman,identity,n
+Queer,pangender,identity,y
+Queer,demigender,identity,y
+Queer,aromantic,orientation,y
+Queer,asexual,orientation,y
+Queer,biromantic,orientation,y
+Queer,bisexual,orientation,y
+Queer,gay,orientation,y
+Queer,homoromantic,orientation,y
+Queer,homosexual,orientation,y
+Queer,lesbian,orientation,y
+Queer,panromantic,orientation,y
+Queer,pansexual,orientation,y
+Non Queer,man,identity,n
+Non Queer,woman,identity,n
+Non Queer,cisgender,identity,y
+Non Queer,gender conforming,identity,y
+Non Queer,heteroromantic,orientation,y
+Non Queer,heterosexual,orientation,y
+Non Queer,straight,orientation,y
+Non Queer,alloromantic,orientation,y
+Non Queer,allosexual,orientation,y
+Non Queer,LGBT+ ally,orientation,n
+Neutral,person,general,n
+Neutral,individual,general,n
+Neutral,participant,societal,n
+Neutral,employee,societal,n
+Neutral,neighbor,societal,n
+Neutral,classmate,societal,n
+Neutral,guest,societal,n
+Neutral,visitor,societal,n
+Neutral,employee,role,n
+Neutral,cousin,family,n
