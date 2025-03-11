@@ -74,6 +74,24 @@ MODEL_LIST1 = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, 
 # MODEL_LIST2 = [LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B]
 # MODEL_LIST3 = [LLAMA3, GPT4, GPT4_MINI, GEMINI_FLASH]
 
+MODELS_LABELS = {
+    BERT_BASE : 'BERT Base',
+    BERT_LARGE : 'BERT Large',
+    ROBERTA_BASE : 'RoBERTa Base',
+    ROBERTA_LARGE : 'RoBERTa Large',
+    ALBERT_BASE : 'AlBERT Base',
+    ALBERT_LARGE : 'AlBERT Large',
+    BERTTWEET_BASE : 'BERTweet Base',
+    BERTTWEET_LARGE : 'BERTweet Large',
+    LLAMA3 : 'Llama 3',
+    LLAMA3_70B : 'Llama 3(70b)',
+    GEMMA2 : 'Gemma 2',
+    GEMMA2_27B : 'Gemma 2(27b)',
+    GEMINI_FLASH : "Gemini 1.5 Flash",
+    GPT4_MINI : 'GPT4o Mini',
+    GPT4 : 'GPT4o'
+}
+
 # TEMPLATE MAP
 NOUN = 'noun'
 PRONOUN = 'pronoun'
@@ -114,8 +132,28 @@ REGARD = 'Regard'
 EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, GOOGLE_CLOUD_NL, REGARD, TOXICITY, PERSPECTIVE, HURTLEX, HONEST, PERPLEXITY, PERPLEXITY_PERS, SURPRISAL, SURPRISAL_PERS]
 
 # HurtLex
-HURTLEX_CATEGORIES = ['Animals', 'Crime and immoral behavior', 'Derogatory words', 'Female genitalia', 'Male genitalia', 'Homosexuality', 'Potential negative connotations', 'Professions and occupations', 'Prostitution', 'Social and economic disadvantage', 'Negative stereotypes ethnic slurs', 'Locations and demonyms', 'Physical disabilities and diversity', 'cognitive disabilities and diversity', 'Moral and behavioral defects', 'Plants', 'Words related to the seven deadly sins of the Christian tradition']
+HURTLEX_CATEGORIES = ['Animals', 'Felonies and Words Related to crime and Immoral Behavior', 'Derogatory Words', 'Female genitalia', 'Male genitalia', 'Words related to Homosexuality', 'Potential Negative Connotations', 'Professions and Occupations', 'Words Related to Prostitution', 'Words Related to Social and Economic Disadvantage', 'Negative Stereotypes Ethnic Slurs', 'Locations and Demonyms', 'Physical Disabilities and Diversity', 'Cognitive Disabilities and Diversity', 'Moral and Behavioral Defects', 'Plants', 'Words Related to the Seven Deadly Sins of the Christian Tradition']
 HURTLEX_CATEGORIES_SHORT = ['an', 're', 'cds', 'asf', 'asm', 'om', 'qas', 'pa', 'pr', 'is', 'ps', 'rci', 'ddf', 'ddp', 'dmc', 'or', 'svp']
+
+HURTLEX_MAP = {
+    'ps': 'Negative Stereotypes Ethnic Slurs',
+    'rci': 'Locations and Demonyms', 
+    'pa': 'Professions and Occupations',
+    'ddf': 'Physical Disabilities and Diversity',
+    'ddp' : 'Cognitive Disabilities and Diversity',
+    'dmc': 'Moral and Behavioral Defects', 
+    'is': 'Words Related to Social and Economic Disadvantage',
+    'or': 'Plants',
+    'an': 'Animals',
+    'asm': 'Male genitalia',
+    'asf': 'Female genitalia', 
+    'pr': 'Words Related to Prostitution', 
+    'om': 'Words related to Homosexuality',
+    'qas': 'Potential Negative Connotations', 
+    'cds': 'Derogatory Words', 
+    're': 'Felonies and Words Related to crime and Immoral Behavior', 
+    'svp': 'Words Related to the Seven Deadly Sins of the Christian Tradition'
+}
 
 #Perspective
 TOXICITY = 'TOXICITY'
@@ -125,6 +163,15 @@ IDENTITY_ATTACK = 'IDENTITY_ATTACK'
 PROFANITY = 'PROFANITY'
 THREAT = 'THREAT'
 PERSPECTIVE_CATEGORIES =[TOXICITY, SEVERE_TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
+
+PERSPECTIVE_MAP = {
+    TOXICITY: "Toxicity", 
+    SEVERE_TOXICITY: "Severe Toxicity", 
+    INSULT: "Insult", 
+    IDENTITY_ATTACK: "Identity Attack", 
+    PROFANITY: "Profanity", 
+    THREAT: "Threat"
+}
 
 #Regard
 POSITIVE = 'positive'

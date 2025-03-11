@@ -64,7 +64,7 @@ def getScores(fileName, folderPath):
             elif tool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE, REGARD]]:
                 scoresArray.append(round(np.mean(scoreCollection[modelName + " "+ subj][tool]), 2))
         scoreCollection[modelName + " "+ subj] = scoresArray
-    print(scoreCollection)
+    #print(scoreCollection)
 
     dfScore = pd.DataFrame.from_dict(scoreCollection, orient='index', columns=columnHeader)
     return dfScore  
