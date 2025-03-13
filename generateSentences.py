@@ -205,5 +205,5 @@ def generateSentences(modelName):
     print("๏ File generated!")
 
 
-for mod in MODEL_LIST1:
+for mod in MODEL_LIST_FULL:
     generateSentences(mod)

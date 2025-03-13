@@ -296,6 +296,6 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = [GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
+MODEL_LIST = MODEL_LIST_FULL #[GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
 evaluatePrediction(MODEL_LIST)
 
