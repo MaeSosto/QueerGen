@@ -4,6 +4,7 @@ from evaluate import load
 
 def getScores(fileName, folderPath):
     templateFile = pd.read_csv(folderPath+ fileName)
+    templateFile.replace(pd.NA, 0)
     modelName = fileName.replace('.csv', '')
     print(f"๏ Getting scores from {fileName}...")
     
@@ -11,58 +12,59 @@ def getScores(fileName, folderPath):
     scoreCollection = {}
     for subj in NOUN_TYPES:
         scoreCollection[modelName + " "+ subj] = {}
-        for tool in EVALUATION_TOOLS:
-            if tool == PERSPECTIVE:
+        for evalTool in EVALUATION_TOOLS:
+            if evalTool == PERSPECTIVE:
                 for cat in PERSPECTIVE_CATEGORIES:
-                    scoreCollection[modelName + " "+ subj][tool+ " "+ cat] = []
-            if tool == REGARD:
+                    scoreCollection[modelName + " "+ subj][evalTool+ " "+ cat] = []
+            if evalTool == REGARD:
                 for cat in REGARD_CATEGORIES:
-                    scoreCollection[modelName + " "+ subj][tool+ " "+ cat] = []
+                    scoreCollection[modelName + " "+ subj][evalTool+ " "+ cat] = []
             else:
-                scoreCollection[modelName + " "+ subj][tool] = []
+                scoreCollection[modelName + " "+ subj][evalTool] = []
     #Fill scoreCollection      
     for _, row in templateFile.iterrows():
-        for tool in EVALUATION_TOOLS:
-            type = row.loc[TYPE]
-            if tool == REGARD:
+        for evalTool in EVALUATION_TOOLS:
+            key = modelName + " "+ row.loc[TYPE]
+            if evalTool == REGARD:
                 for cat in REGARD_CATEGORIES:
-                    scoreCollection[modelName + " "+ type][tool+ " " + cat].append(row.loc[tool+ " " + cat])
-            elif tool == HURTLEX and isinstance(val, str):
-                scoreCollection[modelName + " "+ type][tool].append(row.loc[tool])
-            elif tool == PERSPECTIVE:
+                    scoreCollection[key][evalTool+ " " + cat].append(row.loc[evalTool+ " " + cat])
+            elif evalTool == HURTLEX and isinstance(val, str):
+                scoreCollection[key][evalTool].append(row.loc[evalTool])
+            elif evalTool == PERSPECTIVE:
                for cat in PERSPECTIVE_CATEGORIES:
-                    val = row.loc[tool+ " " + cat]
-                    scoreCollection[modelName + " "+ type][tool+ " " + cat].append(val)
-                #scoreCollection[modelName + " "+ type][tool].append(len(val))
-            elif tool in [ev for ev in EVALUATION_TOOLS if ev != HURTLEX and ev!= PERSPECTIVE and ev!= REGARD ]:
-                scoreCollection[modelName + " "+ type][tool].append(row.loc[tool])
+                    val = row.loc[evalTool+ " " + cat]
+                    scoreCollection[key][evalTool+ " " + cat].append(val)
+                #scoreCollection[key][tool].append(len(val))
+            else:
+                val = row.loc[evalTool]
+                scoreCollection[key][evalTool].append(val)
 
     #Calculate overall scores
     for subj in NOUN_TYPES:
         scoresArray = [] 
         columnHeader = []
-        for tool in EVALUATION_TOOLS:
-            if tool == REGARD:
+        for evalTool in EVALUATION_TOOLS:
+            if evalTool == REGARD:
                 for cat in REGARD_CATEGORIES:
-                    columnHeader.append(tool+ " "+ cat)
-            elif tool == PERSPECTIVE:
+                    columnHeader.append(evalTool+ " "+ cat)
+            elif evalTool == PERSPECTIVE:
                 for cat in PERSPECTIVE_CATEGORIES:
-                    columnHeader.append(tool+ " "+ cat)
+                    columnHeader.append(evalTool+ " "+ cat)
             else:
-                columnHeader.append(tool)
-        for tool in EVALUATION_TOOLS:
-            if tool == HURTLEX:
-                scoresArray.append(len(scoreCollection[modelName + " "+ subj][tool]))    
-            elif tool == REGARD:
-                score = [np.mean(scoreCollection[modelName + " "+ subj][tool+ " " + cat]) for cat in REGARD_CATEGORIES] 
+                columnHeader.append(evalTool)
+        for evalTool in EVALUATION_TOOLS:
+            if evalTool == HURTLEX:
+                scoresArray.append(len(scoreCollection[modelName + " "+ subj][evalTool]))    
+            elif evalTool == REGARD:
+                score = [np.mean(scoreCollection[modelName + " "+ subj][evalTool+ " " + cat]) for cat in REGARD_CATEGORIES] 
                 #score = np.mean(score)
                 [scoresArray.append(round(s,2)) for s in score] 
-            elif tool == PERSPECTIVE:
-                score = [sum(scoreCollection[modelName + " "+ subj][tool+ " " + cat]) for cat in PERSPECTIVE_CATEGORIES]
+            elif evalTool == PERSPECTIVE:
+                score = [sum(scoreCollection[modelName + " "+ subj][evalTool+ " " + cat]) for cat in PERSPECTIVE_CATEGORIES]
                 #score = sum(score)
                 [scoresArray.append(round(s,2)) for s in score] 
-            elif tool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE, REGARD]]:
-                scoresArray.append(round(np.mean(scoreCollection[modelName + " "+ subj][tool]), 2))
+            elif evalTool in [ev for ev in EVALUATION_TOOLS if ev not in [HURTLEX, PERSPECTIVE, REGARD]]:
+                scoresArray.append(round(np.mean(scoreCollection[modelName + " "+ subj][evalTool]), 2))
         scoreCollection[modelName + " "+ subj] = scoresArray
     #print(scoreCollection)
 
@@ -83,4 +85,5 @@ def overallScores(folderPath):
 # represents the path to a directory where files are stored. The function reads files from this
 # directory, processes them, and generates an output file named `results.csv` in the same directory
 folderPath = OUTPUT_EVALUATION
-overallScores(folderPath)
+#overallScores(folderPath)
+dfModel = getScores('BERT_large.csv', folderPath)

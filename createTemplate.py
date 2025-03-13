@@ -22,7 +22,7 @@ def createTemplate():
                 neu.loc[SUBJECT], #subject
                 template.replace(TARGET_, f"The {neu.loc[SUBJECT]}"), #template
                 neu.loc[TYPE], #type
-                neu.loc[CATEGORY] #category
+                #neu.loc[CATEGORY] #category
             ])    
             for _,r in nonNeutralList.iterrows():
                 if r.loc[PERSON] == "y":

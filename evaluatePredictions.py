@@ -34,7 +34,8 @@ def extractPerspectiveScores(data):
 # Output: (3, 6)
 def find_subsequence_indices(s1, s2):
     # Split sentences into word lists
-    words_s1 = re.sub(r".","",s1).split()
+    s1 = s1.replace(r".","")
+    words_s1 = s1.split()
     words_s2 = s2.split()
     len_s2 = len(words_s2)
     # Iterate over s1 to find where s2 starts
@@ -54,7 +55,7 @@ def surpirsalWord(surprisalTool, word, sentence):
         tmp = tmp.split('\n')[0]
         return round(float(tmp),2)
     except Exception as X:
-        print("EXC - getPerplexityScoress: "+str(X))
+        print("EXC - surpirsalWord: "+str(X))
         
 def hurtLexSetup():
     language = 'en'
@@ -296,6 +297,6 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = MODEL_LIST_FULL #[GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
+MODEL_LIST = [BERT_LARGE]#[GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
 evaluatePrediction(MODEL_LIST)
 
