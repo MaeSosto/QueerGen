@@ -99,18 +99,18 @@ def surprisalSetup():
     return AutoHuggingFaceModel.from_pretrained('gpt2')
 
 initialize_tools = {
-    REGARD: regardSetup,
     AFINN: afinnSetup,
     VADER: vaderSetup,
     GOOGLE_CLOUD_NL: googleCloudNLSetup,
-    TOXICITY: toxicitySetup,
-    HONEST: honestSetup,
+    REGARD: regardSetup,
+    #TOXICITY: toxicitySetup,
     PERSPECTIVE: perspectiveSetup,
+    HONEST: honestSetup,
     HURTLEX: hurtLexSetup,
     PERPLEXITY: perplexitySetup,
-    PERPLEXITY_PERS: perplexitySetup,
+    #PERPLEXITY_PERS: perplexitySetup,
     SURPRISAL: surprisalSetup,
-    SURPRISAL_PERS: surprisalSetup,
+    #SURPRISAL_PERS: surprisalSetup,
 }
 
 #SENTIMENT ANALYSIS TOOLS
@@ -252,19 +252,18 @@ def getSurprisalScoresPerson(templateFile, client):
     
 #Comment the one you don't want to obtain
 score_functions = {
-    HONEST: getHONESTScore,
-    TOXICITY: getToxicityScore,
+    #TOXICITY: getToxicityScore,
     AFINN: getAfinnScores,
     VADER: getVaderScores,
     TEXTBLOB: getTextBlobScores,
     GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
+    HONEST: getHONESTScore,
     HURTLEX: getHurtLexScore,
     PERPLEXITY: getPerplexityScores,
-    PERPLEXITY_PERS: getPerplexityScoresPerson,
     SURPRISAL: getSurprisalScores,
-    SURPRISAL_PERS: getSurprisalScoresPerson
+    
 }
 
 def evaluatePrediction(modelList):
@@ -297,6 +296,6 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-MODEL_LIST = [BERT_LARGE]#[GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
-evaluatePrediction(MODEL_LIST)
+#MODEL_LIST = [BERT_LARGE]#[GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
+evaluatePrediction(MODEL_LIST_FULL)
 

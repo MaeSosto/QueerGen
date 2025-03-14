@@ -31,7 +31,7 @@ def getScores(fileName, folderPath):
             elif evalTool == HURTLEX and isinstance(val, str):
                 scoreCollection[key][evalTool].append(row.loc[evalTool])
             elif evalTool == PERSPECTIVE:
-               for cat in PERSPECTIVE_CATEGORIES:
+                for cat in PERSPECTIVE_CATEGORIES:
                     val = row.loc[evalTool+ " " + cat]
                     scoreCollection[key][evalTool+ " " + cat].append(val)
                 #scoreCollection[key][tool].append(len(val))
@@ -85,5 +85,4 @@ def overallScores(folderPath):
 # represents the path to a directory where files are stored. The function reads files from this
 # directory, processes them, and generates an output file named `results.csv` in the same directory
 folderPath = OUTPUT_EVALUATION
-#overallScores(folderPath)
-dfModel = getScores('BERT_large.csv', folderPath)
+overallScores(folderPath)

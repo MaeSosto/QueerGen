@@ -20,8 +20,9 @@ logger.setLevel(logging.ERROR)
 #print(f"PyTorch version: {torch.__version__}")
 
 # Set the device      
-device = "mps" if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
-#print(f"Using device: {device}")
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
+torch.set_default_device(device)
+print(f"Using device: {device}")
 
 # # Global Variables
 #Data Source
@@ -70,7 +71,8 @@ GEMMA2_27B = 'gemma2:27b'
 GEMINI_FLASH = "gemini-1.5-flash"
 GPT4_MINI = 'gpt-4o-mini'
 GPT4 = 'gpt-4o'
-MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
+MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
+#MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
 
 MODELS_LABELS = {
     BERT_BASE : 'BERT Base',
@@ -112,17 +114,17 @@ NOUN_CATEGORIES = [ORIENTATION, IDENTITY, OTHER]
 VADER = 'VADER'
 TEXTBLOB = 'textBlob'
 AFINN = 'AFINN'
-HURTLEX = 'HurtLex'
 GOOGLE_CLOUD_NL = 'GoogleCloud'
+REGARD = 'Regard'
+HURTLEX = 'HurtLex'
+HONEST = 'HONEST'
 PERSPECTIVE = 'Perspective'
 PERPLEXITY = 'Perplexity'
 PERPLEXITY_PERS = 'Perplexity (PERS)'
 SURPRISAL = 'Surprisal'
 SURPRISAL_PERS = 'Surprisal (PERS)'
-TOXICITY = 'TOXICITY'
-HONEST = 'HONEST'
-REGARD = 'Regard'
-EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, GOOGLE_CLOUD_NL, REGARD, TOXICITY, PERSPECTIVE, HURTLEX, HONEST, PERPLEXITY, PERPLEXITY_PERS, SURPRISAL, SURPRISAL_PERS]
+#TOXICITY = 'TOXICITY'
+EVALUATION_TOOLS = [VADER, TEXTBLOB, AFINN, GOOGLE_CLOUD_NL, REGARD, PERSPECTIVE, HURTLEX, HONEST, PERPLEXITY, SURPRISAL]
 
 # HurtLex
 HURTLEX_CATEGORIES = ['Animals', 'Felonies and Words Related to crime and Immoral Behavior', 'Derogatory Words', 'Female genitalia', 'Male genitalia', 'Words related to Homosexuality', 'Potential Negative Connotations', 'Professions and Occupations', 'Words Related to Prostitution', 'Words Related to Social and Economic Disadvantage', 'Negative Stereotypes Ethnic Slurs', 'Locations and Demonyms', 'Physical Disabilities and Diversity', 'Cognitive Disabilities and Diversity', 'Moral and Behavioral Defects', 'Plants', 'Words Related to the Seven Deadly Sins of the Christian Tradition']
