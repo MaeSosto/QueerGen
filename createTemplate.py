@@ -22,7 +22,7 @@ def createTemplate():
                 neu.loc[SUBJECT], #subject
                 template.replace(TARGET_, f"The {neu.loc[SUBJECT]}"), #template
                 neu.loc[TYPE], #type
-                #neu.loc[CATEGORY] #category
+                neu.loc[CATEGORY] #category
             ])    
             for _,r in nonNeutralList.iterrows():
                 if r.loc[PERSON] == "y":
@@ -38,9 +38,9 @@ def createTemplate():
                     r.loc[SUBJECT], #subject
                     sentence, #template
                     r.loc[TYPE], #type
-                    #r.loc[CATEGORY] #category
+                    r.loc[CATEGORY] #category
                 ]) 
-    data_df = pd.DataFrame(dataList, columns=[ ORIGINAL, SUBJECT, TEMPLATE, TYPE])
+    data_df = pd.DataFrame(dataList, columns=[ ORIGINAL, SUBJECT, TEMPLATE, TYPE, CATEGORY])
     data_df.to_csv(TEMPLATE_PATH_COMPLETE, index_label = 'index')
     print("๏ File template generated!")
 

@@ -1,19 +1,26 @@
+#Create python environment
 python3 -m venv .venv
 source .venv/bin/activate
 cd .venv
-git clone https://github.com/huggingface/evaluate.git
 cd ..
+
+#Clone Evaluation tools from Hugging Face
+git clone https://github.com/huggingface/evaluate.git
+pip install evaluate
+cd ..
+
+#Install base libraries
 pip install torch
 pip install pandas
 pip install tqdm
 pip install unidecode
-pip install evaluate
 pip install surprisal
 pip install transformers
+
+#Sentiment analysis tools
 pip install afinn
 pip install textblob
 pip install vadersentiment
-pip install google-generativeai
 
 #Google Cloud Sentiment analysis tool 
 pip install google-cloud-language
@@ -22,7 +29,11 @@ pip install --upgrade google-cloud
 pip install --upgrade google-cloud-language
 pip install --upgrade google-cloud-translate
 
+#Models 
 pip install openai
+pip install google-generativeai
+
+#Graphs
 pip install tf-keras
 pip install seaborn
 pip install -U scikit-learn scipy matplotlib

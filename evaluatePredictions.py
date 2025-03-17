@@ -44,9 +44,6 @@ def find_subsequence_indices(s1, s2):
             return i, i + len_s2  # Start and end indices (Python-style)
     return None  # If s2 is not found in s1
 
-def strip_accent(accented_string):
-    return lib.unidecode.unidecode(str(accented_string))
-
 def surpirsalWord(surprisalTool, word, sentence):
     try:
         [s] = surprisalTool.surprise(sentence)
@@ -57,6 +54,15 @@ def surpirsalWord(surprisalTool, word, sentence):
     except Exception as X:
         print("EXC - surpirsalWord: "+str(X))
         
+        
+def hurtLexSetup():
+    language = 'en'
+    hurtlex = lib.pd.read_csv(f"https://raw.githubusercontent.com/MilaNLProc/hurtlex/master/lexica/{language.upper()}/1.2/hurtlex_{language.upper()}.tsv", sep="\t")
+    hurtlex = hurtlex[hurtlex["level"] == "conservative"]
+    hurtlex["lemma"] = hurtlex["lemma"].apply(strip_accent)
+    return hurtlex
+
+
 def hurtLexSetup():
     language = 'en'
     hurtlex = lib.pd.read_csv(f"https://raw.githubusercontent.com/MilaNLProc/hurtlex/master/lexica/{language.upper()}/1.2/hurtlex_{language.upper()}.tsv", sep="\t")
@@ -78,13 +84,6 @@ def afinnSetup():
 
 def vaderSetup():
     return SentimentIntensityAnalyzer()
-    
-def toxicitySetup():
-    return load(EVALUATION_MEASUREMENT_PATH+"toxicity")
-
-def honestSetup():
-    return load(EVALUATION_MEASUREMENT_PATH+"honest", "en")
-
 def googleCloudNLSetup():
     #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = API.GOOGLE_APPLICATION_CREDENTIALS
     return language_v2.LanguageServiceClient()
@@ -103,14 +102,9 @@ initialize_tools = {
     VADER: vaderSetup,
     GOOGLE_CLOUD_NL: googleCloudNLSetup,
     REGARD: regardSetup,
-    #TOXICITY: toxicitySetup,
     PERSPECTIVE: perspectiveSetup,
-    HONEST: honestSetup,
-    HURTLEX: hurtLexSetup,
     PERPLEXITY: perplexitySetup,
-    #PERPLEXITY_PERS: perplexitySetup,
     SURPRISAL: surprisalSetup,
-    #SURPRISAL_PERS: surprisalSetup,
 }
 
 #SENTIMENT ANALYSIS TOOLS
@@ -201,20 +195,6 @@ def getPerspectiveScore(templateFile, client):
         scores.append(tmp)
     return scores
 
-def getHONESTScore(templateFile, client):
-    print("๏ Calculating HONEST score...")
-    return [round(client.compute(predictions=[[row.loc[GENERATED]], []], groups=["x"])['honest_score_per_group']["x"], 2) for _, row in templateFile.iterrows()]
-
-def getHurtLexScore(templateFile, client):
-    res = []
-    for word in tqdm([row.loc[GENERATED] for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True):
-        try:
-            category = client[client["lemma"] == strip_accent(word)]["category"].values[0]
-        except:
-            category = ''
-        res.append(category)
-    return res
-
 #PERPLEXITY AND SURPRISAL SCORES
 def getPerplexityScores(templateFile, client):
     print("๏ Calculating perplexity score...")
@@ -224,14 +204,14 @@ def getPerplexityScores(templateFile, client):
         print("EXC - getPerplexityScores: "+str(X))
         breakpoint
 
-def getPerplexityScoresPerson(templateFile, client):
-    print("๏ Calculating perplexity score...")
-    try:
-        perplexityList = [round(per, 2) for per in client.compute(predictions=[re.sub(TARGET_, 'The person', re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[ORIGINAL])) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
-        return perplexityList
-    except Exception as X:
-        print("EXC - getPerplexityScoresPerson: "+str(X))
-        breakpoint
+# def getPerplexityScoresPerson(templateFile, client):
+#     print("๏ Calculating perplexity score...")
+#     try:
+#         perplexityList = [round(per, 2) for per in client.compute(predictions=[re.sub(TARGET_, 'The person', re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[ORIGINAL])) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
+#         return perplexityList
+#     except Exception as X:
+#         print("EXC - getPerplexityScoresPerson: "+str(X))
+#         breakpoint
 
 def getSurprisalScores(templateFile, client = None):
     print("๏ Calculating surprisal score...")
@@ -241,29 +221,25 @@ def getSurprisalScores(templateFile, client = None):
         print("EXC - getSurprisalScores: "+str(X))
         breakpoint
 
-def getSurprisalScoresPerson(templateFile, client):
-    print("๏ Calculating surprisal score...")
-    try:
-        return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], re.sub(TARGET_, 'The person', row.loc[ORIGINAL])))for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
-    except Exception as X:
-        print("EXC - getSurprisalScoresPerson: "+str(X))
-        breakpoint
+# def getSurprisalScoresPerson(templateFile, client):
+#     print("๏ Calculating surprisal score...")
+#     try:
+#         return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], re.sub(TARGET_, 'The person', row.loc[ORIGINAL])))for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
+#     except Exception as X:
+#         print("EXC - getSurprisalScoresPerson: "+str(X))
+#         breakpoint
         
     
 #Comment the one you don't want to obtain
 score_functions = {
-    #TOXICITY: getToxicityScore,
     AFINN: getAfinnScores,
     VADER: getVaderScores,
     TEXTBLOB: getTextBlobScores,
     GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
-    HONEST: getHONESTScore,
-    HURTLEX: getHurtLexScore,
     PERPLEXITY: getPerplexityScores,
     SURPRISAL: getSurprisalScores,
-    
 }
 
 def evaluatePrediction(modelList):

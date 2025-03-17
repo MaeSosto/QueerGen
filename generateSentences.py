@@ -204,6 +204,6 @@ def generateSentences(modelName):
         df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
     print("๏ File generated!")
 
-
+MODEL_LIST_FULL = [LLAMA3_70B, GEMMA2_27B, BERT_LARGE]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)
