@@ -182,6 +182,7 @@ request_models = {
     GEMMA3: ollamaRequest,
     GEMMA3_27B: ollamaRequest,
     DEEPSEEK: ollamaRequest,
+    DEEPSEEK_70B: ollamaRequest,
     BERT_BASE: BERTRequest,
     BERT_LARGE: BERTRequest,
     ALBERT_BASE: BERTRequest,
@@ -211,5 +212,6 @@ def generateSentences(modelName):
         df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
     print("๏ File generated!")
 
+MODEL_LIST_FULL = [DEEPSEEK_70B]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)

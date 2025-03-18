@@ -92,7 +92,7 @@ initialize_tools = {
 
 #SENTIMENT ANALYSIS TOOLS
 def getGoogleCloudSentimentAnalisysScores(templateFile, client):
-    print("๏ Calculating Google Cloud Sentiment Analisys score...")
+    print("○ Calculating Google Cloud Sentiment Analisys score...")
     lst = []
     for sentence in tqdm([row.loc[GENERATED] for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True):
         try:
@@ -112,18 +112,19 @@ def getGoogleCloudSentimentAnalisysScores(templateFile, client):
     return lst
 
 def getAfinnScores(templateFile, client):
-    print("๏ Calculating Afinn score...")
+    print("○ Calculating Afinn score...")
     return [(client.score(row.loc[GENERATED]))/5 for _, row in templateFile.iterrows()]
 
 def getVaderScores(templateFile, client):
-    print("๏ Calculating VADER score...")
+    print("○ Calculating VADER score...")
     return [round(client.polarity_scores(word)['compound'], 2) for word in [row.loc[GENERATED] for _, row in templateFile.iterrows()]]
 
 def getTextBlobScores(templateFile, client = None):
-    print("๏ Calculating TextBlob score...")
+    print("○ Calculating TextBlob score...")
     return [round(TextBlob(word).sentiment[0], 2) for word in [row.loc[GENERATED] for _, row in templateFile.iterrows()]]
 
 def getRegardScore(templateFile, client):
+    print("○ Calculating Regard score...")
     array = [item for item in client.compute(data = [re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()])['regard']]
     return array
 
@@ -162,7 +163,7 @@ def perspectiveRequest(client, sentence):
     return row
     
 def getPerspectiveScore(templateFile, client):
-    print("๏ Calculating Perspective score...")
+    print("○ Calculating Perspective score...")
     scores = []
     for sentence in tqdm([re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Perspective', unit=' s', position=0, leave=True): 
         tmp = perspectiveRequest(client, sentence)
@@ -171,7 +172,7 @@ def getPerspectiveScore(templateFile, client):
 
 #PERPLEXITY AND SURPRISAL SCORES
 def getPerplexityScores(templateFile, client):
-    print("๏ Calculating perplexity score...")
+    print("○ Calculating perplexity score...")
     try:
         return [round(per, 2) for per in client.compute(predictions=[re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
     except Exception as X:
@@ -179,7 +180,7 @@ def getPerplexityScores(templateFile, client):
         breakpoint
 
 def getSurprisalScores(templateFile, client = None):
-    print("๏ Calculating surprisal score...")
+    print("○ Calculating surprisal score...")
     try:
         return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE])) for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
     except Exception as X:
@@ -199,12 +200,12 @@ score_functions = {
 }
 
 def evaluatePrediction(modelList):
+    inputFolder, outputFolder = OUTPUT_SENTENCES, OUTPUT_EVALUATION
+    os.makedirs(outputFolder, exist_ok=True)
     for modelName in modelList:
-        inputFolder, outputFolder = OUTPUT_SENTENCES, OUTPUT_EVALUATION
-        print(f"○ Evaluating {modelName} model...")
+        print(f"○ Evaluating {modelName}")
         preTemplateFile, templateFile = getTemplateFile(modelName, inputFolder, outputFolder)
         templateFile = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
-        os.makedirs(outputFolder, exist_ok=True)
         for key, func in score_functions.items():
                 client = initialize_tools[key]() if key in initialize_tools else ""
                 if key == REGARD:
@@ -224,7 +225,7 @@ def evaluatePrediction(modelList):
                 elif key not in templateFile.columns:
                     templateFile[key] = func(templateFile, client)
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
-        print("๏ Evaluation completed...")
+        print(f"○ {modelName} OK!")
 
 evaluatePrediction(MODEL_LIST_FULL)
 
