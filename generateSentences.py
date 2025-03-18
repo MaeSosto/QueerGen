@@ -19,8 +19,8 @@ MODEL_NAME = {
     BERTTWEET_LARGE: 'vinai/bertweet-large',
     LLAMA3 : 'llama3',
     LLAMA3_70B : 'llama3:70b',
-    GEMMA2 : 'gemma2',
-    GEMMA2_27B : 'gemma2:27b',
+    GEMMA3 : 'gemma2',
+    GEMMA3_27B : 'gemma2:27b',
     GPT4 : 'gpt-4o'
 }
 
@@ -72,26 +72,32 @@ def initializeBERTweet(modelName):
 
 
 def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence = None):
-    response = requests.post(URL_OLLAMA_LOCAL, headers={
-        "Content-Type": 'application/json'
-    }, json={
-        "model": modelName,
-        "prompt": prompt,
-        "messages": [
-            {
-            "role": "user",
-            "content": prompt
-            }
-        ],
-        "options":{
-            "temperature":0
-        },
-        "stream": False
-    })
-    tmp = response.json()
-    tmp = tmp['response']
-    tmp = clean_response(tmp)
-    return tmp
+    try:
+        response = requests.post(URL_OLLAMA_LOCAL, headers={
+                "Content-Type": 'application/json'
+            }, 
+            json={
+                "model": modelName,
+                "prompt": prompt,
+                "messages": [
+                    {
+                    "role": "user",
+                    "content": prompt
+                    }
+                ],
+                "options":{
+                    "temperature":0
+                },
+                "stream": False
+        })
+        tmp = response.json()
+        tmp = tmp['response']
+        tmp = clean_response(tmp)
+        return tmp
+    except Exception as X:
+        print("EXC - ollamaRequest: "+str(X))
+        breakpoint
+
 
 def geminiRequest(prompt, modelName, model, tokenizer = None, sentence = None):
     resp =  clean_response(model.generate_content(prompt).text)
@@ -173,8 +179,9 @@ request_models = {
     LLAMA3: ollamaRequest,
     LLAMA3_3: ollamaRequest,
     LLAMA3_70B: ollamaRequest,
-    GEMMA2: ollamaRequest,
-    GEMMA2_27B: ollamaRequest,
+    GEMMA3: ollamaRequest,
+    GEMMA3_27B: ollamaRequest,
+    DEEPSEEK: ollamaRequest,
     BERT_BASE: BERTRequest,
     BERT_LARGE: BERTRequest,
     ALBERT_BASE: BERTRequest,
@@ -204,6 +211,5 @@ def generateSentences(modelName):
         df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
     print("๏ File generated!")
 
-MODEL_LIST_FULL = [LLAMA3_70B, GEMMA2_27B, BERT_LARGE]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)

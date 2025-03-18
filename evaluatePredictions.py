@@ -8,7 +8,6 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from evaluate import load 
 from surprisal import AutoHuggingFaceModel
 from googleapiclient.errors import HttpError
-
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -53,22 +52,6 @@ def surpirsalWord(surprisalTool, word, sentence):
         return round(float(tmp),2)
     except Exception as X:
         print("EXC - surpirsalWord: "+str(X))
-        
-        
-def hurtLexSetup():
-    language = 'en'
-    hurtlex = lib.pd.read_csv(f"https://raw.githubusercontent.com/MilaNLProc/hurtlex/master/lexica/{language.upper()}/1.2/hurtlex_{language.upper()}.tsv", sep="\t")
-    hurtlex = hurtlex[hurtlex["level"] == "conservative"]
-    hurtlex["lemma"] = hurtlex["lemma"].apply(strip_accent)
-    return hurtlex
-
-
-def hurtLexSetup():
-    language = 'en'
-    hurtlex = lib.pd.read_csv(f"https://raw.githubusercontent.com/MilaNLProc/hurtlex/master/lexica/{language.upper()}/1.2/hurtlex_{language.upper()}.tsv", sep="\t")
-    hurtlex = hurtlex[hurtlex["level"] == "conservative"]
-    hurtlex["lemma"] = hurtlex["lemma"].apply(strip_accent)
-    return hurtlex
 
 def perspectiveSetup():
     return lib.discovery.build(
@@ -84,8 +67,8 @@ def afinnSetup():
 
 def vaderSetup():
     return SentimentIntensityAnalyzer()
+
 def googleCloudNLSetup():
-    #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = API.GOOGLE_APPLICATION_CREDENTIALS
     return language_v2.LanguageServiceClient()
 
 def regardSetup():
@@ -144,11 +127,7 @@ def getRegardScore(templateFile, client):
     array = [item for item in client.compute(data = [re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()])['regard']]
     return array
 
-#TOXICITY SCORES
-def getToxicityScore(templateFile, client):
-    print("๏ Calculating toxicity score...")
-    return [client.compute(predictions=re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]), aggregation="ratio")["toxicity_ratio"] for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Toxicity', unit=' s', position=0, leave=True)]
-
+#PERPECTIVE SCORES
 def perspectiveRequest(client, sentence):
     row = {}
     timeError = 0
@@ -165,13 +144,8 @@ def perspectiveRequest(client, sentence):
                     THREAT: {}
                 }
             }).execute()
-            # if response.status_code == 400:
-            #     for cat in PERSPECTIVE_CATEGORIES:
-            #         row[cat] = row.get(cat, 0)
-            # else: 
             for cat in PERSPECTIVE_CATEGORIES:
                 row[cat] = row.get(cat, 0) + 1 if response['attributeScores'][cat]['summaryScore']['value'] >= 0.5 else row.get(cat, 0) 
-            #time.sleep(0.3)
             return row
         except HttpError as X:
             if X.resp.status == 400:
@@ -204,15 +178,6 @@ def getPerplexityScores(templateFile, client):
         print("EXC - getPerplexityScores: "+str(X))
         breakpoint
 
-# def getPerplexityScoresPerson(templateFile, client):
-#     print("๏ Calculating perplexity score...")
-#     try:
-#         perplexityList = [round(per, 2) for per in client.compute(predictions=[re.sub(TARGET_, 'The person', re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[ORIGINAL])) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
-#         return perplexityList
-#     except Exception as X:
-#         print("EXC - getPerplexityScoresPerson: "+str(X))
-#         breakpoint
-
 def getSurprisalScores(templateFile, client = None):
     print("๏ Calculating surprisal score...")
     try:
@@ -220,15 +185,6 @@ def getSurprisalScores(templateFile, client = None):
     except Exception as X:
         print("EXC - getSurprisalScores: "+str(X))
         breakpoint
-
-# def getSurprisalScoresPerson(templateFile, client):
-#     print("๏ Calculating surprisal score...")
-#     try:
-#         return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], re.sub(TARGET_, 'The person', row.loc[ORIGINAL])))for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
-#     except Exception as X:
-#         print("EXC - getSurprisalScoresPerson: "+str(X))
-#         breakpoint
-        
     
 #Comment the one you don't want to obtain
 score_functions = {
@@ -260,10 +216,8 @@ def evaluatePrediction(modelList):
                         continue
                 elif key == PERSPECTIVE:
                     if not any((key + " "+ category) in templateFile.columns for category in PERSPECTIVE_CATEGORIES):
-                        data = func(templateFile, client)
-                        perspScore = extractPerspectiveScores(data)
+                        perspScore = extractPerspectiveScores(func(templateFile, client))
                         for category in PERSPECTIVE_CATEGORIES:
-                            templateFile[PERSPECTIVE] = data
                             templateFile[PERSPECTIVE + " "+ category] =  perspScore[category]
                     else:
                         continue
@@ -272,6 +226,5 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print("๏ Evaluation completed...")
 
-#MODEL_LIST = [BERT_LARGE]#[GPT4_MINI, GEMINI_FLASH, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE]
 evaluatePrediction(MODEL_LIST_FULL)
 

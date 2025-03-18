@@ -1,13 +1,23 @@
 #Create python environment
 python3 -m venv .venv
 source .venv/bin/activate
-cd .venv
-cd ..
 
 #Clone Evaluation tools from Hugging Face
+cd .venv
 git clone https://github.com/huggingface/evaluate.git
 pip install evaluate
 cd ..
+
+#Install Ollama and models
+pip install ollama
+ollama pull llama3
+ollama pull llama3:70b
+ollama pull gemma3
+ollama pull gemma3:27b
+ollama pull deepseek-r1
+ollama pull deepseek-r1:70b
+ollama serve
+
 
 #Install base libraries
 pip install torch
@@ -21,6 +31,10 @@ pip install transformers
 pip install afinn
 pip install textblob
 pip install vadersentiment
+
+#Follow the instructions to Install the gcliud client and then set up the ADC for a local develpment evironment
+#https://cloud.google.com/sdk/docs/install
+#https://cloud.google.com/docs/authentication/set-up-adc-local-dev-environment
 
 #Google Cloud Sentiment analysis tool 
 pip install google-cloud-language
