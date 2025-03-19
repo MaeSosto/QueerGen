@@ -203,6 +203,8 @@ def generateSentences(modelName):
     for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences', position=0, leave=True):
         prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {row.loc[TEMPLATE]}"
         response = request_models[modelName](prompt, modelName, model, tokenizer, row.loc[TEMPLATE])
+        if response == None:
+            break
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
         dicSentences[CATEGORY].append(row.loc[CATEGORY])
@@ -210,8 +212,11 @@ def generateSentences(modelName):
         dicSentences[GENERATED].append(response)
         df = pd.DataFrame.from_dict(dicSentences)    
         df.to_csv(f'{OUTPUT_SENTENCES+modelName}.csv', index_label = 'index')
-    print("๏ File generated!")
+    if response == None:
+            print("Request Error")
+    else:
+        print("๏ File generated!")
 
-MODEL_LIST_FULL = [DEEPSEEK_70B]
+MODEL_LIST_FULL = [GEMMA3_27B]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)

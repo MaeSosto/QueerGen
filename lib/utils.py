@@ -59,14 +59,15 @@ def getListFromString(text):
     return (map(int, text.split(","))) if "," in text else text
 
 def getTemplateFile(modelName, inputFolder, outputFolder):
-    #print("๏ Getting the CSV file...")
-    templateFile = lib.pd.read_csv(f"{inputFolder+modelName}.csv")
-    #If the file exists already in the output folder then take that one   
-    if lib.os.path.exists(outputFolder+modelName+".csv"):
-        preTemplateFile = lib.pd.read_csv(outputFolder+modelName+".csv")
-        startingFrom = preTemplateFile.shape[0]
-        print(f"๏ {startingFrom} sentences imported!")
-        return preTemplateFile, templateFile[startingFrom:]
-    # else:
-    #     print("๏ Starting from the prediction file")  
-    return lib.pd.DataFrame(), templateFile[0:]
+    sentenceFile = f"{inputFolder+modelName}.csv"
+    evaluationFile = f"{outputFolder+modelName}.csv"
+    if lib.os.path.exists(sentenceFile):
+        sentenceFile = lib.pd.read_csv(sentenceFile)
+        #If the file exists already in the output folder then take that one   
+        if lib.os.path.exists(evaluationFile):
+            evaluationFile = lib.pd.read_csv(evaluationFile)
+            print(f"๏ {evaluationFile.shape[0]} sentences imported!")
+            return evaluationFile, sentenceFile[evaluationFile.shape[0]:]
+        return lib.pd.DataFrame(), sentenceFile[0:]
+    else:
+        return None, None

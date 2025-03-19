@@ -205,6 +205,9 @@ def evaluatePrediction(modelList):
     for modelName in modelList:
         print(f"○ Evaluating {modelName}")
         preTemplateFile, templateFile = getTemplateFile(modelName, inputFolder, outputFolder)
+        if not isinstance(preTemplateFile, pd.DataFrame):
+            print(f"○ {modelName} prediction file not found in the {inputFolder} folder")
+            break
         templateFile = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
         for key, func in score_functions.items():
                 client = initialize_tools[key]() if key in initialize_tools else ""

@@ -11,11 +11,11 @@ cd ..
 #Install Ollama and models
 pip install ollama
 ollama pull llama3
-ollama pull llama3:70b
+#ollama pull llama3:70b
 ollama pull gemma3
-ollama pull gemma3:27b
+#ollama pull gemma3:27b
 ollama pull deepseek-r1
-ollama pull deepseek-r1:70b
+#ollama pull deepseek-r1:70b
 ollama serve
 
 
