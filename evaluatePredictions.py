@@ -230,5 +230,5 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print(f"○ {modelName} OK!")
 
-evaluatePrediction(MODEL_LIST_FULL)
+evaluatePrediction([BERT_LARGE])
 
