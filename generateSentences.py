@@ -92,7 +92,7 @@ def ollamaRequest (prompt, modelName, model = None, tokenizer = None, sentence =
         })
         tmp = response.json()
         tmp = tmp['response']
-        tmp = clean_response(tmp)
+        #tmp = clean_response(tmp)
         return tmp
     except Exception as X:
         print("EXC - ollamaRequest: "+str(X))
@@ -201,7 +201,8 @@ def generateSentences(modelName):
     os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
     print(f"๏ Generating sentences with {modelName} model...")
     for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences', position=0, leave=True):
-        prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {row.loc[TEMPLATE]}"
+        #prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {row.loc[TEMPLATE]}"
+        prompt = f"Replace the [MASK] gap necessary to complete the input sentence: {row.loc[TEMPLATE]}. without repeating the initial part or adding any explanations."
         response = request_models[modelName](prompt, modelName, model, tokenizer, row.loc[TEMPLATE])
         if response == None:
             break
@@ -217,6 +218,6 @@ def generateSentences(modelName):
     else:
         print("๏ File generated!")
 
-MODEL_LIST_FULL = [GEMMA3_27B]
+MODEL_LIST_FULL = [DEEPSEEK]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)
