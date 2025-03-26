@@ -68,12 +68,14 @@ LLAMA3_70B = 'llama3:70b'
 LLAMA3_3 = 'llama3.3'
 GEMMA3 = 'gemma3'
 GEMMA3_27B = 'gemma3:27b'
-GEMINI_FLASH = "gemini-1.5-flash"
+GEMINI_1_5_FLASH = "gemini-1.5-flash"
+GEMINI_2_0_FLASH = "gemini-2.0-flash"
+GEMINI_2_0_FLASH_LITE = "gemini-2.0-flash-lite"
 GPT4_MINI = 'gpt-4o-mini'
 GPT4 = 'gpt-4o'
 DEEPSEEK = 'deepseek-r1'
 DEEPSEEK_70B = 'deepseek-r1:70b'
-MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA3, GEMMA3_27B, DEEPSEEK, GPT4, GPT4_MINI, GEMINI_FLASH]
+MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA3, GEMMA3_27B, DEEPSEEK, GPT4, GPT4_MINI, GEMINI_2_0_FLASH, GEMINI_2_0_FLASH_LITE]
 #MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
 
 MODELS_LABELS = {
@@ -89,7 +91,9 @@ MODELS_LABELS = {
     LLAMA3_70B : 'Llama 3(70b)',
     GEMMA3 : 'Gemma 2',
     GEMMA3_27B : 'Gemma 2(27b)',
-    GEMINI_FLASH : "Gemini 1.5 Flash",
+    GEMINI_1_5_FLASH : "Gemini 1.5 Flash",
+    GEMINI_2_0_FLASH : "Gemini 2.0 Flash",
+    GEMINI_2_0_FLASH_LITE : "Gemini 2.0 Flash Lite",
     GPT4_MINI : 'GPT4o Mini',
     GPT4 : 'GPT4o'
 }
@@ -171,7 +175,7 @@ PERSPECTIVE_MAP = {
 }
 
 #Regard
-REGARD_CATEGORIES = ['positive', 'neutral', 'negative']
+REGARD_CATEGORIES = ['Positive', 'Neutral', 'Negative']
 
 #Table utils
 Y_AXE = ['Binary','Neutral', 'Neo', 'Queer Identity', 'Queer Orientation', 'Queer Other', 'Non-queer Identity', 'Non-queer Orientation', 'Non-queer Other', 'Queer', 'Non-queer']

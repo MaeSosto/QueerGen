@@ -54,7 +54,7 @@ def surpirsalWord(surprisalTool, word, sentence):
         print("EXC - surpirsalWord: "+str(X))
 
 def perspectiveSetup():
-    return lib.discovery.build(
+    return discovery.build(
         "commentanalyzer",
         "v1alpha1",
         developerKey=API.PERSPECTIVE_API_KEY,
@@ -94,7 +94,7 @@ initialize_tools = {
 def getGoogleCloudSentimentAnalisysScores(templateFile, client):
     print("○ Calculating Google Cloud Sentiment Analisys score...")
     lst = []
-    for sentence in tqdm([row.loc[GENERATED] for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True):
+    for sentence in tqdm([str(row.loc[GENERATED]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True):
         try:
             response = client.analyze_sentiment(request={
                 "document": {
@@ -113,19 +113,20 @@ def getGoogleCloudSentimentAnalisysScores(templateFile, client):
 
 def getAfinnScores(templateFile, client):
     print("○ Calculating Afinn score...")
-    return [(client.score(row.loc[GENERATED]))/5 for _, row in templateFile.iterrows()]
+    tmp = [(client.score(str(row.loc[GENERATED])))/5 for _, row in templateFile.iterrows()]
+    return tmp
 
 def getVaderScores(templateFile, client):
     print("○ Calculating VADER score...")
-    return [round(client.polarity_scores(word)['compound'], 2) for word in [row.loc[GENERATED] for _, row in templateFile.iterrows()]]
+    return [round(client.polarity_scores(word)['compound'], 2) for word in [str(row.loc[GENERATED]) for _, row in templateFile.iterrows()]]
 
 def getTextBlobScores(templateFile, client = None):
     print("○ Calculating TextBlob score...")
-    return [round(TextBlob(word).sentiment[0], 2) for word in [row.loc[GENERATED] for _, row in templateFile.iterrows()]]
+    return [round(TextBlob(word).sentiment[0], 2) for word in [str(row.loc[GENERATED]) for _, row in templateFile.iterrows()]]
 
 def getRegardScore(templateFile, client):
     print("○ Calculating Regard score...")
-    array = [item for item in client.compute(data = [re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()])['regard']]
+    array = [item for item in client.compute(data = [re.sub(MASKBERT_+".", str(row.loc[GENERATED]), row.loc[TEMPLATE]) for _, row in templateFile.iterrows()])['regard']]
     return array
 
 #PERPECTIVE SCORES
@@ -165,7 +166,7 @@ def perspectiveRequest(client, sentence):
 def getPerspectiveScore(templateFile, client):
     print("○ Calculating Perspective score...")
     scores = []
-    for sentence in tqdm([re.sub(MASKBERT_, row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Perspective', unit=' s', position=0, leave=True): 
+    for sentence in tqdm([re.sub(MASKBERT_, str(row.loc[GENERATED]), row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], desc=f'Perspective', unit=' s', position=0, leave=True): 
         tmp = perspectiveRequest(client, sentence)
         scores.append(tmp)
     return scores
@@ -174,7 +175,7 @@ def getPerspectiveScore(templateFile, client):
 def getPerplexityScores(templateFile, client):
     print("○ Calculating perplexity score...")
     try:
-        return [round(per, 2) for per in client.compute(predictions=[re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
+        return [round(per, 2) for per in client.compute(predictions=[re.sub(MASKBERT_+".", str(row.loc[GENERATED]), row.loc[TEMPLATE]) for _, row in templateFile.iterrows()], model_id='gpt2')['perplexities']]
     except Exception as X:
         print("EXC - getPerplexityScores: "+str(X))
         breakpoint
@@ -182,7 +183,7 @@ def getPerplexityScores(templateFile, client):
 def getSurprisalScores(templateFile, client = None):
     print("○ Calculating surprisal score...")
     try:
-        return [surpirsalWord(client, row.loc[GENERATED], re.sub(MASKBERT_+".", row.loc[GENERATED], row.loc[TEMPLATE])) for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
+        return [surpirsalWord(client, str(row.loc[GENERATED]), re.sub(MASKBERT_+".", str(row.loc[GENERATED]), row.loc[TEMPLATE])) for _, row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Surprisal', unit=' s', position=0, leave=True)]
     except Exception as X:
         print("EXC - getSurprisalScores: "+str(X))
         breakpoint
@@ -230,5 +231,5 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print(f"○ {modelName} OK!")
 
-evaluatePrediction([GEMMA3_27B])
+evaluatePrediction([GEMINI_2_0_FLASH_LITE])
 

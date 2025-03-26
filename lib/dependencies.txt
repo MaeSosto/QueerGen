@@ -1,25 +1,25 @@
-#Create python environment
+ECHO ๏ Create python environment
 python3 -m venv .venv
 source .venv/bin/activate
 
-#Clone Evaluation tools from Hugging Face
+ECHO ๏ Clone Evaluation tools from Hugging Face
 cd .venv
 git clone https://github.com/huggingface/evaluate.git
 pip install evaluate
 cd ..
 
-#Install Ollama and models
+ECHO ๏ Install Ollama and models
 pip install ollama
-ollama pull llama3
+#ollama pull llama3
 #ollama pull llama3:70b
-ollama pull gemma3
+#ollama pull gemma3
 #ollama pull gemma3:27b
-ollama pull deepseek-r1
+#ollama pull deepseek-r1
 #ollama pull deepseek-r1:70b
 ollama serve
 
 
-#Install base libraries
+ECHO ๏ Install base libraries
 pip install torch
 pip install pandas
 pip install tqdm
@@ -27,7 +27,7 @@ pip install unidecode
 pip install surprisal
 pip install transformers
 
-#Sentiment analysis tools
+ECHO ๏ Sentiment analysis tools
 pip install afinn
 pip install textblob
 pip install vadersentiment
@@ -36,18 +36,18 @@ pip install vadersentiment
 #https://cloud.google.com/sdk/docs/install
 #https://cloud.google.com/docs/authentication/set-up-adc-local-dev-environment
 
-#Google Cloud Sentiment analysis tool 
+ECHO ๏ Google Cloud Sentiment analysis tool 
 pip install google-cloud-language
 pip install --upgrade google-api-python-client
 pip install --upgrade google-cloud
 pip install --upgrade google-cloud-language
 pip install --upgrade google-cloud-translate
 
-#Models 
+ECHO ๏ Install Models 
 pip install openai
 pip install google-generativeai
 
-#Graphs
+ECHO ๏ Graphs libraries
 pip install tf-keras
 pip install seaborn
 pip install -U scikit-learn scipy matplotlib
