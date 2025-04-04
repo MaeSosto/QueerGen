@@ -15,8 +15,8 @@ def extractRegardScores(data):
     scores = {category: [] for category in REGARD_CATEGORIES}
     for item in data:
         for entry in item:
-            if entry["label"] in scores:
-                scores[entry["label"]].append(round(entry["score"],2))
+            if str(entry["label"]).capitalize() in scores:
+                scores[str(entry["label"]).capitalize()].append(round(entry["score"],2))
     return scores
 
 def extractPerspectiveScores(data):
@@ -196,8 +196,8 @@ score_functions = {
     GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
-    PERPLEXITY: getPerplexityScores,
-    SURPRISAL: getSurprisalScores,
+    #PERPLEXITY: getPerplexityScores,
+    #SURPRISAL: getSurprisalScores,
 }
 
 def evaluatePrediction(modelList):
@@ -231,5 +231,5 @@ def evaluatePrediction(modelList):
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
         print(f"○ {modelName} OK!")
 
-evaluatePrediction([GEMINI_2_0_FLASH_LITE])
+evaluatePrediction([DEEPSEEK])
 

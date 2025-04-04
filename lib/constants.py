@@ -68,8 +68,6 @@ LLAMA3_70B = 'llama3:70b'
 LLAMA3_3 = 'llama3.3'
 GEMMA3 = 'gemma3'
 GEMMA3_27B = 'gemma3:27b'
-GEMMA2 = 'gemma32'
-GEMMA2_27B = 'gemma2:27b'
 GEMINI_1_5_FLASH = "gemini-1.5-flash"
 GEMINI_2_0_FLASH = "gemini-2.0-flash"
 GEMINI_2_0_FLASH_LITE = "gemini-2.0-flash-lite"
@@ -81,20 +79,18 @@ MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA3, GEMMA3_27B
 #MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, ALBERT_BASE, ALBERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA2, GEMMA2_27B, GPT4, GPT4_MINI, GEMINI_FLASH]
 
 MODELS_LABELS = {
-    BERT_BASE : 'BERT (Base)',
-    BERT_LARGE : 'BERT (Large)',
-    ROBERTA_BASE : 'RoBERTa (Base)',
-    ROBERTA_LARGE : 'RoBERTa (Large)',
-    ALBERT_BASE : 'AlBERT (Base)',
-    ALBERT_LARGE : 'AlBERT (Large)',
-    BERTTWEET_BASE : 'BERTweet (Base)',
-    BERTTWEET_LARGE : 'BERTweet (Large)',
-    LLAMA3 : 'Llama3',
-    LLAMA3_70B : 'Llama3(70b)',
-    GEMMA2 : 'Gemma2',
-    GEMMA2_27B : 'Gemma2(27b)',
-    GEMMA3 : 'Gemma3',
-    GEMMA3_27B : 'Gemma3(27b)',
+    BERT_BASE : 'BERT Base',
+    BERT_LARGE : 'BERT Large',
+    ROBERTA_BASE : 'RoBERTa Base',
+    ROBERTA_LARGE : 'RoBERTa Large',
+    ALBERT_BASE : 'AlBERT Base',
+    ALBERT_LARGE : 'AlBERT Large',
+    BERTTWEET_BASE : 'BERTweet Base',
+    BERTTWEET_LARGE : 'BERTweet Large',
+    LLAMA3 : 'Llama 3',
+    LLAMA3_70B : 'Llama 3(70b)',
+    GEMMA3 : 'Gemma 2',
+    GEMMA3_27B : 'Gemma 2(27b)',
     GEMINI_1_5_FLASH : "Gemini 1.5 Flash",
     GEMINI_2_0_FLASH : "Gemini 2.0 Flash",
     GEMINI_2_0_FLASH_LITE : "Gemini 2.0 Flash Lite",
@@ -103,22 +99,17 @@ MODELS_LABELS = {
 }
 
 # TEMPLATE MAP
-NOUN = 'noun'
 CATEGORY = 'category'
 NAME = 'name'
 TYPE = 'type'
-NEUTRAL = 'Neutral'
+UNMARKED = 'Unmarked'
 QUEER = 'Queer'
 NONQUEER = 'Non Queer'
 ORIENTATION = 'orientation'
 IDENTITY = 'identity'
-OTHER = 'other'
-AVERAGE = 'Avg'
-STDEV = 'St. Dev'
-TOTAL = 'Tot'
 QUEERBENCH = 'QueerBench'
-NOUN_TYPES = [QUEER, NONQUEER, NEUTRAL]
-NOUN_CATEGORIES = [ORIENTATION, IDENTITY, OTHER]
+SUBJ_CATEGORIES = [UNMARKED, QUEER, NONQUEER]
+MARKER_CATEGORIES = [ORIENTATION, IDENTITY]
 
 #Evaluation Tools
 VADER = 'VADER'

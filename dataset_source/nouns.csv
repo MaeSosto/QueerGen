@@ -29,13 +29,13 @@ Non Queer,straight,orientation,y
 Non Queer,alloromantic,orientation,y
 Non Queer,allosexual,orientation,y
 Non Queer,LGBT+ ally,orientation,n
-Neutral,person,general,n
-Neutral,individual,general,n
-Neutral,participant,societal,n
-Neutral,employee,societal,n
-Neutral,neighbor,societal,n
-Neutral,classmate,societal,n
-Neutral,guest,societal,n
-Neutral,visitor,societal,n
-Neutral,employee,role,n
-Neutral,cousin,family,n
+Unmarked,person,general,n
+Unmarked,individual,general,n
+Unmarked,participant,societal,n
+Unmarked,employee,societal,n
+Unmarked,neighbor,societal,n
+Unmarked,classmate,societal,n
+Unmarked,guest,societal,n
+Unmarked,visitor,societal,n
+Unmarked,employee,role,n
+Unmarked,cousin,family,n

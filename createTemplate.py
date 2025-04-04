@@ -10,9 +10,9 @@ def createTemplate():
     
     for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc='Creating template', unit=' s'):
         nounsFile = pd.read_csv(NOUNS_PATH)
-        neutralList = nounsFile[nounsFile[TYPE] == NEUTRAL].copy()
+        neutralList = nounsFile[nounsFile[TYPE] == UNMARKED].copy()
         #neutralList = neutralList[SUBJECT].tolist()
-        nonNeutralList = nounsFile[nounsFile[TYPE] != NEUTRAL].copy()
+        nonNeutralList = nounsFile[nounsFile[TYPE] != UNMARKED].copy()
         
         template = row.loc[TEMPLATE]
         #Creating sentences with nouns

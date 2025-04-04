@@ -1,5 +1,5 @@
 from lib.constants import *
-from lib.utils import *
+from lib.utils import clean_response
 import lib.API as API
 import google.generativeai as genai
 from openai import OpenAI
@@ -29,6 +29,7 @@ def preExistingFile(modelName):
     startingFrom, dicSentences = 0, {
         TYPE: [],
         TEMPLATE: [],
+        SUBJECT: [],
         GENERATED: [],
         CATEGORY: [],
         ORIGINAL:[]
@@ -42,6 +43,7 @@ def preExistingFile(modelName):
         for idx, row in df.iterrows():
             dicSentences[TYPE].append(row.loc[TYPE])
             dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
+            dicSentences[SUBJECT].append(row.loc[SUBJECT])
             dicSentences[GENERATED].append(row.loc[GENERATED])
             dicSentences[CATEGORY].append(row.loc[CATEGORY])
             dicSentences[ORIGINAL].append(row.loc[ORIGINAL])
@@ -211,6 +213,7 @@ def generateSentences(modelName):
             break
         dicSentences[TYPE].append(row.loc[TYPE])
         dicSentences[TEMPLATE].append(row.loc[TEMPLATE])
+        dicSentences[SUBJECT].append(row.loc[SUBJECT])
         dicSentences[CATEGORY].append(row.loc[CATEGORY])
         dicSentences[ORIGINAL].append(row.loc[ORIGINAL])
         dicSentences[GENERATED].append(response)
@@ -221,6 +224,6 @@ def generateSentences(modelName):
     else:
         print("๏ File generated!")
 
-MODEL_LIST_FULL = [DEEPSEEK_70B]
+MODEL_LIST_FULL = [BERT_BASE]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)
