@@ -1,6 +1,5 @@
 from lib.constants import *
 from lib.utils import clean_response
-import lib.API as API
 import google.generativeai as genai
 from openai import OpenAI
 from transformers import AutoModel, BertTokenizer, BertForMaskedLM, AutoTokenizer, RobertaTokenizer, RobertaForMaskedLM, AlbertTokenizer, AlbertForMaskedLM
@@ -52,14 +51,14 @@ def preExistingFile(modelName):
     return startingFrom, dicSentences
 
 def initializeGemini(modelName):
-    genai.configure(api_key=API.GENAI_API_KEY)
+    genai.configure(api_key=os.getenv('GENAI_API_KEY'))
     return genai.GenerativeModel(modelName), None
 
 def initializeGPT(modelName = None):
-    return OpenAI(api_key=API.OPENAI_API_KEY), None
+    return OpenAI(api_key=os.getenv('OPENAI_API_KEY')), None
 
 def initializeDeepSeeek(modelName = None):
-    return OpenAI(api_key=API.DEEPSEEK_API_KEY, base_url=URL_DEEPSEEK), None
+    return OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
 
 def initializeBERT(modelName):
     val = MODEL_NAME[modelName]

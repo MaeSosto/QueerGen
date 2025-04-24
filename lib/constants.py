@@ -13,6 +13,7 @@ from collections import defaultdict
 import json
 import numpy as np
 import statistics as st
+from dotenv import load_dotenv
 
 logger = logging.getLogger()
 logging.basicConfig(filename='logFile.log', encoding='utf-8', level=logging.DEBUG)
@@ -25,6 +26,9 @@ logger.addHandler(console)
 device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
 torch.set_default_device(device)
 logger.info(f"Using device: {device}")
+
+#Get local evirnoment 
+load_dotenv()
 
 # # Global Variables
 #Data Source

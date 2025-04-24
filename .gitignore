@@ -2,4 +2,6 @@ lib/API.py
 lib/__pycache__
 .venv
 .vscode
-logFile.log
+*.log
+*.env
+.cache_ggshield

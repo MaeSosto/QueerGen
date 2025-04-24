@@ -26,6 +26,7 @@ pip install tqdm
 pip install unidecode
 pip install surprisal
 pip install transformers
+pip install python-dotenv
 
 ECHO ๏ Sentiment analysis tools
 pip install afinn

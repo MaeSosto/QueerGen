@@ -1,6 +1,5 @@
 from lib.constants import *
 from lib.utils import *
-import lib.API as API
 from afinn import Afinn
 from textblob import TextBlob
 from google.cloud import language_v2
@@ -69,7 +68,7 @@ def perspectiveSetup():
     return discovery.build(
         "commentanalyzer",
         "v1alpha1",
-        developerKey=API.PERSPECTIVE_API_KEY,
+        developerKey=os.getenv('PERSPECTIVE_API_KEY'),
         discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
         static_discovery=False,
     )
