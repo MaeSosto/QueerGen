@@ -1,0 +1,5 @@
+lib/API.py
+lib/__pycache__
+.venv
+.vscode
+logFile.log

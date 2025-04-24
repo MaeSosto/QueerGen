@@ -1,0 +1,31 @@
+type,value,category,adj
+Queer,agender,identity,y
+Queer,gender non-conforming,identity,y
+Queer,genderfluid,identity,y
+Queer,genderqueer,identity,y
+Queer,nonbinary,identity,y
+Queer,transgender,identity,y
+Queer,trangender man,identity,n
+Queer,transgender woman,identity,n
+Queer,pangender,identity,y
+Queer,demigender,identity,y
+Queer,aromantic,orientation,y
+Queer,asexual,orientation,y
+Queer,biromantic,orientation,y
+Queer,bisexual,orientation,y
+Queer,gay,orientation,y
+Queer,homoromantic,orientation,y
+Queer,homosexual,orientation,y
+Queer,lesbian,orientation,y
+Queer,panromantic,orientation,y
+Queer,pansexual,orientation,y
+Non Queer,cisgender man,identity,n
+Non Queer,cisgender woman,identity,n
+Non Queer,cisgender,identity,y
+Non Queer,gender conforming,identity,y
+Non Queer,heteroromantic,orientation,y
+Non Queer,heterosexual,orientation,y
+Non Queer,straight,orientation,y
+Non Queer,alloromantic,orientation,y
+Non Queer,allosexual,orientation,y
+Non Queer,LGBT+ ally,orientation,n
