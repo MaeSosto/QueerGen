@@ -1,13 +1,13 @@
 from lib.constants import *
 from lib.utils import *
 from afinn import Afinn
-from textblob import TextBlob
 from google.cloud import language_v2
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from evaluate import load 
 from surprisal import AutoHuggingFaceModel
 from googleapiclient.errors import HttpError
 import warnings
+from time import sleep
 warnings.filterwarnings('ignore')
 
 def extractRegardScores(data):
@@ -65,6 +65,7 @@ def callGoogleCloudSentimentAnalisysScores(pred, templateFile, client):
     return lst
 
 def perspectiveSetup():
+    #import pdb; pdb.set_trace()
     return discovery.build(
         "commentanalyzer",
         "v1alpha1",
@@ -89,6 +90,7 @@ def perspectiveRequest(client, sentence):
                     THREAT: {}
                 }
             }).execute()
+            sleep(0.9)
             for cat in PERSPECTIVE_CATEGORIES:
                 row[cat] = row.get(cat, 0) + 1 if response['attributeScores'][cat]['summaryScore']['value'] >= 0.5 else row.get(cat, 0) 
             return row
@@ -121,7 +123,7 @@ def regardSetup():
 initialize_tools = {
     AFINN: afinnSetup,
     VADER: vaderSetup,
-    GOOGLE_CLOUD_NL: googleCloudNLSetup,
+    #GOOGLE_CLOUD_NL: googleCloudNLSetup,
     REGARD: regardSetup,
     PERSPECTIVE: perspectiveSetup,
 }
@@ -160,14 +162,14 @@ def getRegardScore(templateFile, client):
 def getPerspectiveScore(templateFile, client):
     logger.info("○ Calculating Perspective score...")
     #Give as input the sentences with the subject without the marker 
-    scores = [perspectiveRequest(client, sentence) for sentence in [re.sub(MASKBERT_, str(row.loc[PREDICTION]), row.loc[UNMARKED]) for _, row in templateFile.iterrows()]]
+    scores = [perspectiveRequest(client, sentence) for sentence in tqdm([re.sub(MASKBERT_, str(row.loc[PREDICTION]), row.loc[UNMARKED]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True)]
     return scores
     
 #Comment the one you don't want to obtain
 score_functions = {
     AFINN: getAfinnScores,
     VADER: getVaderScores,
-    GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
+    #GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
 }
@@ -182,13 +184,15 @@ def evaluatePrediction(modelList):
             logger.warning(f"○ {modelName} prediction file not found in the {inputFolder} folder")
             break
         templateFile = templateFile if preTemplateFile.empty else pd.concat([preTemplateFile, templateFile])
+        evaluation = True
         for key, func in score_functions.items():
                 client = initialize_tools[key]() if key in initialize_tools else ""
                 if key == REGARD:
                     if not any(key + " "+ category in templateFile.columns for category in REGARD_CATEGORIES):
                         func = func(templateFile, client)
                         if func == None:
-                            logger.error("Regard funciton is None")
+                            logger.error("Regard funnction is None")
+                            evaluation = False
                             break
                         regScores = extractRegardScores(func)
                         for category in REGARD_CATEGORIES:
@@ -205,6 +209,8 @@ def evaluatePrediction(modelList):
                 elif key not in templateFile.columns:
                     templateFile[key] = func(templateFile, client)
                 templateFile.to_csv(outputFolder+modelName+'.csv', index=False)
-        logger.info(f"○ {modelName} OK!")
-
-evaluatePrediction([LLAMA3_70B, GEMMA3_27B])
+        if evaluation:
+            logger.info(f"○ {modelName} OK!")
+        else:
+            logger.error(f"○ Something went wrong!")
+evaluatePrediction([DEEPSEEK, DEEPSEEK_673B])

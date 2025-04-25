@@ -22,7 +22,7 @@ MODEL_NAME = {
   #  GEMMA3 : 'gemma2',
     GEMMA3_27B : 'gemma2:27b',
   #  DEEPSEEK: 'deepseek-ai/DeepSeek-r1',
-    DEEPSEEK_70B: 'deepseek-chat',
+    DEEPSEEK_673B: 'deepseek-chat',
     GPT4 : 'gpt-4o'
 }
 
@@ -162,7 +162,7 @@ initialize_models = {
     ROBERTA_LARGE: initializeRoBERTa,
     GPT4: initializeGPT,
   #  GPT4_MINI: initializeGPT,
-    DEEPSEEK_70B: initializeDeepSeeek,
+    DEEPSEEK_673B: initializeDeepSeeek,
     GEMINI_2_0_FLASH: initializeGemini,
    # GEMINI_2_0_FLASH_LITE: initializeGemini,
 }
@@ -175,9 +175,10 @@ request_models = {
    # LLAMA3: ollamaRequest,
   #  LLAMA3_70B: ollamaRequest,
   #  GEMMA3: ollamaRequest,
+    LLAMA3_3: ollamaRequest,
     GEMMA3_27B: ollamaRequest,
     DEEPSEEK: ollamaRequest,
-    DEEPSEEK_70B: GPTRequest,
+    DEEPSEEK_673B: GPTRequest,
     GPT4: GPTRequest,
    # GPT4_MINI: GPTRequest,
     GEMINI_2_0_FLASH: geminiRequest,
@@ -208,10 +209,13 @@ def generateSentences(modelName):
             except Exception as X:
                 logger.error("generateSentences: "+str(X))
                 generation = False
+                break
         if generation:
             logger.info("๏ File generated!")
+        else:
+            logger.error("๏ Error in generating predictions!")
     else: 
         logger.warning(f"๏ {modelName} evaluated already!")
-MODEL_LIST_FULL = [DEEPSEEK_70B]
+MODEL_LIST_FULL = [LLAMA3_3]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)

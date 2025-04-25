@@ -16,14 +16,20 @@ import statistics as st
 from dotenv import load_dotenv
 
 logger = logging.getLogger()
-logging.basicConfig(filename='logFile.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='.log', encoding='utf-8', level=logging.DEBUG)
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 logger.addHandler(console)
 #print(f"PyTorch version: {torch.__version__}")
 
 # Set the device      
-device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
+if torch.backends.mps.is_available():
+    #device = torch.device("mps") 
+    device = torch.device('cpu') 
+elif torch.cuda.is_available():   
+    device = torch.device("cuda") 
+else: 
+    device = torch.device('cpu')
 torch.set_default_device(device)
 logger.info(f"Using device: {device}")
 
@@ -65,49 +71,49 @@ PREDICTION = 'prediction'
 ORIGINAL = 'original'
 
 # MODELS
-#BERT_BASE = 'BERT_base'
+BERT_BASE = 'BERT_base'
 BERT_LARGE = 'BERT_large'
-#ROBERTA_BASE = 'RoBERTa_base'
+ROBERTA_BASE = 'RoBERTa_base'
 ROBERTA_LARGE = 'RoBERTa_large'
-#ALBERT_BASE = 'AlBERT_base'
-#ALBERT_LARGE = 'AlBERT_large'
-#BERTTWEET_BASE = 'BERTweet_base'
-#BERTTWEET_LARGE = 'BERTweet_large'
-#LLAMA3 = 'llama3'
-#LLAMA3_70B = 'llama3:70b'
+ALBERT_BASE = 'AlBERT_base'
+ALBERT_LARGE = 'AlBERT_large'
+BERTTWEET_BASE = 'BERTweet_base'
+BERTTWEET_LARGE = 'BERTweet_large'
+LLAMA3 = 'llama3'
+LLAMA3_70B = 'llama3:70b'
 LLAMA3_3 = 'llama3.3'
-#GEMMA3 = 'gemma3'
+GEMMA3 = 'gemma3'
 GEMMA3_27B = 'gemma3:27b'
-#GEMINI_1_5_FLASH = "gemini-1.5-flash"
+GEMINI_1_5_FLASH = "gemini-1.5-flash"
 GEMINI_2_0_FLASH = "gemini-2.0-flash"
-#GEMINI_2_0_FLASH_LITE = "gemini-2.0-flash-lite"
-#GPT4_MINI = 'gpt-4o-mini'
+GEMINI_2_0_FLASH_LITE = "gemini-2.0-flash-lite"
+GPT4_MINI = 'gpt-4o-mini'
 GPT4 = 'gpt-4o'
 DEEPSEEK = 'deepseek-r1'
-DEEPSEEK_70B = 'deepseek-reasoner'
-#LIGHT_MODELS = [BERT_BASE, BERT_LARGE, LLAMA3, GEMMA3, GPT4, GPT4_MINI, GEMINI_2_0_FLASH, GEMINI_2_0_FLASH_LITE]
-#HEAVY_MODELS = [LLAMA3_70B, GEMMA3_27B, DEEPSEEK, DEEPSEEK_70B]
-#MODEL_LIST_FULL = [BERT_BASE, BERT_LARGE, LLAMA3, LLAMA3_70B, GEMMA3, GEMMA3_27B, DEEPSEEK, GPT4, GPT4_MINI, GEMINI_2_0_FLASH, GEMINI_2_0_FLASH_LITE]
+DEEPSEEK_673B = 'deepseek-reasoner'
+MODEL_LIST_FULL = [BERT_LARGE, ROBERTA_LARGE, LLAMA3, GEMMA3_27B, DEEPSEEK, GPT4, GEMINI_2_0_FLASH]
 
 MODELS_LABELS = {
- #   BERT_BASE : 'BERT Base',
+    BERT_BASE : 'BERT Base',
     BERT_LARGE : 'BERT Large',
- #   ROBERTA_BASE : 'RoBERTa Base',
+    ROBERTA_BASE : 'RoBERTa Base',
     ROBERTA_LARGE : 'RoBERTa Large',
-  #  ALBERT_BASE : 'AlBERT Base',
-   # ALBERT_LARGE : 'AlBERT Large',
-   # BERTTWEET_BASE : 'BERTweet Base',
-   # BERTTWEET_LARGE : 'BERTweet Large',
-   # LLAMA3 : 'Llama 3',
-   # LLAMA3_70B : 'Llama 3(70b)',
-   # GEMMA3 : 'Gemma 3',
+    ALBERT_BASE : 'AlBERT Base',
+    ALBERT_LARGE : 'AlBERT Large',
+    BERTTWEET_BASE : 'BERTweet Base',
+    BERTTWEET_LARGE : 'BERTweet Large',
+    LLAMA3_3 : 'Llama 3.3',
+    LLAMA3 : 'Llama 3',
+    LLAMA3_70B : 'Llama 3(70b)',
+    GEMMA3 : 'Gemma 3',
     GEMMA3_27B : 'Gemma 3(27b)',
-    #GEMINI_1_5_FLASH : "Gemini 1.5 Flash",
+    GEMINI_1_5_FLASH : "Gemini 1.5 Flash",
     GEMINI_2_0_FLASH : "Gemini 2.0 Flash",
-    #GEMINI_2_0_FLASH_LITE : "Gemini 2.0 Flash Lite",
-    #GPT4_MINI : 'GPT4o Mini',
+    GEMINI_2_0_FLASH_LITE : "Gemini 2.0 Flash Lite",
+    GPT4_MINI : 'GPT4o Mini',
     GPT4 : 'GPT4o',
-    DEEPSEEK_70B: 'DeepSeek R1'
+    DEEPSEEK_673B: 'DeepSeek R1',
+    DEEPSEEK: 'DeepSeek R1'
 }
 
 # TEMPLATE MAP
