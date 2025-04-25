@@ -1,14 +1,14 @@
-ECHO ๏ Create python environment
+๏ Create python environment
 python3 -m venv .venv
 source .venv/bin/activate
 
-ECHO ๏ Clone Evaluation tools from Hugging Face
+๏ Clone Evaluation tools from Hugging Face
 cd .venv
 git clone https://github.com/huggingface/evaluate.git
 pip install evaluate
 cd ..
 
-ECHO ๏ Install Ollama and models
+๏ Install Ollama and models
 pip install ollama
 #ollama pull llama3
 #ollama pull llama3:70b
@@ -19,7 +19,7 @@ pip install ollama
 ollama serve
 
 
-ECHO ๏ Install base libraries
+๏ Install base libraries
 pip install torch
 pip install pandas
 pip install tqdm
@@ -28,27 +28,26 @@ pip install surprisal
 pip install transformers
 pip install python-dotenv
 
-ECHO ๏ Sentiment analysis tools
+๏ Sentiment analysis tools
 pip install afinn
-pip install textblob
 pip install vadersentiment
 
 #Follow the instructions to Install the gcliud client and then set up the ADC for a local develpment evironment
 #https://cloud.google.com/sdk/docs/install
 #https://cloud.google.com/docs/authentication/set-up-adc-local-dev-environment
 
-ECHO ๏ Google Cloud Sentiment analysis tool 
+๏ Google Cloud Sentiment analysis tool 
 pip install google-cloud-language
 pip install --upgrade google-api-python-client
 pip install --upgrade google-cloud
 pip install --upgrade google-cloud-language
 pip install --upgrade google-cloud-translate
 
-ECHO ๏ Install Models 
+๏ Install Models 
 pip install openai
 pip install google-generativeai
 
-ECHO ๏ Graphs libraries
+๏ Graphs libraries
 pip install tf-keras
 pip install seaborn
 pip install -U scikit-learn scipy matplotlib

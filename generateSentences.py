@@ -176,6 +176,7 @@ request_models = {
   #  LLAMA3_70B: ollamaRequest,
   #  GEMMA3: ollamaRequest,
     GEMMA3_27B: ollamaRequest,
+    DEEPSEEK: ollamaRequest,
     DEEPSEEK_70B: GPTRequest,
     GPT4: GPTRequest,
    # GPT4_MINI: GPTRequest,
@@ -187,9 +188,10 @@ def generateSentences(modelName):
     client, tokenizer = (initialize_models[modelName](modelName)) if modelName in initialize_models else (None, None)
     #Checking if there is an existing file with evaluations
     startingFrom, dicSentences = preExistingFile(modelName)
-    templateFile = pd.read_csv(DATA_SOURCE+'template_complete.csv')[startingFrom:]
+    templateFile = pd.read_csv(DATA_SOURCE+'template_complete.csv')
     os.makedirs(OUTPUT_SENTENCES, exist_ok=True)
     if startingFrom < templateFile.shape[0]:
+        templateFile = templateFile[startingFrom:]
         logger.info(f"๏ Generating sentences with {modelName} model...")
         generation = True
         for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences', position=0, leave=True):
