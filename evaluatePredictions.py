@@ -123,7 +123,7 @@ def regardSetup():
 initialize_tools = {
     AFINN: afinnSetup,
     VADER: vaderSetup,
-    #GOOGLE_CLOUD_NL: googleCloudNLSetup,
+    GOOGLE_CLOUD_NL: googleCloudNLSetup,
     REGARD: regardSetup,
     PERSPECTIVE: perspectiveSetup,
 }
@@ -132,7 +132,7 @@ initialize_tools = {
 def getAfinnScores(templateFile, client):
     logger.info("○ Calculating Afinn score...")
     #Give as input the only the predicted words
-    return [(client.score(sent))/5 for sent in [str(row.loc[PREDICTION]) for _, row in templateFile.iterrows()]]
+    return [(client.score(sent)) for sent in [str(row.loc[PREDICTION]) for _, row in templateFile.iterrows()]]
 
 def getVaderScores(templateFile, client):
     logger.info("○ Calculating VADER score...")
@@ -169,7 +169,7 @@ def getPerspectiveScore(templateFile, client):
 score_functions = {
     AFINN: getAfinnScores,
     VADER: getVaderScores,
-    #GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
+    GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
 }
@@ -213,4 +213,4 @@ def evaluatePrediction(modelList):
             logger.info(f"○ {modelName} OK!")
         else:
             logger.error(f"○ Something went wrong!")
-evaluatePrediction([DEEPSEEK, DEEPSEEK_673B])
+evaluatePrediction(MODEL_LIST_FULL)
