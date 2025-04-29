@@ -75,10 +75,6 @@ BERT_BASE = 'BERT_base'
 BERT_LARGE = 'BERT_large'
 ROBERTA_BASE = 'RoBERTa_base'
 ROBERTA_LARGE = 'RoBERTa_large'
-ALBERT_BASE = 'AlBERT_base'
-ALBERT_LARGE = 'AlBERT_large'
-BERTTWEET_BASE = 'BERTweet_base'
-BERTTWEET_LARGE = 'BERTweet_large'
 LLAMA3 = 'llama3'
 LLAMA3_70B = 'llama3:70b'
 LLAMA3_3 = 'llama3.3'
@@ -103,10 +99,6 @@ MODELS_LABELS = {
     BERT_LARGE : 'BERT Large',
     ROBERTA_BASE : 'RoBERTa Base',
     ROBERTA_LARGE : 'RoBERTa Large',
-    ALBERT_BASE : 'AlBERT Base',
-    ALBERT_LARGE : 'AlBERT Large',
-    BERTTWEET_BASE : 'BERTweet Base',
-    BERTTWEET_LARGE : 'BERTweet Large',
     LLAMA3_3 : 'Llama 3.3',
     LLAMA3 : 'Llama 3',
     LLAMA3_70B : 'Llama 3(70b)',
@@ -159,7 +151,7 @@ PERSPECTIVE_MAP = {
     THREAT: "Threat"
 }
 #Regard
-REGARD_CATEGORIES = ['Positive', 'Neutral', 'Negative']
+REGARD_CATEGORIES = ['Negative', 'Neutral', 'Positive']
 
 #Table utils
 Y_AXE = ['Binary','Neutral', 'Neo', 'Queer Identity', 'Queer Orientation', 'Queer Other', 'Non-queer Identity', 'Non-queer Orientation', 'Non-queer Other', 'Queer', 'Non-queer']
