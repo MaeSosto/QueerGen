@@ -16,7 +16,7 @@ def extractRegardScores(data):
         for entry in item:
             if str(entry["label"]).capitalize() in scores:
                 try:
-                    scores[str(entry["label"]).capitalize()].append(round(entry["score"],2))
+                    scores[str(entry["label"]).capitalize()].append(entry["score"])
                 except Exception as X:
                     logger.error("extractRegardScores: "+str(X))
     return scores
@@ -123,7 +123,7 @@ def regardSetup():
 initialize_tools = {
     AFINN: afinnSetup,
     VADER: vaderSetup,
-    GOOGLE_CLOUD_NL: googleCloudNLSetup,
+    #GOOGLE_CLOUD_NL: googleCloudNLSetup,
     REGARD: regardSetup,
     PERSPECTIVE: perspectiveSetup,
 }
@@ -169,7 +169,7 @@ def getPerspectiveScore(templateFile, client):
 score_functions = {
     AFINN: getAfinnScores,
     VADER: getVaderScores,
-    GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
+    #GOOGLE_CLOUD_NL: getGoogleCloudSentimentAnalisysScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
 }
