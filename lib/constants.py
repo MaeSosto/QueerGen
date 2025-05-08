@@ -138,7 +138,7 @@ PROFANITY = 'PROFANITY'
 THREAT = 'THREAT'
 PERSPECTIVE_CATEGORIES =[TOXICITY, SEVERE_TOXICITY, INSULT, IDENTITY_ATTACK, PROFANITY, THREAT]
 #Regard
-REGARD_CATEGORIES = ['Negative', 'Neutral', 'Positive', 'Other']
+REGARD_CATEGORIES = ['Negative', 'Neutral', 'Positive']
 
 #Table utils
 Y_AXE = ['Binary','Neutral', 'Neo', 'Queer Identity', 'Queer Orientation', 'Queer Other', 'Non-queer Identity', 'Non-queer Orientation', 'Non-queer Other', 'Queer', 'Non-queer']
