@@ -1,5 +1,4 @@
 from lib.constants import *
-from lib.utils import *
 from afinn import Afinn
 from google.cloud import language_v2
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -9,6 +8,9 @@ from googleapiclient.errors import HttpError
 import warnings
 from time import sleep
 warnings.filterwarnings('ignore')
+
+EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
+EVALUATION_METRICS_PATH = '.venv/evaluate/metrics/'
 
 def extractRegardScores(data):
     scores = {category: [] for category in REGARD_CATEGORIES}
@@ -151,7 +153,8 @@ def getRegardScore(templateFile, client):
     logger.info("○ Calculating Regard score...")
     #Inserting "xyz" instead of [subject] and [masked] and inserting the predicted word in the [MASK] gab 
     #Getting sentences like "xyz dreams of being a hero"
-    xyzSentence = [re.sub(MASKBERT_, str(row.loc[PREDICTION]), re.sub(SUBJECT_, "xyz", row.loc[TEMPLATE])) for _, row in templateFile.iterrows()]
+    #xyzSentence = [re.sub(MASKBERT_, str(row.loc[PREDICTION]), re.sub(SUBJECT_, "xyz", row.loc[TEMPLATE])) for _, row in templateFile.iterrows()]
+    xyzSentence = [f"{re.sub(SUBJECT_, 'xyz', row.loc[TEMPLATE])} {str(row.loc[PREDICTION])}." for _, row in templateFile.iterrows()]
     try:
         xyzScores = [item for item in client.compute(data = xyzSentence)['regard']]
         return xyzScores
@@ -162,7 +165,8 @@ def getRegardScore(templateFile, client):
 def getPerspectiveScore(templateFile, client):
     logger.info("○ Calculating Perspective score...")
     #Give as input the sentences with the subject without the marker 
-    scores = [perspectiveRequest(client, sentence) for sentence in tqdm([re.sub(MASKBERT_, str(row.loc[PREDICTION]), row.loc[UNMARKED]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True)]
+    #scores = [perspectiveRequest(client, sentence) for sentence in tqdm([re.sub(MASKBERT_, str(row.loc[PREDICTION]), row.loc[UNMARKED]) for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True)]
+    scores = [perspectiveRequest(client, sentence) for sentence in tqdm([f"{row.loc[UNMARKED]} {str(row.loc[PREDICTION])}" for _, row in templateFile.iterrows()], total=templateFile.shape[0], position=0, leave=True)]
     return scores
     
 #Comment the one you don't want to obtain

@@ -1,5 +1,4 @@
 from lib.constants import *
-from lib.utils import clean_response
 import google.generativeai as genai
 from openai import OpenAI
 from transformers import AutoModel, BertTokenizer, BertForMaskedLM, AutoTokenizer, RobertaTokenizer, RobertaForMaskedLM, AlbertTokenizer, AlbertForMaskedLM
@@ -7,6 +6,9 @@ from transformers import AutoModel, BertTokenizer, BertForMaskedLM, AutoTokenize
 NUM_PREDICTION = 1
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
 URL_DEEPSEEK = "https://api.deepseek.com"
+
+MASKBERT = '[MASK]'
+MASKROBERT = '<mask>'
 
 MODEL_NAME = {
     BERT_BASE: 'bert-base-uncased',
@@ -111,7 +113,7 @@ def GPTRequest(prompt, modelName, client, tokenizer = None, sentence = None):
     return clean_response(response)
 
 def BERTRequest(prompt, modelName, client, tokenizer, sentence):
-    sentence = "[CLS] %s [SEP]"%sentence
+    sentence = "[CLS] %s [SEP]"%sentence #+ " "+ MASKBERT
     tokenized_text = tokenizer.tokenize(sentence)
     masked_index = tokenized_text.index(MASKBERT)
     indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_text)
@@ -133,6 +135,7 @@ def BERTRequest(prompt, modelName, client, tokenizer, sentence):
 
 def RoBERTaRequest(prompt, modelName, client, tokenizer, sentence):
     sentence = sentence.replace(MASKBERT, MASKROBERT)
+    #sentence = sentence + " "+ MASKROBERT
     sentence = "<s> %s </s>"%sentence
     tokenized_text = tokenizer.tokenize(sentence)
     masked_index = tokenized_text.index(MASKROBERT)
@@ -192,7 +195,7 @@ def generateSentences(modelName):
         logger.info(f"๏ Generating sentences with {modelName} model...")
         generation = True
         for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences', position=0, leave=True):
-            sentence = row.loc[MARKED]
+            sentence = row.loc[MARKED] + " " + MASKBERT+"."
             prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {sentence}"
             try:
                 response = request_models[modelName](prompt, modelName, client, tokenizer, sentence)
@@ -213,6 +216,6 @@ def generateSentences(modelName):
             logger.error("๏ Error in generating predictions!")
     else: 
         logger.warning(f"๏ {modelName} evaluated already!")
-MODEL_LIST_FULL = [LLAMA3_3]
+MODEL_LIST_FULL = [LLAMA3]
 for mod in MODEL_LIST_FULL:
     generateSentences(mod)

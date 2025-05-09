@@ -8,6 +8,7 @@ import random
 from statistics import mode
 from wordcloud import WordCloud
 
+OUTPUT_GRAPHS = 'output_graphs/'
 PATH_SENTIMENT_GRAPH = OUTPUT_GRAPHS+'/sentiment/'
 PATH_REGARD_GRAPH = OUTPUT_GRAPHS+'/regard/'
 PATH_TOXICITY_GRAPH = OUTPUT_GRAPHS+'/toxicity/'
@@ -140,7 +141,7 @@ PERSPECTIVE_MAP = {
 }
 
 def create_multi_line_graph(models, y_modelScores, y_label, path, img_name):
-    fig, ax = plt.subplots(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=(13, 6))
     lines = []
     for idx, subjScore in enumerate(y_modelScores):
         label = MODELS_GRAPHICS[models[idx]].get(LABEL)
