@@ -9,19 +9,15 @@ URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
 URL_DEEPSEEK = "https://api.deepseek.com"
 
 MODEL_NAME = {
-  #  BERT_BASE: 'bert-base-uncased',
+    BERT_BASE: 'bert-base-uncased',
     BERT_LARGE: 'bert-large-uncased',
-  #  ROBERTA_BASE: 'roberta-base',
+    ROBERTA_BASE: 'roberta-base',
     ROBERTA_LARGE: 'roberta-large',
-   # ALBERT_BASE: 'albert-base-v2',
-  #  ALBERT_LARGE: 'albert-large-v2',
-  #  BERTTWEET_BASE: 'vinai/bertweet-base',
-  #  BERTTWEET_LARGE: 'vinai/bertweet-large',
-   # LLAMA3 : 'llama3',
-   # LLAMA3_70B : 'llama3:70b',
-  #  GEMMA3 : 'gemma2',
+    LLAMA3 : 'llama3',
+    LLAMA3_70B : 'llama3:70b',
+    GEMMA3 : 'gemma2',
     GEMMA3_27B : 'gemma2:27b',
-  #  DEEPSEEK: 'deepseek-ai/DeepSeek-r1',
+    DEEPSEEK: 'deepseek-ai/DeepSeek-r1',
     DEEPSEEK_673B: 'deepseek-chat',
     GPT4 : 'gpt-4o'
 }
@@ -156,33 +152,33 @@ def RoBERTaRequest(prompt, modelName, client, tokenizer, sentence):
     return predictionList[0]  
 
 initialize_models = {
-   # BERT_BASE: initializeBERT,
+    BERT_BASE: initializeBERT,
     BERT_LARGE: initializeBERT,
-   # ROBERTA_BASE: initializeRoBERTa,
+    ROBERTA_BASE: initializeRoBERTa,
     ROBERTA_LARGE: initializeRoBERTa,
     GPT4: initializeGPT,
-  #  GPT4_MINI: initializeGPT,
+    GPT4_MINI: initializeGPT,
     DEEPSEEK_673B: initializeDeepSeeek,
     GEMINI_2_0_FLASH: initializeGemini,
-   # GEMINI_2_0_FLASH_LITE: initializeGemini,
+    GEMINI_2_0_FLASH_LITE: initializeGemini,
 }
 
 request_models = {
-  #  BERT_BASE: BERTRequest,
+    BERT_BASE: BERTRequest,
     BERT_LARGE: BERTRequest,
-   # ROBERTA_BASE: RoBERTaRequest,
+    ROBERTA_BASE: RoBERTaRequest,
     ROBERTA_LARGE: RoBERTaRequest,
-   # LLAMA3: ollamaRequest,
-  #  LLAMA3_70B: ollamaRequest,
-  #  GEMMA3: ollamaRequest,
+    LLAMA3: ollamaRequest,
+    LLAMA3_70B: ollamaRequest,
+    GEMMA3: ollamaRequest,
     LLAMA3_3: ollamaRequest,
     GEMMA3_27B: ollamaRequest,
     DEEPSEEK: ollamaRequest,
     DEEPSEEK_673B: GPTRequest,
     GPT4: GPTRequest,
-   # GPT4_MINI: GPTRequest,
+    GPT4_MINI: GPTRequest,
     GEMINI_2_0_FLASH: geminiRequest,
-    #GEMINI_2_0_FLASH_LITE: geminiRequest,
+    GEMINI_2_0_FLASH_LITE: geminiRequest,
 }
 
 def generateSentences(modelName):
@@ -196,9 +192,10 @@ def generateSentences(modelName):
         logger.info(f"๏ Generating sentences with {modelName} model...")
         generation = True
         for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc=f'Generating with {modelName} model', unit=' sentences', position=0, leave=True):
-            prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {row.loc[MARKED]}"
+            sentence = row.loc[MARKED]
+            prompt = f"Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {sentence}"
             try:
-                response = request_models[modelName](prompt, modelName, client, tokenizer, row.loc[MARKED])
+                response = request_models[modelName](prompt, modelName, client, tokenizer, sentence)
                 if response == None:
                     break
                 for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
