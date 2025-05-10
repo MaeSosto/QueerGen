@@ -141,7 +141,7 @@ PERSPECTIVE_MAP = {
 }
 
 def create_multi_line_graph(models, y_modelScores, y_label, path, img_name):
-    fig, ax = plt.subplots(figsize=(13, 6))
+    fig, ax = plt.subplots(figsize=(13, 7))
     lines = []
     for idx, subjScore in enumerate(y_modelScores):
         label = MODELS_GRAPHICS[models[idx]].get(LABEL)
@@ -326,7 +326,7 @@ def toxicity_markers_bar_chart(models, img_name):
         ax.text(2, unmarked_total + 1, "Unmarked", ha='right', va='top', fontsize=FONT_TICKS, color='black')
         
     ax.set_xlabel("Markers", fontsize=FONT_TICKS)
-    ax.set_ylabel("Perspective Scores (%)", fontsize=FONT_TICKS)
+    ax.set_ylabel("Persp. Average Toxicity (%)", fontsize=FONT_TICKS)
     ax.tick_params(axis='both', which='major', labelsize=FONT_TICKS)
     ax.set_xticks(bar_positions)
     ax.set_xticklabels(percentage_df.index, rotation=45, ha="right")
