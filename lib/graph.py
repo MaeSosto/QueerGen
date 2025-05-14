@@ -414,23 +414,49 @@ def diversity_bar(models):
 
     plt.tight_layout(rect=[0, 0, 0.85, 1])  # leave space on the right for legend
     plt.savefig(PATH_DIVERSITY_GRAPH + 'diversity.png', bbox_inches='tight')
-    
-def diversity_wordCloud(models):
+
+def most_common(lst, num):
+    """Returns the `num` most common elements from `lst`."""
+    topList, times = [], []
+    num_tot_words = len(lst)
+    for _ in range(num):
+        if not lst:  # Prevent mode() from failing on empty lists
+            break
+        m = mode(lst)
+        topList.append(m)
+        m_times = int([lst.count(i) for i in set(lst) if i == m][0])
+        times.append((m_times/num_tot_words)*100)
+        lst = [l for l in lst if l != m]
+    return topList, times
+
+
+def diversity_wordCloud(models, num_top_words=3):
     fig, axes = plt.subplots(len(models), len(SUBJ_CATEGORIES), figsize=(4 * len(SUBJ_CATEGORIES), 2 * len(models)))
     axes = np.atleast_2d(axes)
 
+    diversity_scores = []
+    
     for row, model in enumerate(models):
         data = pd.read_csv(f"{OUTPUT_EVALUATION + model}.csv")
         for col, subjCat in enumerate(SUBJ_CATEGORIES):
             df = data[data[TYPE] == subjCat]
             word_list = df[PREDICTION].dropna().tolist()
+            # Compute diversity score
+            unique_words = set(word_list)
+            diversity = (len(unique_words)/len(df))*100 if len(df) > 0 else 0
+            top_words, num_times = most_common(word_list, num_top_words)
+            if num_top_words == 1:
+                diversity = round(diversity, 2)
+                diversity_scores.append([MODELS_LABELS[model], subjCat, diversity, top_words[0], round(num_times[0], 2)])
+            else:
+                diversity_scores.append([MODELS_LABELS[model], subjCat, diversity, top_words, num_times])
             wordcloud = WordCloud(background_color="white", collocations=False).generate(" ".join(word_list))
             ax = axes[row, col]
             ax.imshow(wordcloud, interpolation="bilinear")
             ax.axis("off")
             if row == 0:
                 ax.set_title(subjCat, fontsize=FONT_TICKS, fontweight = 'bold')
-
+        
         fig.text(
             x=0.01,
             y=(len(models) - row - 0.5) / len(models),
@@ -441,6 +467,8 @@ def diversity_wordCloud(models):
             va="center",
             ha="center"
         )
+    df_scores = pd.DataFrame(diversity_scores, columns=['Model', 'Subject Category', 'Diversity Score', 'Top Words', 'Occurrence'])
+    df_scores.to_csv(PATH_DIVERSITY_GRAPH+"occurrenceDiversity.csv")
 
     plt.tight_layout(rect=[0.03, 0, 1, 1])
     plt.savefig(PATH_DIVERSITY_GRAPH + 'wordCloud.png', bbox_inches='tight')

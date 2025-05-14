@@ -1,7 +1,7 @@
 from lib.constants import *
 import google.generativeai as genai
 from openai import OpenAI
-from transformers import AutoModel, BertTokenizer, BertForMaskedLM, AutoTokenizer, RobertaTokenizer, RobertaForMaskedLM, AlbertTokenizer, AlbertForMaskedLM
+from transformers import BertTokenizer, BertForMaskedLM, RobertaTokenizer, RobertaForMaskedLM
 
 NUM_PREDICTION = 1
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
