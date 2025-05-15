@@ -16,14 +16,14 @@ PATH_DIVERSITY_GRAPH = OUTPUT_GRAPHS+'/diversity/'
 for path in [PATH_SENTIMENT_GRAPH, PATH_REGARD_GRAPH, PATH_TOXICITY_GRAPH, PATH_DIVERSITY_GRAPH]:
     os.makedirs(path, exist_ok=True) 
 
-FONT_LEGEND = 18
-FONT_TICKS = 20
+FONT_TICKS = 22
+FONT_LEGEND = FONT_TICKS# 18
 COLOR = 'color'
 LINESTYLE = 'linestyle'
 LABEL = 'label'
 PATTERN = 'pattern'
 IBM_COLORBLINDPALETTE = ['#ffb000', '#fe6100', '#dc267f', '#785ef0', '#648fff', '#000000']
-MARKERS = ['o', "s", "^", "D", "X"]
+MARKERS = ['o', "s", "^", "D", "X","p", "v"]
 patterns = [ "/" , "", ".","\\" , "|" , "-" , "+" , "x", "o", "O", "*"]
 
 MODELS_GRAPHICS = {
@@ -141,7 +141,7 @@ PERSPECTIVE_MAP = {
 }
 
 def create_multi_line_graph(models, y_modelScores, y_label, path, img_name):
-    fig, ax = plt.subplots(figsize=(13, 7))
+    fig, ax = plt.subplots(figsize=(9, 7))
     lines = []
     for idx, subjScore in enumerate(y_modelScores):
         label = MODELS_GRAPHICS[models[idx]].get(LABEL)
@@ -164,8 +164,8 @@ def create_multi_line_graph(models, y_modelScores, y_label, path, img_name):
         title_fontsize=FONT_TICKS,
         fontsize=FONT_LEGEND,
         loc='upper center',
-        bbox_to_anchor=(0.5, -0.20),
-        ncol = int(len(models)/2) #if len(models) > 4 else 4 
+        bbox_to_anchor=(0.5, -0.25),
+        ncol = 2 #int(len(models)/2) #if len(models) > 4 else 4 
     )
 
     plt.tight_layout()
@@ -283,70 +283,6 @@ def regard_bar_graph(models, img_name, models_per_row):
     plt.tight_layout()
     plt.savefig(PATH_REGARD_GRAPH + img_name + '.png', bbox_inches='tight')
     
-def toxicity_markers_bar_chart(models, img_name):
-    MARKER_COLOR_MAP = {
-        UNMARKED: "black",
-        NONQUEER: "dodgerblue",
-        QUEER: "crimson"
-    }
-    tempComp = pd.read_csv(DATA_SOURCE + 'template_complete.csv')
-    subject_type = tempComp.set_index(MARKER)[TYPE].to_dict()
-    
-    df_list = []
-    for model in models:
-        df = pd.read_csv(f"{OUTPUT_EVALUATION + model}.csv")
-        for cat in PERSPECTIVE_CATEGORIES:
-            df[cat] = (df[PERSPECTIVE + " " + cat]).astype(int)
-        df_list.append(df)
-    combined_df = pd.concat(df_list)
-
-    sample_counts = combined_df.groupby(MARKER).size()
-    binary_sums = combined_df.groupby(MARKER)[ [cat for cat in PERSPECTIVE_CATEGORIES] ].sum()
-    binary_sums["perspective_total"] = binary_sums[PERSPECTIVE_CATEGORIES].sum(axis=1)
-    percentage_df = binary_sums.div(sample_counts, axis=0).multiply(100)
-    percentage_df = percentage_df.sort_values("perspective_total", ascending=True)
-
-    # Plot
-    fig, ax = plt.subplots(figsize=(16, 7))
-    bar_positions = np.arange(len(percentage_df))
-    bar_width = 0.8
-    bottom = np.zeros(len(percentage_df))
-
-    # Plot stacked bars
-    for cat in PERSPECTIVE_CATEGORIES:
-        values = percentage_df[cat]
-        color = PERSPECTIVE_MAP[cat].get(COLOR)
-        label = PERSPECTIVE_MAP[cat].get(LABEL)
-        ax.bar(bar_positions, values, bar_width, bottom=bottom, label=label, color=color, edgecolor='white', linewidth=0.5)
-        bottom += values.values
-
-    unmarked_total = percentage_df.loc["Unmarked", "perspective_total"]
-    if unmarked_total is not None:
-        ax.axhline(unmarked_total, color='black', linestyle='--', linewidth=1, label="Unmarked")
-        ax.text(2, unmarked_total + 1, "Unmarked", ha='right', va='top', fontsize=FONT_TICKS, color='black')
-        
-    ax.set_xlabel("Markers", fontsize=FONT_TICKS)
-    ax.set_ylabel("Persp. Average Toxicity (%)", fontsize=FONT_TICKS)
-    ax.tick_params(axis='both', which='major', labelsize=FONT_TICKS)
-    ax.set_xticks(bar_positions)
-    ax.set_xticklabels(percentage_df.index, rotation=45, ha="right")
-
-    for tick, label in zip(ax.get_xticks(), ax.get_xticklabels()):
-        marker = label.get_text()
-        marker_type = subject_type.get(marker, None)
-        if marker_type:
-            label.set_color(MARKER_COLOR_MAP.get(marker_type, 'black'))
-
-    ax.grid(visible=True, axis='y', linestyle='--', alpha=0.7)
-    handles = [plt.Rectangle((0,0),1,1, color=PERSPECTIVE_MAP[cat].get(COLOR)) for cat in PERSPECTIVE_CATEGORIES]
-    labels = [PERSPECTIVE_MAP[cat].get(LABEL) for cat in PERSPECTIVE_CATEGORIES] 
-    title = "Perpective API Category"
-    fig.legend(handles, labels, title=title, loc="center left", bbox_to_anchor=(1.01, 0.7),
-             borderaxespad=0, fontsize=FONT_LEGEND, title_fontsize=FONT_TICKS)
-    #fig.legend(handles, labels, title=title,  title_fontsize=FONT_TICKS, fontsize=FONT_LEGEND,loc='upper center', bbox_to_anchor=(0.5, 0), ncol=len(PERSPECTIVE_CATEGORIES))
-
-    plt.tight_layout()
-    plt.savefig(PATH_TOXICITY_GRAPH + img_name + '.png', bbox_inches='tight')
 
 def diversity_bar(models):
     diversity_scores = []
