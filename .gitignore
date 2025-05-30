@@ -1,7 +1,5 @@
-lib/API.py
-lib/__pycache__
 .venv
 .vscode
 *.log
-*.env
+*.env_mine
 .cache_ggshield

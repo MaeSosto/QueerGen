@@ -1,4 +1,4 @@
-from lib.constants import *
+from lib import *
 
 TEMPLATE_PATH = DATA_SOURCE + 'templates.csv'
 SUBJECT_PATH = DATA_SOURCE + 'subjects.csv'
@@ -6,44 +6,55 @@ MARKER_PATH = DATA_SOURCE + 'markers.csv'
 TEMPLATE_PATH_COMPLETE = DATA_SOURCE + 'template_complete.csv'
 ADJ = 'adj'
 
-def createTemplate():
-    templateFile = pd.read_csv(TEMPLATE_PATH)
-    dataList =[]
-    logger.info("๏ Generating template...")
-    
-    for _,row in tqdm(templateFile.iterrows(), total=templateFile.shape[0], desc='Creating template', unit=' s'):
-        subjectFile = pd.read_csv(SUBJECT_PATH)
-        markerFile = pd.read_csv(MARKER_PATH)
-        
-        sentence = row.loc[TEMPLATE]
-        #Creating sentences with nouns
-        for _, subjRow in subjectFile.iterrows():
-            subject = subjRow.loc[VALUE] 
-            sent_subject = re.sub(SUBJECT_, subject, sentence)
-            dataList.append([
-                sentence, #original
-                subject, #subject
+def create_template():
+    logger.info("๏ Loading input files...")
+    templates = pd.read_csv(TEMPLATE_PATH)
+    subjects = pd.read_csv(SUBJECT_PATH)
+    markers = pd.read_csv(MARKER_PATH)
+
+    data_list = []
+    logger.info("๏ Generating template sentences...")
+
+    for _, template_row in tqdm(templates.iterrows(), total=templates.shape[0], desc='Creating template', unit=' s'):
+        template = template_row[TEMPLATE]
+
+        for _, subject_row in subjects.iterrows():
+            subject = subject_row[VALUE]
+            unmarked_sentence = re.sub(SUBJECT_, subject, template)
+
+            # Add unmarked example
+            data_list.append([
+                template,
+                subject,
                 UNMARKED,
-                subjRow.loc[TYPE], #type
-                "neutral", #category
-                sent_subject,
-                sent_subject
-            ])    
-            for _,markerRow in markerFile.iterrows():
-                marker = markerRow.loc[VALUE] 
-                sub_subject_marker = re.sub(SUBJECT_, marker + " "+ subject, sentence) if markerRow.loc[ADJ] == "y" else re.sub(SUBJECT_, f"{subject} is a {marker} and", sub_subject_marker)
-                
-                dataList.append([
-                    sentence, #original
-                    subject, #subject
-                    marker, #marker 
-                    markerRow.loc[TYPE], #type
-                    markerRow.loc[CATEGORY], #category
-                    sent_subject, #sentence with subject no marker
-                    sub_subject_marker #sentence with subject and marked
-                ]) 
-    data_df = pd.DataFrame(dataList, columns=[TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED])
-    data_df.to_csv(TEMPLATE_PATH_COMPLETE, index_label = 'index')
+                subject_row[TYPE],
+                "neutral",
+                unmarked_sentence,
+                unmarked_sentence
+            ])
+
+            for _, marker_row in markers.iterrows():
+                marker = marker_row[VALUE]
+                is_adj = marker_row[ADJ]
+
+                if is_adj == "y":
+                    marked_sentence = re.sub(SUBJECT_, f"{marker} {subject}", template)
+                else:
+                    base_sentence = re.sub(SUBJECT_, subject, template)
+                    marked_sentence = re.sub(SUBJECT_, f"{subject} is a {marker} and", template)
+
+                data_list.append([
+                    template,
+                    subject,
+                    marker,
+                    marker_row[TYPE],
+                    marker_row[CATEGORY],
+                    unmarked_sentence,
+                    marked_sentence
+                ])
+
+    df = pd.DataFrame(data_list, columns=[TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED])
+    df.to_csv(TEMPLATE_PATH_COMPLETE, index_label='index')
     logger.info("๏ File template generated!")
 
-createTemplate()
+create_template()
