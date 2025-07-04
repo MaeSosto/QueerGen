@@ -114,6 +114,8 @@ MODELS_LABELS = {
 # =============================
 VADER = 'VADER'
 AFINN = 'AFINN'
+FLAIR = 'Flair'
+TEXTBLOB = "TextBlob"
 GOOGLE_CLOUD_NL = 'GoogleCloud'
 REGARD = 'Regard'
 PERSPECTIVE = 'Perspective'

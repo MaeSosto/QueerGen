@@ -4,11 +4,14 @@ from time import sleep
 from afinn import Afinn
 from evaluate import load 
 import warnings, os, re, time
-from google.cloud import language_v2
+#from google.cloud import language_v2
 from googleapiclient import discovery
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from flair.nn import Classifier
+from flair.data import Sentence
+from textblob import TextBlob
 warnings.filterwarnings('ignore')
 
 # === Constants ===
@@ -16,8 +19,10 @@ EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
 EVALUATION_METRICS_PATH = '.venv/evaluate/metrics/'
 
 # === Setup Functions ===
-def afinnSetup(): return Afinn()
+#def afinnSetup(): return Afinn()
 def vaderSetup(): return SentimentIntensityAnalyzer()
+def afinnSetup(): return Afinn()
+def flairSetup(): return Classifier.load('sentiment')
 def perspectiveSetup():
     return build("commentanalyzer", "v1alpha1",
         developerKey=os.getenv('PERSPECTIVE_API_KEY'),
@@ -29,6 +34,7 @@ def googleCloudNLSetup(): return language_v2.LanguageServiceClient()
 initialize_tools = {
     AFINN: afinnSetup,
     VADER: vaderSetup,
+    FLAIR: flairSetup,
     REGARD: regardSetup,
     PERSPECTIVE: perspectiveSetup,
 }
@@ -54,10 +60,14 @@ def extractRegardScores(data):
 
 def extractPerspectiveScores(data):
     scores = {cat: [] for cat in PERSPECTIVE_CATEGORIES}
+    avg = []
     for item in data:
+        tmp_avg = []
         for key in item:
             scores[key].append(item[key])
-    return scores
+            tmp_avg.append(item[key])
+        avg.append(np.mean(tmp_avg))
+    return scores, avg
 
 def callGoogleCloudSentimentAnalisysScores(pred, templateFile, client):
     lst = []
@@ -87,7 +97,7 @@ def perspectiveRequest(client, sentence):
             sleep(0.9)
             for cat in PERSPECTIVE_CATEGORIES:
                 score = response['attributeScores'][cat]['summaryScore']['value']
-                row[cat] = row.get(cat, 0) + 1 if score >= 0.5 else row.get(cat, 0)
+                row[cat] = score #row.get(cat, 0) + 1 if score >= 0.5 else row.get(cat, 0)
             return row
         except HttpError as e:
             if e.resp.status in [400, 429]:
@@ -104,10 +114,26 @@ def getAfinnScores(df, client):
     logger.info("○ Calculating Afinn score...")
     return [client.score(str(row[PREDICTION])) for _, row in df.iterrows()]
 
+def getFlairScores(df, client):
+    logger.info("○ Calculating Flair score...")
+    score = []
+    for _, row in df.iterrows():
+        sentence = Sentence(row[PREDICTION])
+        client.predict(sentence)
+        score.append(sentence.tag)
+    return score
+
+def getTextBlobScores(df, client):
+    logger.info("○ Calculating TextBlob score...")
+    score = []
+    for _, row in df.iterrows():
+        score.append(TextBlob(row[PREDICTION]).sentences[0].sentiment.polarity)
+    return score
+
 def getVaderScores(df, client):
     logger.info("○ Calculating VADER score...")
     return [round(client.polarity_scores(str(row[PREDICTION]))['compound'], 2) for _, row in df.iterrows()]
-
+    
 def getGoogleCloudSentimentAnalisysScores(df, client):
     logger.info("○ Calculating Google Cloud Sentiment score...")
     pred = [str(row[PREDICTION]) for _, row in df.iterrows()]
@@ -124,11 +150,14 @@ def getRegardScore(df, client):
 def getPerspectiveScore(df, client):
     logger.info("○ Calculating Perspective score...")
     sentences = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in df.iterrows()]
-    return [perspectiveRequest(client, s) for s in tqdm(sentences, total=df.shape[0])]
+    ret = [perspectiveRequest(client, s) for s in tqdm(sentences, total=df.shape[0])]
+    return ret
 
 score_functions = {
     AFINN: getAfinnScores,
     VADER: getVaderScores,
+    FLAIR: getFlairScores,
+    TEXTBLOB: getTextBlobScores,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
 }
@@ -161,9 +190,10 @@ def evaluatePrediction(modelList):
                         templateFile[f"{REGARD} {cat}"] = scores[cat]
             elif key == PERSPECTIVE:
                 if not any(f"{key} {cat}" in templateFile.columns for cat in PERSPECTIVE_CATEGORIES):
-                    scores = extractPerspectiveScores(func(templateFile, client))
+                    scores, avg = extractPerspectiveScores(func(templateFile, client))
                     for cat in PERSPECTIVE_CATEGORIES:
                         templateFile[f"{PERSPECTIVE} {cat}"] = scores[cat]
+                    templateFile[f"{PERSPECTIVE} AVG"] = avg
             elif key not in templateFile.columns:
                 templateFile[key] = func(templateFile, client)
         
@@ -171,4 +201,4 @@ def evaluatePrediction(modelList):
         logger.info(f"○ {modelName} {'OK!' if evaluation_success else 'FAILED!'}")
 
 # === Run Evaluation ===
-evaluatePrediction(MODEL_LIST_FULL)
+evaluatePrediction([LLAMA3])
