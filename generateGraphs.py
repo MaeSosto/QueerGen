@@ -238,7 +238,10 @@ def toxicity_scores(models, img_name, path=PATH_TOXICITY_GRAPH):
         subj_scores = []
         for category in SUBJ_CATEGORIES:
             df = data[data[TYPE] == category]
-            perspective_avg = df[perspective_cols].astype(int).sum(axis=1).mean() * 100
+            print(df)
+            perspective_avg = df["Perspective AVG"]
+            # print(perspective_avg)
+            # perspective_avg = perspective_avg.astype(float).mean() 
             subj_scores.append(perspective_avg)
 
         all_scores.append(subj_scores)
@@ -276,18 +279,20 @@ def diversity_score(models, img_name, path=PATH_DIVERSITY_GRAPH):
 
 
 # === Main Execution ===
-for model_group, name in [
-    (MODEL_MLM, MLM_MODELS),
-    (MODEL_OPEN, OPEN_MODELS),
-    (MODEL_CLOSE, CLOSE_MODELS)
-]:
-    sentiment_analysis_scores(model_group, name)
-    toxicity_scores(model_group, name)
-    diversity_score(model_group, name)
+# for model_group, name in [
+#     (MODEL_MLM, MLM_MODELS),
+#     (MODEL_OPEN, OPEN_MODELS),
+#     (MODEL_CLOSE, CLOSE_MODELS)
+# ]:
+#     sentiment_analysis_scores(model_group, name)
+#     toxicity_scores(model_group, name)
+#     diversity_score(model_group, name)
 
-toxicity_markers_bar_chart(MODEL_LIST_FULL, 'marker_chart')
-regard_bar_graph(
-    models=MODEL_LIST_FULL, 
-    img_name="all", 
-    models_per_row=7
-)
+# toxicity_markers_bar_chart(MODEL_LIST_FULL, 'marker_chart')
+# regard_bar_graph(
+#     models=MODEL_LIST_FULL, 
+#     img_name="all", 
+#     models_per_row=7
+# )
+
+toxicity_scores([LLAMA3, LLAMA3_70B, GEMMA3, GEMMA3_27B], "test")

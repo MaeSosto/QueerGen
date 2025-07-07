@@ -29,7 +29,7 @@ def perspectiveSetup():
         discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
         static_discovery=False)
 def regardSetup(): return load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
-def googleCloudNLSetup(): return language_v2.LanguageServiceClient()
+#def googleCloudNLSetup(): return language_v2.LanguageServiceClient()
 
 initialize_tools = {
     AFINN: afinnSetup,
@@ -60,31 +60,27 @@ def extractRegardScores(data):
 
 def extractPerspectiveScores(data):
     scores = {cat: [] for cat in PERSPECTIVE_CATEGORIES}
-    avg = []
     for item in data:
-        tmp_avg = []
         for key in item:
             scores[key].append(item[key])
-            tmp_avg.append(item[key])
-        avg.append(np.mean(tmp_avg))
-    return scores, avg
+    return scores
 
-def callGoogleCloudSentimentAnalisysScores(pred, templateFile, client):
-    lst = []
-    for sentence in tqdm(pred, total=templateFile.shape[0]):
-        try:
-            response = client.analyze_sentiment(request={
-                "document": {
-                    "content": sentence,
-                    "type_": language_v2.Document.Type.PLAIN_TEXT,
-                    "language_code": "en"
-                }, "encoding_type": language_v2.EncodingType.UTF8
-            })
-            lst.append(round(response.document_sentiment.score, 2))
-        except Exception as e:
-            logger.error("GoogleCloudSentimentAnalisysScores: "+str(e))
-            lst.append(0)
-    return lst
+# def callGoogleCloudSentimentAnalisysScores(pred, templateFile, client):
+#     lst = []
+#     for sentence in tqdm(pred, total=templateFile.shape[0]):
+#         try:
+#             response = client.analyze_sentiment(request={
+#                 "document": {
+#                     "content": sentence,
+#                     "type_": language_v2.Document.Type.PLAIN_TEXT,
+#                     "language_code": "en"
+#                 }, "encoding_type": language_v2.EncodingType.UTF8
+#             })
+#             lst.append(round(response.document_sentiment.score, 2))
+#         except Exception as e:
+#             logger.error("GoogleCloudSentimentAnalisysScores: "+str(e))
+#             lst.append(0)
+#     return lst
 
 def perspectiveRequest(client, sentence):
     row, timeError = {}, 0
@@ -94,7 +90,7 @@ def perspectiveRequest(client, sentence):
                 'comment': {'text': sentence},
                 'requestedAttributes': {cat: {} for cat in PERSPECTIVE_CATEGORIES}
             }).execute()
-            sleep(0.9)
+            #sleep(0.9)
             for cat in PERSPECTIVE_CATEGORIES:
                 score = response['attributeScores'][cat]['summaryScore']['value']
                 row[cat] = score #row.get(cat, 0) + 1 if score >= 0.5 else row.get(cat, 0)
@@ -134,10 +130,10 @@ def getVaderScores(df, client):
     logger.info("○ Calculating VADER score...")
     return [round(client.polarity_scores(str(row[PREDICTION]))['compound'], 2) for _, row in df.iterrows()]
     
-def getGoogleCloudSentimentAnalisysScores(df, client):
-    logger.info("○ Calculating Google Cloud Sentiment score...")
-    pred = [str(row[PREDICTION]) for _, row in df.iterrows()]
-    return callGoogleCloudSentimentAnalisysScores(pred, df, client)
+# def getGoogleCloudSentimentAnalisysScores(df, client):
+#     logger.info("○ Calculating Google Cloud Sentiment score...")
+#     pred = [str(row[PREDICTION]) for _, row in df.iterrows()]
+#     return callGoogleCloudSentimentAnalisysScores(pred, df, client)
 
 def getRegardScore(df, client):
     logger.info("○ Calculating Regard score...")
@@ -190,10 +186,9 @@ def evaluatePrediction(modelList):
                         templateFile[f"{REGARD} {cat}"] = scores[cat]
             elif key == PERSPECTIVE:
                 if not any(f"{key} {cat}" in templateFile.columns for cat in PERSPECTIVE_CATEGORIES):
-                    scores, avg = extractPerspectiveScores(func(templateFile, client))
+                    scores = extractPerspectiveScores(func(templateFile, client))
                     for cat in PERSPECTIVE_CATEGORIES:
                         templateFile[f"{PERSPECTIVE} {cat}"] = scores[cat]
-                    templateFile[f"{PERSPECTIVE} AVG"] = avg
             elif key not in templateFile.columns:
                 templateFile[key] = func(templateFile, client)
         
