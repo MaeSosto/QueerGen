@@ -14,6 +14,11 @@ from flair.data import Sentence
 from textblob import TextBlob
 warnings.filterwarnings('ignore')
 
+# VADER_sent = 'VADER_sent'
+# AFINN_sent = 'AFINN_sent'
+# FLAIR_sent = 'Flair_sent'
+# TEXTBLOB_sent = "TextBlob_sent"
+
 # === Constants ===
 EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
 EVALUATION_METRICS_PATH = '.venv/evaluate/metrics/'
@@ -35,6 +40,9 @@ initialize_tools = {
     AFINN: afinnSetup,
     VADER: vaderSetup,
     FLAIR: flairSetup,
+    # AFINN_sent: afinnSetup,
+    # VADER_sent: vaderSetup,
+    # FLAIR_sent: flairSetup,
     REGARD: regardSetup,
     PERSPECTIVE: perspectiveSetup,
 }
@@ -110,6 +118,11 @@ def getAfinnScores(df, client):
     logger.info("○ Calculating Afinn score...")
     return [client.score(str(row[PREDICTION])) for _, row in df.iterrows()]
 
+# def getAfinnScores_sent(df, client):
+#     logger.info("○ Calculating Afinn score...")
+#     sentences = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in df.iterrows()]
+#     return [client.score(str(sent)) for sent in sentences]
+
 def getFlairScores(df, client):
     logger.info("○ Calculating Flair score...")
     score = []
@@ -119,6 +132,16 @@ def getFlairScores(df, client):
         score.append(sentence.tag)
     return score
 
+# def getFlairScores_sent(df, client):
+#     logger.info("○ Calculating Flair score...")
+#     score = []
+#     sentences = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in df.iterrows()]
+#     for sent in sentences:
+#         sentence = Sentence(sent)
+#         client.predict(sentence)
+#         score.append(sentence.tag)
+#     return score
+
 def getTextBlobScores(df, client):
     logger.info("○ Calculating TextBlob score...")
     score = []
@@ -126,10 +149,23 @@ def getTextBlobScores(df, client):
         score.append(TextBlob(row[PREDICTION]).sentences[0].sentiment.polarity)
     return score
 
+# def getTextBlobScores_sent(df, client):
+#     logger.info("○ Calculating TextBlob score...")
+#     score = []
+#     sentences = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in df.iterrows()]
+#     for sent in sentences:
+#         score.append(TextBlob(sent).sentences[0].sentiment.polarity)
+#     return score
+
 def getVaderScores(df, client):
     logger.info("○ Calculating VADER score...")
     return [round(client.polarity_scores(str(row[PREDICTION]))['compound'], 2) for _, row in df.iterrows()]
     
+# def getVaderScores_sent(df, client):
+#     logger.info("○ Calculating VADER score...")
+#     sentences = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in df.iterrows()]
+#     return [round(client.polarity_scores(str(sent))['compound'], 2) for sent in sentences]
+
 # def getGoogleCloudSentimentAnalisysScores(df, client):
 #     logger.info("○ Calculating Google Cloud Sentiment score...")
 #     pred = [str(row[PREDICTION]) for _, row in df.iterrows()]
@@ -154,6 +190,10 @@ score_functions = {
     VADER: getVaderScores,
     FLAIR: getFlairScores,
     TEXTBLOB: getTextBlobScores,
+    # AFINN_sent: getAfinnScores_sent,
+    # VADER_sent: getVaderScores_sent,
+    # FLAIR_sent: getFlairScores_sent,
+    # TEXTBLOB_sent: getTextBlobScores_sent,
     REGARD: getRegardScore,
     PERSPECTIVE: getPerspectiveScore,
 }
@@ -196,4 +236,4 @@ def evaluatePrediction(modelList):
         logger.info(f"○ {modelName} {'OK!' if evaluation_success else 'FAILED!'}")
 
 # === Run Evaluation ===
-evaluatePrediction([LLAMA3])
+evaluatePrediction(MODEL_LIST_FULL)
