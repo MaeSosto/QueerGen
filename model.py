@@ -1,0 +1,226 @@
+# === Imports ===
+from lib import *
+import time, requests
+import google.generativeai as genai
+from openai import OpenAI
+from transformers import (
+    BertTokenizer, BertForMaskedLM,
+    RobertaTokenizer, RobertaForMaskedLM
+)
+
+# === Constants ===
+NUM_PREDICTION = 1
+URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
+URL_DEEPSEEK = "https://api.deepseek.com"
+
+MASKBERT = '[MASK]'
+MASKROBERT = '<mask>'
+
+MODEL_NAME = {
+    BERT_BASE: 'bert-base-uncased',
+    BERT_LARGE: 'bert-large-uncased',
+    ROBERTA_BASE: 'roberta-base',
+    ROBERTA_LARGE: 'roberta-large',
+    LLAMA3: 'llama3',
+    LLAMA3_70B: 'llama3:70b',
+    GEMMA3: 'gemma2',
+    GEMMA3_27B: 'gemma2:27b',
+    DEEPSEEK: 'deepseek-ai/DeepSeek-r1',
+    DEEPSEEK_671B: 'deepseek-chat',
+    GPT4: 'gpt-4o'
+}
+        
+class Model:
+    
+    def __init__(self, model_name):
+        self.model_name = model_name
+        self.template_complete_file = pd.read_csv(DATA_SOURCE + 'template_complete.csv')
+        
+        self.initialize_model = {
+            BERT_BASE: self._initialize_BERT, 
+            BERT_LARGE: self._initialize_BERT,
+            ROBERTA_BASE: self._initialize_RoBERTa, 
+            ROBERTA_LARGE: self._initialize_RoBERTa,
+            GPT4: self._initialize_GPT, 
+            GPT4_MINI: self._initialize_GPT,
+            DEEPSEEK_671B: self._initialize_DeepSeeek,
+            GEMINI_2_0_FLASH: self._initialize_Gemini, 
+            GEMINI_2_0_FLASH_LITE: self._initialize_Gemini,
+        }
+        
+        self.send_request = {
+            BERT_BASE: self._request_BERT, 
+            BERT_LARGE: self._request_BERT,
+            ROBERTA_BASE: self._request_RoBERTa, 
+            ROBERTA_LARGE: self._request_RoBERTa,
+            LLAMA3: self._request_ollama, 
+            LLAMA3_70B: self._request_ollama, 
+            GEMMA3: self._request_ollama,
+            GEMMA3_27B: self._request_ollama, 
+            DEEPSEEK: self._request_ollama,
+            DEEPSEEK_671B: self._request_open_ai,
+            GPT4: self._request_open_ai, 
+            GPT4_MINI: self._request_open_ai,
+            GEMINI_2_0_FLASH: self._request_gemini, 
+            GEMINI_2_0_FLASH_LITE: self._request_gemini,
+        }
+        
+        self.client, self.tokenizer = self.initialize_model.get(
+            self.model_name, 
+            lambda: (None, None)
+        )()
+    
+    def get_predictions(self, prompt_num):
+        self.prompt_num = prompt_num
+        num_prediction_so_far, prediction_dic = self._get_prediction_file()
+        
+        if num_prediction_so_far >= self.template_complete_file.shape[0]:
+            logger.warning(f"๏ {self.model_name} evaluated already!")
+            return
+
+        logger.info(f"๏ Generating sentences with {self.model_name} model...")
+        for _, row in tqdm(self.template_complete_file[num_prediction_so_far:].iterrows(), total= self.template_complete_file.shape[0] - num_prediction_so_far, desc=f'Generating with {self.model_name}', unit=' sentences'):
+            self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
+            self.prompt = PROMPTS[prompt_num].format(self.sentence)
+            try:
+                response = self.send_request[self.model_name]()
+                if response is None:
+                    break
+                for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
+                    prediction_dic[key].append(row[key])
+                prediction_dic[PREDICTION].append(response)
+
+                self._save_csv(prediction_dic)
+            except Exception as X:
+                logger.error(f"generateSentences: {X}")
+                break
+        logger.info("๏ File generated!")
+
+        
+    # === Initialization Functions ===
+    def _initialize_BERT(self): 
+        val = MODEL_NAME[self.model_name]
+        return BertForMaskedLM.from_pretrained(val), BertTokenizer.from_pretrained(val)
+    
+    def _initialize_RoBERTa(self): 
+        return RobertaForMaskedLM.from_pretrained(MODEL_NAME[self.model_name]), RobertaTokenizer.from_pretrained(MODEL_NAME[self.model_name])
+    
+    def _initialize_Gemini(self): 
+        genai.configure(api_key=os.getenv('GENAI_API_KEY')) 
+        return genai.GenerativeModel(self.model_name), None
+    
+    def _initialize_GPT(self): 
+        return OpenAI(api_key=os.getenv('OPENAI_API_KEY')), None
+    
+    def _initialize_DeepSeeek(self): 
+        return OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
+    
+    def _get_prediction_file(self):
+        prediction_file_path = f'{OUTPUT_SENTENCES +self.prompt_num+"/" + self.model_name}.csv'
+        if os.path.exists(prediction_file_path):
+            prediction_file = pd.read_csv(prediction_file_path)
+            logger.info(f"๏ Importing sentences [{prediction_file.shape[0]}] from a pre-existing file")
+            return prediction_file.shape[0], {col: prediction_file[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
+        else:
+            logger.info("๏ Starting from the source file")
+            return 0, {key: [] for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
+    
+    # === Request Functions ===
+    def _request_BERT(self):
+        try:
+            sentence = f"[CLS] {sentence} [SEP]"
+            tokenized_text = self.tokenizer.tokenize(sentence)
+            masked_index = tokenized_text.index(MASKBERT)
+            indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+            tokens_tensor = torch.tensor([indexed_tokens])
+
+            with torch.no_grad():
+                output = self.client(tokens_tensor)
+                probs = torch.nn.functional.softmax(output[0][0, masked_index], dim=-1)
+                _, top_k_indices = torch.topk(probs, NUM_PREDICTION, sorted=True)
+            
+            return self.tokenizer.convert_ids_to_tokens(top_k_indices)[0]
+        except Exception as X:
+            logger.error(f"_request_BERT: {X}")
+            return None
+
+    def _request_RoBERTa(self):
+        try:
+            sentence = sentence.replace(MASKBERT, MASKROBERT)
+            sentence = f"<s> {sentence} </s>"
+            tokenized_text = self.tokenizer.tokenize(sentence)
+            masked_index = tokenized_text.index(MASKROBERT)
+            indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+            tokens_tensor = torch.tensor([indexed_tokens])
+
+            with torch.no_grad():
+                output = self.client(tokens_tensor)
+                probs = torch.nn.functional.softmax(output[0][0, masked_index], dim=-1)
+                _, top_k_indices = torch.topk(probs, NUM_PREDICTION, sorted=True)
+            
+            return self.tokenizer.convert_ids_to_tokens(top_k_indices)[0].replace('Ġ', '')
+        except Exception as X:
+            logger.error(f"_request_RoBERTa: {X}")
+            return None
+    
+    def _request_ollama(self):
+        try:
+            response = requests.post(URL_OLLAMA_LOCAL, headers={"Content-Type": 'application/json'}, json={
+                "model": self.model_name,
+                "prompt": self.prompt,
+                "messages": [{"role": "user", "content": self.prompt}],
+                "options": {"temperature": 0},
+                "stream": False
+            })
+            return self._clean_response(response.json()['response'])
+        
+        except Exception as X:
+            logger.error(f"_request_ollama: {X}")
+            return None
+
+    def _request_gemini(self):
+        #time.sleep(2.5)
+        try:
+            return self._clean_response(self.client.generate_content(self.prompt).text).lower()
+        except Exception as X:
+            logger.error(f"_request_gemini: {X}")
+            return None
+
+    def _request_open_ai(self):
+        console.setLevel(logging.ERROR)
+        try:
+            completion = self.client.chat.completions.create(
+                model=self.model_name, store=True,
+                messages=[{"role": "user", "content": self.prompt}],
+                temperature=0
+            )
+            console.setLevel(logging.INFO)
+            return self._clean_response(completion.choices[0].message.content)
+        except Exception as X:
+            logger.error(f"_request_open_ai: {X}")
+            return None
+        
+    # === Utils ===
+    def _clean_response(self, response):
+        response = re.sub(r'\n', '', response)
+        response = re.sub(r'\"', '', response)
+        response = re.sub(r'`', '', response)
+        response = response.replace('.', '')
+        response = response.replace(r" '", "")
+        response = response.replace(r"*", "")
+        response = response.replace(r"[", "")
+        response = response.replace(r"]", "")
+        response = response.lower()
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        response = response.split(" ")
+        response = response[-1]
+        response = response.replace(r"is:", "")
+        response = re.sub(r'[^a-zA-Z0-9]', '', response)
+        return response
+    
+    def _save_csv(self, prediction_dic):
+        os.makedirs(OUTPUT_SENTENCES + self.prompt_num+"/", exist_ok=True)
+        pd.DataFrame.from_dict(prediction_dic).to_csv(f'{OUTPUT_SENTENCES +self.prompt_num+"/"+ self.model_name}.csv', index_label='index')
+    
+        
+    

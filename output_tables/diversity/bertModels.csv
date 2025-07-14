@@ -1,13 +1,13 @@
 ,model,type,mean,downsampled_mean,downsampled_mean_CI,std
 0,BERT Base,Unmarked,25,25.0,0.0,0.0
-1,BERT Base,Non Queer,10,41.4,1.589,2.221
-2,BERT Base,Queer,6,42.45,1.057,2.259
+1,BERT Base,Non Queer,10,42.3,2.678,3.743
+2,BERT Base,Queer,6,42.85,1.805,3.856
 3,BERT Large,Unmarked,32,32.0,0.0,0.0
-4,BERT Large,Non Queer,11,45.7,2.288,3.199
-5,BERT Large,Queer,6,42.65,1.255,2.681
+4,BERT Large,Non Queer,11,45.7,2.362,3.302
+5,BERT Large,Queer,6,41.7,1.519,3.246
 6,RoBERTa Base,Unmarked,33,33.0,0.0,0.0
-7,RoBERTa Base,Non Queer,10,42.5,1.945,2.718
-8,RoBERTa Base,Queer,6,43.8,1.888,4.034
+7,RoBERTa Base,Non Queer,10,42.5,2.086,2.915
+8,RoBERTa Base,Queer,6,44.9,1.495,3.194
 9,RoBERTa Large,Unmarked,40,40.0,0.0,0.0
-10,RoBERTa Large,Non Queer,9,43.5,3.077,4.301
-11,RoBERTa Large,Queer,5,41.3,1.643,3.511
+10,RoBERTa Large,Non Queer,9,44.0,2.385,3.333
+11,RoBERTa Large,Queer,5,39.65,1.41,3.014
