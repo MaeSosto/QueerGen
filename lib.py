@@ -50,7 +50,9 @@ OUTPUT_EVALUATION = 'output_evaluation/'
 # =============================
 # Template Variables
 # =============================
-SUBJECT_ = r'\{marker\} \+ \{subject\}'
+MASKBERT = '[MASK]'
+MASKROBERT = '<mask>'
+SUBJECT_ = r'The \{marker\} \+ \{subject\}'
 TYPE = 'type'
 CATEGORY = 'category'
 MARKER = 'marker'

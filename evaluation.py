@@ -9,56 +9,62 @@ from flair.nn import Classifier
 from flair.data import Sentence
 from textblob import TextBlob
 from googleapiclient.errors import HttpError
+from transformers import BertTokenizer, BertForMaskedLM
+from transformers import logging
+logging.set_verbosity_error()
 warnings.filterwarnings('ignore')
 
 # === Constants ===
 EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
+LOG_LIKELYHOOD = 'log_likelihood'
 
 class Evaluation:
     
     def __init__(self):
-        os.makedirs(OUTPUT_EVALUATION + self.prompt_num+"/", exist_ok=True)
         self.initialize_tools = {
-            AFINN: self._afinn_setup,
-            VADER: self._VADER_setup,
-            FLAIR: self._FLAIR_setup,
+            # AFINN: self._afinn_setup,
+            # VADER: self._VADER_setup,
+            # FLAIR: self._FLAIR_setup,
             REGARD: self._regard_setup,
-            PERSPECTIVE: self._perpective_setup,
+            # PERSPECTIVE: self._perpective_setup,
+            LOG_LIKELYHOOD: self._log_likelyhood_setup
         }
         
         self.tool_functions = {
-            AFINN: self._get_Afinn_scores,
-            VADER: self._get_VADER_scores,
-            FLAIR: self._get_FLAIR_scores,
-            TEXTBLOB: self._get_TextBlob_scores,
+            # AFINN: self._get_Afinn_scores,
+            # VADER: self._get_VADER_scores,
+            # FLAIR: self._get_FLAIR_scores,
+            # TEXTBLOB: self._get_TextBlob_scores,
             REGARD: self._get_regard_scores,
-            PERSPECTIVE: self._get_perspective_scores,
+            # PERSPECTIVE: self._get_perspective_scores,
+            LOG_LIKELYHOOD: self._get_log_likelyhood_scores,
         }
         
-    def evaluate(self, model_name, prompt_num):
+    def evaluate(self, model_name, prompt_num = "prompt_0"):
         self.model_name = model_name
         self.prompt_num = prompt_num
-        logger.info(f"○ Evaluating {model_name} with {prompt_num}")
+        os.makedirs(OUTPUT_EVALUATION + self.prompt_num+"/", exist_ok=True)
         
         self.evaluation_file = self._get_template_file()
-        if self.evaluation_file == None:
+        if self.evaluation_file.empty:
             return None
         
         self.predictions_list = [str(row[PREDICTION]) for _, row in self.evaluation_file.iterrows()]
         self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.evaluation_file.iterrows()]
         self.xyz_subject = [f"{re.sub(SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
         
+        logger.info(f"○ Evaluating {model_name} with {prompt_num}")
         for key, score_function in self.tool_functions.items():
             self.client = self.initialize_tools.get(key, lambda: "")()
             self.key = key
             logger.info(f"○ Calculating {key} scores...")
             
-            if key == REGARD and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
+            if key == REGARD and not all(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
                     res = score_function()
-                    if res == None: break
-            elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
+                    if res: break
+            elif key == PERSPECTIVE and not all(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
                     res = score_function()
-                    if res == None: break
+                    if res: break
             elif key not in self.evaluation_file.columns:
                 score_function()
         
@@ -81,7 +87,7 @@ class Evaluation:
             return prediction_file
         else: 
             logger.warning(f"○ {self.model_name} with {self.prompt_num} prediction file not found")
-            return None
+            return pd.DataFrame()
     
     # === Setup Functions ===
     def _afinn_setup(self): return Afinn()
@@ -93,7 +99,8 @@ class Evaluation:
             discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
             static_discovery=False)
     def _regard_setup(self): return load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
-
+    def _log_likelyhood_setup(self): return load("perplexity", module_type="metric")
+    
     # === Score Functions ===
     def _get_Afinn_scores(self, sentence = False):
         if sentence:
@@ -128,9 +135,10 @@ class Evaluation:
                             logger.error("extractRegardScores: "+str(e))
             for cat in REGARD_CATEGORIES:
                 self.evaluation_file[f"{REGARD} {cat}"] = scores_df[cat]
+            return False
         except Exception as e:
             logger.error("_get_regard_scores: "+str(e))
-            return None
+            return True
     
     def _get_perspective_scores(self):
         try:
@@ -141,10 +149,11 @@ class Evaluation:
                     scores_df[key].append(item[key])
             for cat in PERSPECTIVE_CATEGORIES:
                 self.evaluation_file[f"{PERSPECTIVE} {cat}"] = scores_df[cat]
+            return False
         except Exception as e:
             logger.error("_get_perspective_scores: "+str(e))
-            return None
-    
+            return True
+
     def _perspective_request(self, sentence):
         row, timeError = {}, 0
         while timeError < 20000:
@@ -167,4 +176,42 @@ class Evaluation:
                 logger.error("getPerplexityScores: "+str(e))
                 timeError += 1
         return {cat: row.get(cat, 0) for cat in PERSPECTIVE_CATEGORIES}
-                
+    
+    def _get_log_likelyhood_scores(self):
+        scores = []
+        for idx in tqdm(range(len(self.unmarked_sentence_list)), total=len(self.unmarked_sentence_list)):
+            scores.append(self.get_log_probability_for_word(self.unmarked_sentence_list[idx], self.predictions_list[idx]))
+        self.evaluation_file[self.key] = scores
+    
+    
+    def get_log_probability_for_word(self, sentence, target_word):
+        model_name='bert-base-uncased'
+        sentence = sentence + " "+ MASKBERT
+        # Load model and tokenizer
+        tokenizer = BertTokenizer.from_pretrained(model_name)
+        model = BertForMaskedLM.from_pretrained(model_name)
+        model.eval()
+
+        inputs = tokenizer(sentence, return_tensors="pt")
+        mask_index = (inputs['input_ids'][0] == tokenizer.mask_token_id).nonzero(as_tuple=True)[0].item()
+
+        # Run through model
+        with torch.no_grad():
+            outputs = model(**inputs)
+            logits = outputs.logits
+
+        # Get probabilities for masked position
+        probs = torch.nn.functional.softmax(logits[0, mask_index], dim=-1)
+        log_probs = torch.log(probs)
+
+        # Convert target word to token ID
+        token_ids = tokenizer.encode(target_word, add_special_tokens=False)
+
+        # # Check for multi-token words
+        # if len(token_ids) != 1:
+        #     print(f"⚠️ The word '{target_word}' was tokenized into {len(token_ids)} tokens: {tokenizer.convert_ids_to_tokens(token_ids)}")
+        #     return None
+
+        token_id = token_ids[0]
+        log_prob = log_probs[token_id].item()
+        return log_prob

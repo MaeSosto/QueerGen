@@ -7,14 +7,13 @@ from transformers import (
     BertTokenizer, BertForMaskedLM,
     RobertaTokenizer, RobertaForMaskedLM
 )
+from transformers import logging
+logging.set_verbosity_error()
 
 # === Constants ===
 NUM_PREDICTION = 1
 URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
 URL_DEEPSEEK = "https://api.deepseek.com"
-
-MASKBERT = '[MASK]'
-MASKROBERT = '<mask>'
 
 MODEL_NAME = {
     BERT_BASE: 'bert-base-uncased',
@@ -70,16 +69,15 @@ class Model:
             lambda: (None, None)
         )()
     
-    def get_predictions(self, prompt_num):
+    def get_predictions(self, prompt_num = "prompt_0"):
         self.prompt_num = prompt_num
-        num_prediction_so_far, prediction_dic = self._get_prediction_file()
+        num_row_processed, prediction_dic = self._get_prediction_file()
         
-        if num_prediction_so_far >= self.template_complete_file.shape[0]:
-            logger.warning(f"๏ {self.model_name} evaluated already!")
+        if num_row_processed == None:
             return
 
         logger.info(f"๏ Generating sentences with {self.model_name} model...")
-        for _, row in tqdm(self.template_complete_file[num_prediction_so_far:].iterrows(), total= self.template_complete_file.shape[0] - num_prediction_so_far, desc=f'Generating with {self.model_name}', unit=' sentences'):
+        for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f'Generating with {self.model_name}', unit=' sentences'):
             self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
             self.prompt = PROMPTS[prompt_num].format(self.sentence)
             try:
@@ -94,7 +92,7 @@ class Model:
             except Exception as X:
                 logger.error(f"generateSentences: {X}")
                 break
-        logger.info("๏ File generated!")
+        #logger.info("๏ File generated!")
 
         
     # === Initialization Functions ===
@@ -119,16 +117,22 @@ class Model:
         prediction_file_path = f'{OUTPUT_SENTENCES +self.prompt_num+"/" + self.model_name}.csv'
         if os.path.exists(prediction_file_path):
             prediction_file = pd.read_csv(prediction_file_path)
+            num_row_processed = prediction_file.shape[0]
+            prediction_dic = {col: prediction_file[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
+            if num_row_processed >= self.template_complete_file.shape[0]:
+                logger.info(f"๏ {self.model_name} with {self.prompt_num} evaluated already!")
+                return None, None
             logger.info(f"๏ Importing sentences [{prediction_file.shape[0]}] from a pre-existing file")
-            return prediction_file.shape[0], {col: prediction_file[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
         else:
             logger.info("๏ Starting from the source file")
-            return 0, {key: [] for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
+            num_row_processed = 0
+            prediction_dic = {key: [] for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}   
+        return num_row_processed, prediction_dic
     
     # === Request Functions ===
     def _request_BERT(self):
         try:
-            sentence = f"[CLS] {sentence} [SEP]"
+            sentence = f"[CLS] {self.sentence} [SEP]"
             tokenized_text = self.tokenizer.tokenize(sentence)
             masked_index = tokenized_text.index(MASKBERT)
             indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_text)
@@ -146,7 +150,7 @@ class Model:
 
     def _request_RoBERTa(self):
         try:
-            sentence = sentence.replace(MASKBERT, MASKROBERT)
+            sentence = self.sentence.replace(MASKBERT, MASKROBERT)
             sentence = f"<s> {sentence} </s>"
             tokenized_text = self.tokenizer.tokenize(sentence)
             masked_index = tokenized_text.index(MASKROBERT)

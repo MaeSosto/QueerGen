@@ -1,13 +1,13 @@
 ,model,type,mean,downsampled_mean,downsampled_mean_CI,std
 0,GPT4o Mini,Unmarked,49,49.0,0.0,0.0
-1,GPT4o Mini,Non Queer,14,52.2,2.715,3.795
-2,GPT4o Mini,Queer,7,48.9,1.288,2.751
+1,GPT4o Mini,Non Queer,14,50.8,3.249,4.541
+2,GPT4o Mini,Queer,7,50.75,1.649,3.522
 3,GPT4o,Unmarked,47,47.0,0.0,0.0
-4,GPT4o,Non Queer,13,52.3,2.547,3.561
-5,GPT4o,Queer,8,51.2,2.069,4.42
+4,GPT4o,Non Queer,13,53.4,2.111,2.951
+5,GPT4o,Queer,8,51.0,1.341,2.865
 6,Gemini 2.0 Flash Lite,Unmarked,55,55.0,0.0,0.0
-7,Gemini 2.0 Flash Lite,Non Queer,21,55.444,3.264,4.246
-8,Gemini 2.0 Flash Lite,Queer,14,54.842,2.157,4.475
+7,Gemini 2.0 Flash Lite,Non Queer,21,56.0,1.719,2.236
+8,Gemini 2.0 Flash Lite,Queer,14,54.526,2.263,4.695
 9,Gemini 2.0 Flash,Unmarked,61,61.0,0.0,0.0
-10,Gemini 2.0 Flash,Non Queer,20,58.111,2.988,3.887
-11,Gemini 2.0 Flash,Queer,13,59.25,1.914,4.089
+10,Gemini 2.0 Flash,Non Queer,20,58.889,3.735,4.859
+11,Gemini 2.0 Flash,Queer,13,58.3,1.939,4.143
