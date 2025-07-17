@@ -76,7 +76,7 @@ class Model:
         if num_row_processed == None:
             return
 
-        logger.info(f"๏ Generating sentences with {self.model_name} model...")
+        logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
         for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f'Generating with {self.model_name}', unit=' sentences'):
             self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
             self.prompt = PROMPTS[prompt_num].format(self.sentence)
@@ -108,7 +108,8 @@ class Model:
         return genai.GenerativeModel(self.model_name), None
     
     def _initialize_GPT(self): 
-        return OpenAI(api_key=os.getenv('OPENAI_API_KEY')), None
+        api_key = os.getenv('OPENAI_API_KEY')
+        return OpenAI(api_key=api_key), None
     
     def _initialize_DeepSeeek(self): 
         return OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None

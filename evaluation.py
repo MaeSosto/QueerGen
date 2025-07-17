@@ -16,7 +16,6 @@ warnings.filterwarnings('ignore')
 
 # === Constants ===
 EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
-LOG_LIKELYHOOD = 'log_likelihood'
 
 class Evaluation:
     
@@ -25,7 +24,7 @@ class Evaluation:
             # AFINN: self._afinn_setup,
             # VADER: self._VADER_setup,
             # FLAIR: self._FLAIR_setup,
-            REGARD: self._regard_setup,
+            # REGARD: self._regard_setup,
             # PERSPECTIVE: self._perpective_setup,
             LOG_LIKELYHOOD: self._log_likelyhood_setup
         }
@@ -35,7 +34,7 @@ class Evaluation:
             # VADER: self._get_VADER_scores,
             # FLAIR: self._get_FLAIR_scores,
             # TEXTBLOB: self._get_TextBlob_scores,
-            REGARD: self._get_regard_scores,
+            # REGARD: self._get_regard_scores,
             # PERSPECTIVE: self._get_perspective_scores,
             LOG_LIKELYHOOD: self._get_log_likelyhood_scores,
         }
@@ -67,13 +66,13 @@ class Evaluation:
                     if res: break
             elif key not in self.evaluation_file.columns:
                 score_function()
-        
-            self.evaluation_file.to_csv(OUTPUT_EVALUATION + self.prompt_num + "/" + self.model_name+".csv", index=False)
+                
+            self.save_csv()
         logger.info(f"○ {model_name} with {self.prompt_num} evaluated!")    
         
     def _get_template_file(self):
-        prediction_file = OUTPUT_SENTENCES + self.prompt_num + "/" + self.model_name+".csv"
-        evaluation_file = OUTPUT_EVALUATION + self.prompt_num + "/" + self.model_name+".csv"
+        prediction_file = f"{OUTPUT_SENTENCES}{self.prompt_num}/{self.model_name}.csv"
+        evaluation_file = f"{OUTPUT_EVALUATION}{self.prompt_num}/{self.model_name}.csv"
 
         if os.path.exists(prediction_file):
             prediction_file = pd.read_csv(prediction_file)
@@ -89,6 +88,19 @@ class Evaluation:
             logger.warning(f"○ {self.model_name} with {self.prompt_num} prediction file not found")
             return pd.DataFrame()
     
+    def save_csv(self):
+        if self.model_name in MODEL_MLM:
+            for prompt in PROMPTS:
+                self.evaluation_file.to_csv(
+                    OUTPUT_EVALUATION + prompt + "/" + self.model_name + ".csv",
+                    index=False
+                )
+        else:
+            self.evaluation_file.to_csv(
+                OUTPUT_EVALUATION + self.prompt_num + "/" + self.model_name + ".csv",
+                index=False
+            )
+            
     # === Setup Functions ===
     def _afinn_setup(self): return Afinn()
     def _VADER_setup(self): return SentimentIntensityAnalyzer()
@@ -185,33 +197,36 @@ class Evaluation:
     
     
     def get_log_probability_for_word(self, sentence, target_word):
-        model_name='bert-base-uncased'
-        sentence = sentence + " "+ MASKBERT
-        # Load model and tokenizer
+        model_name = 'bert-base-uncased'
         tokenizer = BertTokenizer.from_pretrained(model_name)
         model = BertForMaskedLM.from_pretrained(model_name)
         model.eval()
 
-        inputs = tokenizer(sentence, return_tensors="pt")
-        mask_index = (inputs['input_ids'][0] == tokenizer.mask_token_id).nonzero(as_tuple=True)[0].item()
+        # Tokenize target word
+        target_tokens = tokenizer.tokenize(target_word)
+        num_masks = len(target_tokens)
 
-        # Run through model
+        # Add appropriate number of [MASK] tokens
+        masked_sentence = sentence + " " + " ".join([MASKBERT] * num_masks)
+        inputs = tokenizer(masked_sentence, return_tensors="pt")
+        mask_indices = (inputs['input_ids'][0] == tokenizer.mask_token_id).nonzero(as_tuple=True)[0]
+
+        if len(mask_indices) != num_masks:
+            print(f"⚠️ Number of [MASK] tokens doesn't match target token length for '{target_word}'")
+            return None
+
         with torch.no_grad():
             outputs = model(**inputs)
             logits = outputs.logits
 
-        # Get probabilities for masked position
-        probs = torch.nn.functional.softmax(logits[0, mask_index], dim=-1)
-        log_probs = torch.log(probs)
+        log_probs = torch.log_softmax(logits, dim=-1)
+        target_ids = tokenizer.convert_tokens_to_ids(target_tokens)
 
-        # Convert target word to token ID
-        token_ids = tokenizer.encode(target_word, add_special_tokens=False)
+        # Sum log probabilities of each masked token prediction
+        total_log_prob = 0.0
+        for i, mask_idx in enumerate(mask_indices):
+            token_id = target_ids[i]
+            token_log_prob = log_probs[0, mask_idx, token_id].item()
+            total_log_prob += token_log_prob
 
-        # # Check for multi-token words
-        # if len(token_ids) != 1:
-        #     print(f"⚠️ The word '{target_word}' was tokenized into {len(token_ids)} tokens: {tokenizer.convert_ids_to_tokens(token_ids)}")
-        #     return None
-
-        token_id = token_ids[0]
-        log_prob = log_probs[token_id].item()
-        return log_prob
+        return total_log_prob
