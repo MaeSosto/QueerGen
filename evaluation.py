@@ -50,7 +50,7 @@ class Evaluation:
         
         self.predictions_list = [str(row[PREDICTION]) for _, row in self.evaluation_file.iterrows()]
         self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.evaluation_file.iterrows()]
-        self.xyz_subject = [f"{re.sub(SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
+        self.xyz_subject = [f"{re.sub("The "+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
         
         logger.info(f"○ Evaluating {model_name} with {prompt_num}")
         for key, score_function in self.tool_functions.items():

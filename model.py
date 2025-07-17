@@ -64,10 +64,8 @@ class Model:
             GEMINI_2_0_FLASH_LITE: self._request_gemini,
         }
         
-        self.client, self.tokenizer = self.initialize_model.get(
-            self.model_name, 
-            lambda: (None, None)
-        )()
+        if self.model_name in self.initialize_model: 
+            self.initialize_model[self.model_name]()
     
     def get_predictions(self, prompt_num = "prompt_0"):
         self.prompt_num = prompt_num
@@ -76,8 +74,8 @@ class Model:
         if num_row_processed == None:
             return
 
-        logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
-        for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f'Generating with {self.model_name}', unit=' sentences'):
+        #logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
+        for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model..."):
             self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
             self.prompt = PROMPTS[prompt_num].format(self.sentence)
             try:
@@ -98,24 +96,24 @@ class Model:
     # === Initialization Functions ===
     def _initialize_BERT(self): 
         val = MODEL_NAME[self.model_name]
-        return BertForMaskedLM.from_pretrained(val), BertTokenizer.from_pretrained(val)
+        self.client, self.tokenizer = BertForMaskedLM.from_pretrained(val), BertTokenizer.from_pretrained(val)
     
     def _initialize_RoBERTa(self): 
-        return RobertaForMaskedLM.from_pretrained(MODEL_NAME[self.model_name]), RobertaTokenizer.from_pretrained(MODEL_NAME[self.model_name])
+        self.client, self.tokenizer = RobertaForMaskedLM.from_pretrained(MODEL_NAME[self.model_name]), RobertaTokenizer.from_pretrained(MODEL_NAME[self.model_name])
     
     def _initialize_Gemini(self): 
         genai.configure(api_key=os.getenv('GENAI_API_KEY')) 
-        return genai.GenerativeModel(self.model_name), None
+        self.client, self.tokenizer = genai.GenerativeModel(self.model_name), None
     
     def _initialize_GPT(self): 
         api_key = os.getenv('OPENAI_API_KEY')
-        return OpenAI(api_key=api_key), None
+        self.client, self.tokenizer = OpenAI(api_key=api_key), None
     
     def _initialize_DeepSeeek(self): 
-        return OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
+        self.client, self.tokenizer = OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
     
     def _get_prediction_file(self):
-        prediction_file_path = f'{OUTPUT_SENTENCES +self.prompt_num+"/" + self.model_name}.csv'
+        prediction_file_path = f'{OUTPUT_SENTENCES}{self.prompt_num}/{self.model_name}.csv'
         if os.path.exists(prediction_file_path):
             prediction_file = pd.read_csv(prediction_file_path)
             num_row_processed = prediction_file.shape[0]

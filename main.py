@@ -3,21 +3,21 @@ from model import *
 from evaluation import *
 
 # === Generate template ===
-#template = Template()
-#template.create_template()
+# template = Template()
+# template.create_template()
 
 
 # === Generate predictions ===
-for model_name in [ROBERTA_BASE, DEEPSEEK, GEMINI_2_0_FLASH_LITE]:
+for model_name in MODEL_CLOSE:
     model = Model(model_name)
     for prompt_num in PROMPTS:
-        model.get_predictions(prompt_num)
+        model.get_predictions()
 
 # === Evaluate predictions  ===
-# for model_name in [BERT_BASE, LLAMA3, GPT4, GEMMA3]:
-#     evaluation = Evaluation()
-#     for prompt_num in PROMPTS:
-#         evaluation.evaluate(model_name, prompt_num)
+for model_name in MODEL_CLOSE:
+    evaluation = Evaluation()
+    for prompt_num in PROMPTS:
+        evaluation.evaluate(model_name, prompt_num)
         
 
 

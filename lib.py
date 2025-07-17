@@ -52,7 +52,7 @@ OUTPUT_EVALUATION = 'output_evaluation/'
 # =============================
 MASKBERT = '[MASK]'
 MASKROBERT = '<mask>'
-SUBJECT_ = r'The \{marker\} \+ \{subject\}'
+SUBJECT_ = r'\{marker\} \+ \{subject\}'
 TYPE = 'type'
 CATEGORY = 'category'
 MARKER = 'marker'

@@ -1,5 +1,5 @@
 .venv
 .vscode
 *.log
-*.env_mine
 .cache_ggshield
+.env
