@@ -22,20 +22,20 @@ class Evaluation:
     def __init__(self):
         self.initialize_tools = {
             # AFINN: self._afinn_setup,
-            # VADER: self._VADER_setup,
+            VADER: self._VADER_setup,
             # FLAIR: self._FLAIR_setup,
-            # REGARD: self._regard_setup,
-            # PERSPECTIVE: self._perpective_setup,
+            REGARD: self._regard_setup,
+            PERSPECTIVE: self._perpective_setup,
             LOG_LIKELYHOOD: self._log_likelyhood_setup
         }
         
         self.tool_functions = {
             # AFINN: self._get_Afinn_scores,
-            # VADER: self._get_VADER_scores,
+            VADER: self._get_VADER_scores,
             # FLAIR: self._get_FLAIR_scores,
             # TEXTBLOB: self._get_TextBlob_scores,
-            # REGARD: self._get_regard_scores,
-            # PERSPECTIVE: self._get_perspective_scores,
+            REGARD: self._get_regard_scores,
+            PERSPECTIVE: self._get_perspective_scores,
             LOG_LIKELYHOOD: self._get_log_likelyhood_scores,
         }
         
@@ -50,21 +50,22 @@ class Evaluation:
         
         self.predictions_list = [str(row[PREDICTION]) for _, row in self.evaluation_file.iterrows()]
         self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.evaluation_file.iterrows()]
-        self.xyz_subject = [f"{re.sub("The "+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
+        self.xyz_subject = [f"{re.sub('The '+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
         
         logger.info(f"○ Evaluating {model_name} with {prompt_num}")
         for key, score_function in self.tool_functions.items():
-            self.client = self.initialize_tools.get(key, lambda: "")()
+            if key in self.initialize_tools:
+                self.initialize_tools[key]()
             self.key = key
             logger.info(f"○ Calculating {key} scores...")
             
-            if key == REGARD and not all(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
+            if key == REGARD and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
                     res = score_function()
                     if res: break
-            elif key == PERSPECTIVE and not all(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
+            elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
                     res = score_function()
                     if res: break
-            elif key not in self.evaluation_file.columns:
+            elif key != REGARD and key != PERSPECTIVE and key not in self.evaluation_file.columns:
                 score_function()
                 
             self.save_csv()
@@ -102,16 +103,16 @@ class Evaluation:
             )
             
     # === Setup Functions ===
-    def _afinn_setup(self): return Afinn()
-    def _VADER_setup(self): return SentimentIntensityAnalyzer()
-    def _FLAIR_setup(self): return Classifier.load('sentiment')
+    def _afinn_setup(self): self.client = Afinn()
+    def _VADER_setup(self): self.client = SentimentIntensityAnalyzer()
+    def _FLAIR_setup(self): self.client = Classifier.load('sentiment')
     def _perpective_setup(self):
-        return build("commentanalyzer", "v1alpha1",
+        self.client = build("commentanalyzer", "v1alpha1",
             developerKey=os.getenv('PERSPECTIVE_API_KEY'),
             discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
             static_discovery=False)
-    def _regard_setup(self): return load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
-    def _log_likelyhood_setup(self): return load("perplexity", module_type="metric")
+    def _regard_setup(self): self.client = load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
+    def _log_likelyhood_setup(self): self.client = load("perplexity", module_type="metric")
     
     # === Score Functions ===
     def _get_Afinn_scores(self, sentence = False):
@@ -154,7 +155,7 @@ class Evaluation:
     
     def _get_perspective_scores(self):
         try:
-            scores = [self._perspective_request(self.client, s) for s in tqdm(self.unmarked_sentence_list, total=self.unmarked_sentence_list.shape[0])]
+            scores = [self._perspective_request(s) for s in tqdm(self.unmarked_sentence_list, total=len(self.unmarked_sentence_list))]
             scores_df = {cat: [] for cat in PERSPECTIVE_CATEGORIES}
             for item in scores:
                 for key in item:

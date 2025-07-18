@@ -66,3 +66,4 @@ fi
 pip install evaluate || { echo "❌ Failed to install evaluate"; exit 1; }
 
 cd ..
+source .venv/bin/activate

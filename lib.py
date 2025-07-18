@@ -84,6 +84,7 @@ GPT4_MINI = 'gpt-4o-mini'
 GPT4 = 'gpt-4o'
 DEEPSEEK = 'deepseek-r1'
 DEEPSEEK_671B = 'deepseek-reasoner'
+
 MODEL_MLM = [BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE]
 MODEL_OPEN = [LLAMA3, LLAMA3_70B, GEMMA3, GEMMA3_27B,DEEPSEEK, DEEPSEEK_671B]
 MODEL_CLOSE = [GPT4_MINI, GPT4, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH]
@@ -107,8 +108,8 @@ MODELS_LABELS = {
     GEMINI_2_0_FLASH_LITE : "Gemini 2.0 Flash Lite",
     GPT4_MINI : 'GPT4o Mini',
     GPT4 : 'GPT4o',
+    DEEPSEEK: 'DeepSeek R1',
     DEEPSEEK_671B: 'DeepSeek R1 (671b)',
-    DEEPSEEK: 'DeepSeek R1'
 }
 
 # =============================
