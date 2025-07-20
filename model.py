@@ -178,7 +178,7 @@ class Model:
             return self._clean_response(response.json()['response'])
         
         except Exception as X:
-            logger.error(f"_request_ollama: {X}")
+            logger.error(f"_request_ollama: {response["text"]}")
             return None
 
     def _request_gemini(self):
