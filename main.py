@@ -12,13 +12,13 @@ from evaluation import *
 #     GPT4_MINI, GPT4, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH
 # ]
 # === Generate predictions ===
-for model_name in [GEMMA3, GEMMA3_27B]:
+for model_name in [GPT4_MINI, GPT4, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH]:
     model = Model(model_name)
     for prompt_num in PROMPTS:
         model.get_predictions(prompt_num)
 
 # === Evaluate predictions  ===
-for model_name in [GEMMA3, GEMMA3_27B]:
+for model_name in [GPT4_MINI, GPT4, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH]:
     evaluation = Evaluation()
     for prompt_num in PROMPTS:
         evaluation.evaluate(model_name, prompt_num)
