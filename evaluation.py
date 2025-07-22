@@ -52,24 +52,26 @@ class Evaluation:
         self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.evaluation_file.iterrows()]
         self.xyz_subject = [f"{re.sub('The '+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
         
-        logger.info(f"○ Evaluating {model_name} with {prompt_num}")
+        start_evaluation = True
         for key, score_function in self.tool_functions.items():
+            if start_evaluation: logger.info(f"○ Evaluating {model_name} with {prompt_num}"); start_evaluation = False
             if key in self.initialize_tools:
                 self.initialize_tools[key]()
             self.key = key
-            logger.info(f"○ Calculating {key} scores...")
-            
             if key == REGARD and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
-                    res = score_function()
-                    if res: break
+                logger.info(f"○ Calculating {key} scores...")
+                res = score_function()
+                if res: break
             elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
-                    res = score_function()
-                    if res: break
+                logger.info(f"○ Calculating {key} scores...")
+                res = score_function()
+                if res: break
             elif key != REGARD and key != PERSPECTIVE and key not in self.evaluation_file.columns:
+                logger.info(f"○ Calculating {key} scores...")
                 score_function()
                 
             self.save_csv()
-        logger.info(f"○ {model_name} with {self.prompt_num} evaluated!")    
+        logger.info(f"○ Evaluated: {model_name} with {self.prompt_num}")    
         
     def _get_template_file(self):
         prediction_file = f"{OUTPUT_SENTENCES}{self.prompt_num}/{self.model_name}.csv"

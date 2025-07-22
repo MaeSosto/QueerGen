@@ -1,127 +1,127 @@
 Model,Subject,Regard,Score,CI
-BERT Base,Unmarked,Negative,0.03,0.01
-BERT Base,Unmarked,Neutral,0.77,0.06
-BERT Base,Unmarked,Positive,0.2,0.07
-BERT Base,Non Queer,Negative,0.11,0.01
-BERT Base,Non Queer,Neutral,0.73,0.02
+BERT Base,Unmarked,Negative,0.05,0.03
+BERT Base,Unmarked,Neutral,0.76,0.07
+BERT Base,Unmarked,Positive,0.19,0.06
+BERT Base,Non Queer,Negative,0.11,0.02
+BERT Base,Non Queer,Neutral,0.72,0.02
 BERT Base,Non Queer,Positive,0.16,0.02
 BERT Base,Queer,Negative,0.13,0.01
 BERT Base,Queer,Neutral,0.68,0.02
-BERT Base,Queer,Positive,0.19,0.01
-BERT Large,Unmarked,Negative,0.05,0.03
-BERT Large,Unmarked,Neutral,0.65,0.08
-BERT Large,Unmarked,Positive,0.3,0.08
-BERT Large,Non Queer,Negative,0.18,0.02
+BERT Base,Queer,Positive,0.2,0.01
+BERT Large,Unmarked,Negative,0.06,0.03
+BERT Large,Unmarked,Neutral,0.67,0.08
+BERT Large,Unmarked,Positive,0.28,0.08
+BERT Large,Non Queer,Negative,0.19,0.02
 BERT Large,Non Queer,Neutral,0.65,0.02
-BERT Large,Non Queer,Positive,0.17,0.02
-BERT Large,Queer,Negative,0.22,0.02
-BERT Large,Queer,Neutral,0.63,0.02
+BERT Large,Non Queer,Positive,0.16,0.02
+BERT Large,Queer,Negative,0.23,0.02
+BERT Large,Queer,Neutral,0.62,0.02
 BERT Large,Queer,Positive,0.15,0.01
 RoBERTa Base,Unmarked,Negative,0.16,0.06
-RoBERTa Base,Unmarked,Neutral,0.56,0.08
-RoBERTa Base,Unmarked,Positive,0.28,0.08
-RoBERTa Base,Non Queer,Negative,0.27,0.02
-RoBERTa Base,Non Queer,Neutral,0.55,0.03
-RoBERTa Base,Non Queer,Positive,0.18,0.02
-RoBERTa Base,Queer,Negative,0.26,0.02
-RoBERTa Base,Queer,Neutral,0.56,0.02
-RoBERTa Base,Queer,Positive,0.18,0.01
-RoBERTa Large,Unmarked,Negative,0.1,0.05
-RoBERTa Large,Unmarked,Neutral,0.62,0.08
-RoBERTa Large,Unmarked,Positive,0.28,0.07
-RoBERTa Large,Non Queer,Negative,0.2,0.02
-RoBERTa Large,Non Queer,Neutral,0.6,0.02
-RoBERTa Large,Non Queer,Positive,0.2,0.02
-RoBERTa Large,Queer,Negative,0.22,0.02
-RoBERTa Large,Queer,Neutral,0.6,0.02
-RoBERTa Large,Queer,Positive,0.18,0.01
-Llama 3,Unmarked,Negative,0.09,0.04
-Llama 3,Unmarked,Neutral,0.77,0.07
-Llama 3,Unmarked,Positive,0.15,0.05
+RoBERTa Base,Unmarked,Neutral,0.6,0.08
+RoBERTa Base,Unmarked,Positive,0.24,0.07
+RoBERTa Base,Non Queer,Negative,0.26,0.02
+RoBERTa Base,Non Queer,Neutral,0.58,0.02
+RoBERTa Base,Non Queer,Positive,0.16,0.02
+RoBERTa Base,Queer,Negative,0.25,0.02
+RoBERTa Base,Queer,Neutral,0.58,0.02
+RoBERTa Base,Queer,Positive,0.17,0.01
+RoBERTa Large,Unmarked,Negative,0.09,0.05
+RoBERTa Large,Unmarked,Neutral,0.65,0.08
+RoBERTa Large,Unmarked,Positive,0.26,0.07
+RoBERTa Large,Non Queer,Negative,0.21,0.02
+RoBERTa Large,Non Queer,Neutral,0.61,0.02
+RoBERTa Large,Non Queer,Positive,0.18,0.02
+RoBERTa Large,Queer,Negative,0.24,0.02
+RoBERTa Large,Queer,Neutral,0.61,0.02
+RoBERTa Large,Queer,Positive,0.15,0.01
+Llama 3,Unmarked,Negative,0.07,0.03
+Llama 3,Unmarked,Neutral,0.78,0.06
+Llama 3,Unmarked,Positive,0.15,0.04
 Llama 3,Non Queer,Negative,0.13,0.02
 Llama 3,Non Queer,Neutral,0.69,0.02
 Llama 3,Non Queer,Positive,0.18,0.02
-Llama 3,Queer,Negative,0.14,0.01
-Llama 3,Queer,Neutral,0.7,0.01
-Llama 3,Queer,Positive,0.16,0.01
+Llama 3,Queer,Negative,0.16,0.01
+Llama 3,Queer,Neutral,0.68,0.02
+Llama 3,Queer,Positive,0.17,0.01
 Llama 3(70b),Unmarked,Negative,0.11,0.05
-Llama 3(70b),Unmarked,Neutral,0.65,0.08
-Llama 3(70b),Unmarked,Positive,0.24,0.07
-Llama 3(70b),Non Queer,Negative,0.16,0.02
+Llama 3(70b),Unmarked,Neutral,0.67,0.08
+Llama 3(70b),Unmarked,Positive,0.22,0.06
+Llama 3(70b),Non Queer,Negative,0.17,0.02
 Llama 3(70b),Non Queer,Neutral,0.65,0.02
-Llama 3(70b),Non Queer,Positive,0.2,0.02
-Llama 3(70b),Queer,Negative,0.15,0.01
+Llama 3(70b),Non Queer,Positive,0.18,0.02
+Llama 3(70b),Queer,Negative,0.16,0.01
 Llama 3(70b),Queer,Neutral,0.66,0.02
-Llama 3(70b),Queer,Positive,0.19,0.01
-Gemma 3,Unmarked,Negative,0.15,0.06
-Gemma 3,Unmarked,Neutral,0.67,0.07
-Gemma 3,Unmarked,Positive,0.18,0.05
+Llama 3(70b),Queer,Positive,0.18,0.01
+Gemma 3,Unmarked,Negative,0.14,0.06
+Gemma 3,Unmarked,Neutral,0.7,0.07
+Gemma 3,Unmarked,Positive,0.16,0.05
 Gemma 3,Non Queer,Negative,0.13,0.02
-Gemma 3,Non Queer,Neutral,0.63,0.02
+Gemma 3,Non Queer,Neutral,0.64,0.02
 Gemma 3,Non Queer,Positive,0.23,0.02
-Gemma 3,Queer,Negative,0.1,0.01
-Gemma 3,Queer,Neutral,0.7,0.01
+Gemma 3,Queer,Negative,0.09,0.01
+Gemma 3,Queer,Neutral,0.71,0.01
 Gemma 3,Queer,Positive,0.2,0.01
-Gemma 3(27b),Unmarked,Negative,0.07,0.04
-Gemma 3(27b),Unmarked,Neutral,0.62,0.08
-Gemma 3(27b),Unmarked,Positive,0.31,0.08
-Gemma 3(27b),Non Queer,Negative,0.16,0.02
-Gemma 3(27b),Non Queer,Neutral,0.6,0.02
-Gemma 3(27b),Non Queer,Positive,0.24,0.02
+Gemma 3(27b),Unmarked,Negative,0.08,0.04
+Gemma 3(27b),Unmarked,Neutral,0.64,0.08
+Gemma 3(27b),Unmarked,Positive,0.28,0.07
+Gemma 3(27b),Non Queer,Negative,0.18,0.02
+Gemma 3(27b),Non Queer,Neutral,0.6,0.03
+Gemma 3(27b),Non Queer,Positive,0.23,0.02
 Gemma 3(27b),Queer,Negative,0.13,0.01
-Gemma 3(27b),Queer,Neutral,0.66,0.02
+Gemma 3(27b),Queer,Neutral,0.67,0.02
 Gemma 3(27b),Queer,Positive,0.21,0.01
-DeepSeek R1,Unmarked,Negative,0.19,0.07
-DeepSeek R1,Unmarked,Neutral,0.62,0.08
-DeepSeek R1,Unmarked,Positive,0.19,0.06
-DeepSeek R1,Non Queer,Negative,0.2,0.02
-DeepSeek R1,Non Queer,Neutral,0.62,0.02
-DeepSeek R1,Non Queer,Positive,0.18,0.02
-DeepSeek R1,Queer,Negative,0.23,0.01
-DeepSeek R1,Queer,Neutral,0.61,0.02
-DeepSeek R1,Queer,Positive,0.15,0.01
-DeepSeek R1 (671b),Unmarked,Negative,0.07,0.03
-DeepSeek R1 (671b),Unmarked,Neutral,0.7,0.07
-DeepSeek R1 (671b),Unmarked,Positive,0.23,0.06
-DeepSeek R1 (671b),Non Queer,Negative,0.22,0.02
-DeepSeek R1 (671b),Non Queer,Neutral,0.57,0.02
-DeepSeek R1 (671b),Non Queer,Positive,0.21,0.02
-DeepSeek R1 (671b),Queer,Negative,0.14,0.01
-DeepSeek R1 (671b),Queer,Neutral,0.62,0.02
-DeepSeek R1 (671b),Queer,Positive,0.24,0.01
-GPT4o Mini,Unmarked,Negative,0.11,0.05
-GPT4o Mini,Unmarked,Neutral,0.62,0.08
+DeepSeek R1,Unmarked,Negative,0.02,0.02
+DeepSeek R1,Unmarked,Neutral,0.98,0.02
+DeepSeek R1,Unmarked,Positive,0.01,0.0
+DeepSeek R1,Non Queer,Negative,0.12,0.11
+DeepSeek R1,Non Queer,Neutral,0.73,0.17
+DeepSeek R1,Non Queer,Positive,0.16,0.12
+DeepSeek R1,Queer,Negative,0.15,0.08
+DeepSeek R1,Queer,Neutral,0.69,0.12
+DeepSeek R1,Queer,Positive,0.16,0.09
+DeepSeek R1 (671b),Unmarked,Negative,0.04,0.04
+DeepSeek R1 (671b),Unmarked,Neutral,0.65,0.14
+DeepSeek R1 (671b),Unmarked,Positive,0.31,0.14
+DeepSeek R1 (671b),Non Queer,Negative,0.07,0.02
+DeepSeek R1 (671b),Non Queer,Neutral,0.62,0.04
+DeepSeek R1 (671b),Non Queer,Positive,0.31,0.04
+DeepSeek R1 (671b),Queer,Negative,0.04,0.01
+DeepSeek R1 (671b),Queer,Neutral,0.64,0.03
+DeepSeek R1 (671b),Queer,Positive,0.32,0.03
+GPT4o Mini,Unmarked,Negative,0.1,0.05
+GPT4o Mini,Unmarked,Neutral,0.64,0.08
 GPT4o Mini,Unmarked,Positive,0.26,0.07
 GPT4o Mini,Non Queer,Negative,0.26,0.02
-GPT4o Mini,Non Queer,Neutral,0.53,0.03
+GPT4o Mini,Non Queer,Neutral,0.52,0.03
 GPT4o Mini,Non Queer,Positive,0.22,0.02
-GPT4o Mini,Queer,Negative,0.17,0.01
-GPT4o Mini,Queer,Neutral,0.58,0.02
-GPT4o Mini,Queer,Positive,0.25,0.01
-GPT4o,Unmarked,Negative,0.12,0.05
-GPT4o,Unmarked,Neutral,0.65,0.07
+GPT4o Mini,Queer,Negative,0.18,0.01
+GPT4o Mini,Queer,Neutral,0.56,0.02
+GPT4o Mini,Queer,Positive,0.27,0.01
+GPT4o,Unmarked,Negative,0.1,0.04
+GPT4o,Unmarked,Neutral,0.67,0.07
 GPT4o,Unmarked,Positive,0.23,0.06
-GPT4o,Non Queer,Negative,0.22,0.02
-GPT4o,Non Queer,Neutral,0.59,0.02
-GPT4o,Non Queer,Positive,0.19,0.02
-GPT4o,Queer,Negative,0.11,0.01
-GPT4o,Queer,Neutral,0.66,0.02
-GPT4o,Queer,Positive,0.22,0.01
-Gemini 2.0 Flash Lite,Unmarked,Negative,0.21,0.07
-Gemini 2.0 Flash Lite,Unmarked,Neutral,0.59,0.08
-Gemini 2.0 Flash Lite,Unmarked,Positive,0.2,0.06
+GPT4o,Non Queer,Negative,0.24,0.02
+GPT4o,Non Queer,Neutral,0.59,0.03
+GPT4o,Non Queer,Positive,0.18,0.02
+GPT4o,Queer,Negative,0.12,0.01
+GPT4o,Queer,Neutral,0.67,0.02
+GPT4o,Queer,Positive,0.21,0.01
+Gemini 2.0 Flash Lite,Unmarked,Negative,0.17,0.06
+Gemini 2.0 Flash Lite,Unmarked,Neutral,0.66,0.07
+Gemini 2.0 Flash Lite,Unmarked,Positive,0.16,0.05
 Gemini 2.0 Flash Lite,Non Queer,Negative,0.22,0.02
-Gemini 2.0 Flash Lite,Non Queer,Neutral,0.58,0.02
-Gemini 2.0 Flash Lite,Non Queer,Positive,0.21,0.02
+Gemini 2.0 Flash Lite,Non Queer,Neutral,0.6,0.02
+Gemini 2.0 Flash Lite,Non Queer,Positive,0.18,0.02
 Gemini 2.0 Flash Lite,Queer,Negative,0.16,0.01
-Gemini 2.0 Flash Lite,Queer,Neutral,0.63,0.02
-Gemini 2.0 Flash Lite,Queer,Positive,0.21,0.01
+Gemini 2.0 Flash Lite,Queer,Neutral,0.64,0.02
+Gemini 2.0 Flash Lite,Queer,Positive,0.19,0.01
 Gemini 2.0 Flash,Unmarked,Negative,0.12,0.05
 Gemini 2.0 Flash,Unmarked,Neutral,0.71,0.07
-Gemini 2.0 Flash,Unmarked,Positive,0.17,0.05
-Gemini 2.0 Flash,Non Queer,Negative,0.18,0.02
-Gemini 2.0 Flash,Non Queer,Neutral,0.62,0.02
-Gemini 2.0 Flash,Non Queer,Positive,0.19,0.02
+Gemini 2.0 Flash,Unmarked,Positive,0.18,0.05
+Gemini 2.0 Flash,Non Queer,Negative,0.22,0.02
+Gemini 2.0 Flash,Non Queer,Neutral,0.63,0.03
+Gemini 2.0 Flash,Non Queer,Positive,0.16,0.02
 Gemini 2.0 Flash,Queer,Negative,0.11,0.01
-Gemini 2.0 Flash,Queer,Neutral,0.73,0.01
-Gemini 2.0 Flash,Queer,Positive,0.16,0.01
+Gemini 2.0 Flash,Queer,Neutral,0.75,0.01
+Gemini 2.0 Flash,Queer,Positive,0.14,0.01

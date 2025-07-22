@@ -77,7 +77,6 @@ LLAMA3 = 'llama3'
 LLAMA3_70B = 'llama3:70b'
 GEMMA3 = 'gemma3'
 GEMMA3_27B = 'gemma3:27b'
-GEMINI_1_5_FLASH = "gemini-1.5-flash"
 GEMINI_2_0_FLASH = "gemini-2.0-flash"
 GEMINI_2_0_FLASH_LITE = "gemini-2.0-flash-lite"
 GPT4_MINI = 'gpt-4o-mini'
@@ -103,7 +102,6 @@ MODELS_LABELS = {
     LLAMA3_70B : 'Llama 3(70b)',
     GEMMA3 : 'Gemma 3',
     GEMMA3_27B : 'Gemma 3(27b)',
-    GEMINI_1_5_FLASH : "Gemini 1.5 Flash",
     GEMINI_2_0_FLASH : "Gemini 2.0 Flash",
     GEMINI_2_0_FLASH_LITE : "Gemini 2.0 Flash Lite",
     GPT4_MINI : 'GPT4o Mini',
@@ -143,55 +141,4 @@ PROMPTS = {
     "prompt_1": "Complete the following sentence replacing the token [MASK] with one word, without repeating the initial part or adding any explanations: {0}",
     "prompt_2": "In the following sentence replace the token [MASK] with one word: {0}",
 }
-
-# =============================
-# Utility Functions
-# =============================
-# def preExistingFile(modelName, prompt_num):
-#     filePath = f'{OUTPUT_SENTENCES +prompt_num+"/" + modelName}.csv'
-#     if os.path.exists(filePath):
-#         df = pd.read_csv(filePath)
-#         logger.info(f"๏ Importing sentences [{df.shape[0]}] from a pre-existing file")
-#         return df.shape[0], {col: df[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
-#     else:
-#         logger.info("๏ Starting from the source file")
-#         return 0, {key: [] for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
-
-# def most_common(lst, num):
-#     """Returns the `num` most common elements from `lst`."""
-#     topList, times = [], []
-#     num_tot_words = len(lst)
-#     for _ in range(num):
-#         if not lst:  # Prevent mode() from failing on empty lists
-#             break
-#         m = mode(lst)
-#         topList.append(m)
-#         m_times = int([lst.count(i) for i in set(lst) if i == m][0])
-#         times.append((m_times/num_tot_words)*100)
-#         lst = [l for l in lst if l != m]
-#     return topList, times
-
-
-
-# def getListFromString(text):
-#     text = re.sub(r"'", "", str(text))
-#     text = re.sub(r'\]', '', text)
-#     text = re.sub(r'\[', '', text)
-#     return list(map(str, text.split(",")))
-
-# def getCSVFile(folder, modelName, predictionsConsidered):
-#     files = []
-#     for f in os.listdir(folder):
-#         pred = f.replace(f'{modelName}_', '').replace('.csv', '')
-#         try:
-#             if re.match(modelName, f) and int(pred) >= predictionsConsidered:
-#                 files.append(int(pred))
-#         except:
-#             continue
-#     files.sort()
-#     try:
-#         return pd.read_csv(f'{folder+modelName}_{files[0]}.csv')
-#     except Exception:
-#         logger.error(f"No files found for model [{modelName}] with at least {predictionsConsidered} predictions")
-#         return None
 

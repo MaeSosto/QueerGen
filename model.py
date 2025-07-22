@@ -71,26 +71,30 @@ class Model:
         self.prompt_num = prompt_num
         num_row_processed, prediction_dic = self._get_prediction_file()
         
-        if num_row_processed == None:
-            return
+        if num_row_processed >= self.template_complete_file.shape[0]:
+            logger.info(f"๏ {self.model_name} with {self.prompt_num} evaluated already!")
+            return num_row_processed
+        else:
+            logger.info(f"๏ Importing sentences [{num_row_processed}] from a pre-existing file")
+            
 
-        #logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
-        for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model..."):
-            self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
-            self.prompt = PROMPTS[prompt_num].format(self.sentence)
-            try:
-                response = self.send_request[self.model_name]()
-                if response is None:
+            #logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
+            for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model..."):
+                self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
+                self.prompt = PROMPTS[prompt_num].format(self.sentence)
+                try:
+                    response = self.send_request[self.model_name]()
+                    if response is None:
+                        return None
+                    for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
+                        prediction_dic[key].append(row[key])
+                    prediction_dic[PREDICTION].append(response)
+
+                    self._save_csv(prediction_dic)
+                except Exception as X:
+                    logger.error(f"generateSentences: {X}")
                     break
-                for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
-                    prediction_dic[key].append(row[key])
-                prediction_dic[PREDICTION].append(response)
-
-                self._save_csv(prediction_dic)
-            except Exception as X:
-                logger.error(f"generateSentences: {X}")
-                break
-        #logger.info("๏ File generated!")
+            #logger.info("๏ File generated!")
 
         
     # === Initialization Functions ===
@@ -118,10 +122,6 @@ class Model:
             prediction_file = pd.read_csv(prediction_file_path)
             num_row_processed = prediction_file.shape[0]
             prediction_dic = {col: prediction_file[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
-            if num_row_processed >= self.template_complete_file.shape[0]:
-                logger.info(f"๏ {self.model_name} with {self.prompt_num} evaluated already!")
-                return None, None
-            logger.info(f"๏ Importing sentences [{prediction_file.shape[0]}] from a pre-existing file")
         else:
             logger.info("๏ Starting from the source file")
             num_row_processed = 0
@@ -178,7 +178,7 @@ class Model:
             return self._clean_response(response.json()['response'])
         
         except Exception as X:
-            logger.error(f"_request_ollama: {response["text"]}")
+            logger.error(f"_request_ollama: {response['text']}")
             return None
 
     def _request_gemini(self):
@@ -190,14 +190,14 @@ class Model:
             return None
 
     def _request_open_ai(self):
-        console.setLevel(logging.ERROR)
+        logger.setLevel(logging.ERROR)
         try:
             completion = self.client.chat.completions.create(
                 model=self.model_name, store=True,
                 messages=[{"role": "user", "content": self.prompt}],
                 temperature=0
             )
-            console.setLevel(logging.INFO)
+            logger.setLevel(logging.INFO)
             return self._clean_response(completion.choices[0].message.content)
         except Exception as X:
             logger.error(f"_request_open_ai: {X}")
