@@ -120,7 +120,7 @@ TEXTBLOB = "TextBlob"
 GOOGLE_CLOUD_NL = 'GoogleCloud'
 REGARD = 'Regard'
 PERSPECTIVE = 'Perspective'
-LOG_LIKELYHOOD = 'log_likelihood'
+LOG_LIKELIHOOD = 'log_likelihood'
 
 # Perspective Categories
 TOXICITY = 'TOXICITY'

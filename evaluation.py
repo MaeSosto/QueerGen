@@ -26,7 +26,7 @@ class Evaluation:
             # FLAIR: self._FLAIR_setup,
             REGARD: self._regard_setup,
             PERSPECTIVE: self._perpective_setup,
-            LOG_LIKELYHOOD: self._log_likelyhood_setup
+            LOG_LIKELIHOOD: self._log_likelyhood_setup
         }
         
         self.tool_functions = {
@@ -36,7 +36,7 @@ class Evaluation:
             # TEXTBLOB: self._get_TextBlob_scores,
             REGARD: self._get_regard_scores,
             PERSPECTIVE: self._get_perspective_scores,
-            LOG_LIKELYHOOD: self._get_log_likelyhood_scores,
+            LOG_LIKELIHOOD: self._get_log_likelyhood_scores,
         }
         
     def evaluate(self, model_name, prompt_num = "prompt_0"):

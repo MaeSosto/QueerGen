@@ -13,15 +13,15 @@ from evaluation import *
 # ]
 
 # === Generate predictions ===
-for model_name in [DEEPSEEK_671B]:
+for model_name in [GEMMA3_27B]:
     model = Model(model_name)
-    #for prompt_num in PROMPTS:
-    proc = model.get_predictions("prompt_2")
-        # if proc is None:
-        #     break
+    for prompt_num in PROMPTS:
+        proc = model.get_predictions(prompt_num)
+        if proc is None:
+            break
 
 # === Evaluate predictions  ===
-# for model_name in [DEEPSEEK_671B] :
-#     evaluation = Evaluation()
-#     for prompt_num in PROMPTS:
-#         evaluation.evaluate(model_name, prompt_num)
+for model_name in [GEMMA3_27B] :
+    evaluation = Evaluation()
+    for prompt_num in PROMPTS:
+        evaluation.evaluate(model_name, prompt_num)
