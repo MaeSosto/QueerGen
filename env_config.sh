@@ -48,8 +48,10 @@ python setup.py install
 cd .. 
 cd ..
 
-for pkg in vadersentiment flair textblob; do
+for pkg in vadersentiment flair textblob spacy; do
     python -m textblob.download_corpora
+    python -m spacy download en_core_web_sm
+    python -m spacy download en
     echo "   → Installing $pkg..."
     pip install "$pkg" || { echo "❌ Failed to install $pkg"; exit 1; }
 done

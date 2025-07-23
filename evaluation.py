@@ -11,6 +11,7 @@ from textblob import TextBlob
 from googleapiclient.errors import HttpError
 from transformers import BertTokenizer, BertForMaskedLM
 from transformers import logging
+import spacy
 logging.set_verbosity_error()
 warnings.filterwarnings('ignore')
 
@@ -20,13 +21,16 @@ EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
 class Evaluation:
     
     def __init__(self):
+        self.template_file = pd.read_csv(DATA_SOURCE + 'templates.csv')
+        
         self.initialize_tools = {
             # AFINN: self._afinn_setup,
             VADER: self._VADER_setup,
             # FLAIR: self._FLAIR_setup,
             REGARD: self._regard_setup,
             PERSPECTIVE: self._perpective_setup,
-            LOG_LIKELIHOOD: self._log_likelyhood_setup
+            #LOG_LIKELIHOOD: self._log_likelyhood_setup,
+            POS: self._pos_setup
         }
         
         self.tool_functions = {
@@ -36,71 +40,80 @@ class Evaluation:
             # TEXTBLOB: self._get_TextBlob_scores,
             REGARD: self._get_regard_scores,
             PERSPECTIVE: self._get_perspective_scores,
-            LOG_LIKELIHOOD: self._get_log_likelyhood_scores,
+            #LOG_LIKELIHOOD: self._get_log_likelyhood_scores,
+            POS: self._get_POS_scores
         }
         
-    def evaluate(self, model_name, prompt_num = "prompt_0"):
+    def evaluate(self, model_name, prompt_num = 2):
         self.model_name = model_name
         self.prompt_num = prompt_num
-        os.makedirs(OUTPUT_EVALUATION + self.prompt_num+"/", exist_ok=True)
-        
-        self.evaluation_file = self._get_template_file()
+        os.makedirs(f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/", exist_ok=True)
+        self.evaluation_file = self._get_evaluation_file()
         if self.evaluation_file.empty:
             return None
         
+        self.template_list = [row[TEMPLATE] for _, row in self.evaluation_file.iterrows()]
         self.predictions_list = [str(row[PREDICTION]) for _, row in self.evaluation_file.iterrows()]
         self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.evaluation_file.iterrows()]
         self.xyz_subject = [f"{re.sub('The '+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
         
         start_evaluation = True
         for key, score_function in self.tool_functions.items():
-            if start_evaluation: logger.info(f"○ Evaluating {model_name} with {prompt_num}"); start_evaluation = False
             if key in self.initialize_tools:
                 self.initialize_tools[key]()
             self.key = key
             if key == REGARD and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
+                if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
                 logger.info(f"○ Calculating {key} scores...")
                 res = score_function()
                 if res: break
             elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
+                if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
                 logger.info(f"○ Calculating {key} scores...")
                 res = score_function()
                 if res: break
             elif key != REGARD and key != PERSPECTIVE and key not in self.evaluation_file.columns:
+                if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
                 logger.info(f"○ Calculating {key} scores...")
                 score_function()
                 
             self.save_csv()
-        logger.info(f"○ Evaluated: {model_name} with {self.prompt_num}")    
+        logger.info(f"✅ {model_name} [prompt {int(self.prompt_num)+1}]")    
         
-    def _get_template_file(self):
-        prediction_file = f"{OUTPUT_SENTENCES}{self.prompt_num}/{self.model_name}.csv"
-        evaluation_file = f"{OUTPUT_EVALUATION}{self.prompt_num}/{self.model_name}.csv"
-
+    def _get_evaluation_file(self):
+        prediction_file = f"{OUTPUT_SENTENCES}prompt_{self.prompt_num}/{self.model_name}.csv"
+        evaluation_file = f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/{self.model_name}.csv"
+        
         if os.path.exists(prediction_file):
             prediction_file = pd.read_csv(prediction_file)
             if os.path.exists(evaluation_file):
                 evaluation_file = pd.read_csv(evaluation_file)
-                logger.info(f"๏ {evaluation_file.shape[0]} sentences imported!")
+                if evaluation_file.shape[0] < prediction_file.shape[0]:
+                    logger.info(f"🔙 {evaluation_file.shape[0]} sentences imported")
                 prediction_file = prediction_file[evaluation_file.shape[0]:]
             else:
                 evaluation_file, prediction_file = pd.DataFrame(), prediction_file[0:]
             prediction_file = pd.concat([evaluation_file, prediction_file]) if not evaluation_file.empty else prediction_file
             return prediction_file
         else: 
-            logger.warning(f"○ {self.model_name} with {self.prompt_num} prediction file not found")
+            logger.warning(f"○ {self.model_name} with prompt {self.prompt_num} prediction file not found")
             return pd.DataFrame()
     
+    def _get_expected_word(self, sentence):
+            for _, row in self.template_file.iterrows():
+                if sentence.lower().strip().startswith(row[TEMPLATE].lower()):
+                    return row[EXPECTED_WORD_TYPE].split()
+
     def save_csv(self):
         if self.model_name in MODEL_MLM:
-            for prompt in PROMPTS:
+            for idx, _ in enumerate(PROMPTS):
                 self.evaluation_file.to_csv(
-                    OUTPUT_EVALUATION + prompt + "/" + self.model_name + ".csv",
+                    f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/{self.model_name}.csv",
                     index=False
                 )
         else:
             self.evaluation_file.to_csv(
-                OUTPUT_EVALUATION + self.prompt_num + "/" + self.model_name + ".csv",
+                f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/{self.model_name}.csv",
                 index=False
             )
             
@@ -115,6 +128,27 @@ class Evaluation:
             static_discovery=False)
     def _regard_setup(self): self.client = load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
     def _log_likelyhood_setup(self): self.client = load("perplexity", module_type="metric")
+    def _pos_setup(self): self.client = spacy.load("en_core_web_sm")
+    
+    def _get_POS_scores(self):
+        noun_tags = {"NN", "NNS", "NNP", "NNPS"}
+        verb_tags = {"VB", "VBD", "VBG", "VBN", "VBP", "VBZ"}
+        POS_scores = []
+        for idx, sentence in tqdm(enumerate(self.unmarked_sentence_list), total=len(self.unmarked_sentence_list)):
+            sentence = self.client(sentence)
+            sentence_tokens = [token for token in sentence if not token.is_space and not token.is_punct]
+            last_token = sentence[-1]
+            ok_types = self._get_expected_word(self.template_list[idx])
+            # Fine-grained POS tags (Penn Treebank)
+            
+            #if (last_token.tag_ in noun_tags) or (last_token.tag_ == "JJ" and len(sentence_tokens) >= 2 and sentence_tokens[-2].lower_ in {"a", "an", "the"}) and "NOUN" in ok_types:
+            if last_token.tag_ in noun_tags and "NOUN" in ok_types:
+                POS_scores.append(True)
+            elif last_token.tag_ in verb_tags and "VERB" in ok_types:
+                POS_scores.append(True)
+            else:
+                POS_scores.append(False)
+        self.evaluation_file[self.key] = POS_scores
     
     # === Score Functions ===
     def _get_Afinn_scores(self, sentence = False):

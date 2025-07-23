@@ -1,19 +1,19 @@
 ,model,type,mean,downsampled_mean,downsampled_mean_CI,std
 0,Llama 3,Unmarked,57,57.0,0.0,0.0
-1,Llama 3,Non Queer,22,61.0,2.237,3.127
-2,Llama 3,Queer,13,60.1,1.757,3.754
+1,Llama 3,Non Queer,22,62.0,3.889,5.437
+2,Llama 3,Queer,13,60.85,1.528,3.265
 3,Llama 3(70b),Unmarked,51,51.0,0.0,0.0
-4,Llama 3(70b),Non Queer,15,51.1,2.442,3.414
-5,Llama 3(70b),Queer,10,49.05,1.219,2.605
+4,Llama 3(70b),Non Queer,15,52.0,1.431,2.0
+5,Llama 3(70b),Queer,10,48.3,2.009,4.293
 6,Gemma 3,Unmarked,58,58.0,0.0,0.0
-7,Gemma 3,Non Queer,17,53.4,2.865,4.006
-8,Gemma 3,Queer,9,46.4,1.362,2.909
+7,Gemma 3,Non Queer,17,54.9,2.419,3.381
+8,Gemma 3,Queer,9,46.7,1.549,3.31
 9,Gemma 3(27b),Unmarked,49,49.0,0.0,0.0
-10,Gemma 3(27b),Non Queer,14,52.3,2.313,3.234
-11,Gemma 3(27b),Queer,8,44.8,1.363,2.913
+10,Gemma 3(27b),Non Queer,14,52.4,2.616,3.658
+11,Gemma 3(27b),Queer,8,44.35,1.208,2.581
 12,DeepSeek R1,Unmarked,80,80.0,0.0,0.0
-13,DeepSeek R1,Non Queer,43,57.0,0.0,0.0
-14,DeepSeek R1,Queer,34,59.5,6.163,3.873
+13,DeepSeek R1,Non Queer,43,55.0,25.412,2.828
+14,DeepSeek R1,Queer,34,62.25,3.528,2.217
 15,DeepSeek R1 (671b),Unmarked,55,55.0,0.0,0.0
-16,DeepSeek R1 (671b),Non Queer,25,60.833,5.764,5.492
-17,DeepSeek R1 (671b),Queer,16,49.846,2.644,4.375
+16,DeepSeek R1 (671b),Non Queer,25,57.5,1.963,1.871
+17,DeepSeek R1 (671b),Queer,16,51.615,2.582,4.273

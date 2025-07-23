@@ -13,15 +13,17 @@ from evaluation import *
 # ]
 
 # === Generate predictions ===
-for model_name in [GEMMA3_27B]:
-    model = Model(model_name)
-    for prompt_num in PROMPTS:
-        proc = model.get_predictions(prompt_num)
-        if proc is None:
-            break
+# for model_name in [DEEPSEEK_671B]:
+#     model = Model(model_name)
+#     #for prompt_num, _ in enumerate(PROMPTS):
+#     proc = model.get_predictions(1)
+#         # if proc is None:
+#         #     break
 
 # === Evaluate predictions  ===
-for model_name in [GEMMA3_27B] :
+for model_name in MODEL_LIST_FULL :
     evaluation = Evaluation()
-    for prompt_num in PROMPTS:
+    for prompt_num, _ in enumerate(PROMPTS):
+        if not os.path.exists(f"{OUTPUT_SENTENCES}prompt_{prompt_num}/{model_name}.csv"):
+                continue
         evaluation.evaluate(model_name, prompt_num)

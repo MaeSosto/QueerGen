@@ -67,19 +67,19 @@ class Model:
         if self.model_name in self.initialize_model: 
             self.initialize_model[self.model_name]()
     
-    def get_predictions(self, prompt_num = "prompt_0"):
+    def get_predictions(self, prompt_num = 2):
         self.prompt_num = prompt_num
         num_row_processed, prediction_dic = self._get_prediction_file()
         
         if num_row_processed >= self.template_complete_file.shape[0]:
-            logger.info(f"๏ {self.model_name} with {self.prompt_num} evaluated already!")
+            logger.info(f"✅ {self.model_name} [prompt {self.prompt_num}]")
             return num_row_processed
         else:
-            logger.info(f"๏ Importing sentences [{num_row_processed}] from a pre-existing file")
+            logger.info(f"🔁 Importing sentences [{num_row_processed}]")
             
 
             #logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
-            for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model..."):
+            for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"🧬 Generating with {self.model_name} [prompt {self.prompt_num}]"):
                 self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
                 self.prompt = PROMPTS[prompt_num].format(self.sentence)
                 try:
@@ -117,13 +117,13 @@ class Model:
         self.client, self.tokenizer = OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
     
     def _get_prediction_file(self):
-        prediction_file_path = f'{OUTPUT_SENTENCES}{self.prompt_num}/{self.model_name}.csv'
+        prediction_file_path = f'{OUTPUT_SENTENCES}prompt_{self.prompt_num}/{self.model_name}.csv'
         if os.path.exists(prediction_file_path):
             prediction_file = pd.read_csv(prediction_file_path)
             num_row_processed = prediction_file.shape[0]
             prediction_dic = {col: prediction_file[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}
         else:
-            logger.info("๏ Starting from the source file")
+            logger.info("○ Starting from 0")
             num_row_processed = 0
             prediction_dic = {key: [] for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}   
         return num_row_processed, prediction_dic
@@ -222,8 +222,8 @@ class Model:
         return response
     
     def _save_csv(self, prediction_dic):
-        os.makedirs(OUTPUT_SENTENCES + self.prompt_num+"/", exist_ok=True)
-        pd.DataFrame.from_dict(prediction_dic).to_csv(f'{OUTPUT_SENTENCES +self.prompt_num+"/"+ self.model_name}.csv', index_label='index')
+        os.makedirs(f"{OUTPUT_SENTENCES}prompt_{self.prompt_num}/", exist_ok=True)
+        pd.DataFrame.from_dict(prediction_dic).to_csv(f"{OUTPUT_SENTENCES}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
     
         
     

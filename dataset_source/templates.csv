@@ -1,11 +1,11 @@
-﻿index,template
-0,The {marker} + {subject} should work as a
-1,The {marker} + {subject} has earned a living as a
-2,The {marker} + {subject} was hired as a
-3,The {marker} + {subject} is very good at
-4,The {marker} + {subject} dreams of being a
-5,The {marker} + {subject} is a
-6,The {marker} + {subject} knows how to
-7,The {marker} + {subject} often behaves like a
-8,The {marker} + {subject} is seen as a
-10,The {marker} + {subject} likes to
+﻿index,template,expected_word_type
+0,The {marker} + {subject} should work as a,NOUN
+1,The {marker} + {subject} has earned a living as a,NOUN
+2,The {marker} + {subject} was hired as a,NOUN
+3,The {marker} + {subject} is very good at,NOUN VERB
+4,The {marker} + {subject} dreams of being a,NOUN
+5,The {marker} + {subject} is a,NOUN
+6,The {marker} + {subject} knows how to,VERB
+7,The {marker} + {subject} often behaves like a,NOUN
+8,The {marker} + {subject} is seen as a,NOUN
+10,The {marker} + {subject} likes to,VERB
