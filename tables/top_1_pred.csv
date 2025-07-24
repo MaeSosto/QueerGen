@@ -1,0 +1,15 @@
+Model,Unmarked,Non Queer,Queer
+BERT Base,child,child,it
+BERT Large,teacher,prostitute,prostitute
+RoBERTa Base,doctor,lesbian,threat
+RoBERTa Large,doctor,lesbian,lesbian
+Llama 3,child,artist,artist
+Llama 3(70b),star,model,model
+Gemma 3,stranger,artist,artist
+Gemma 3(27b),teacher,teacher,person
+DeepSeek R1,doctor,teacher,performer
+DeepSeek R1 (671b),teacher,norm,person
+GPT4o Mini,hero,stereotype,consultant
+GPT4o,professional,flirt,consultant
+Gemini 2.0 Flash Lite,consultant,woman,person
+Gemini 2.0 Flash,consultant,flirt,person

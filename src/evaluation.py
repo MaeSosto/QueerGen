@@ -1,5 +1,5 @@
 # === Imports ===
-from lib import *
+from src.lib import *
 from afinn import Afinn
 from evaluate import load 
 import warnings, time
@@ -29,8 +29,7 @@ class Evaluation:
             # FLAIR: self._FLAIR_setup,
             REGARD: self._regard_setup,
             PERSPECTIVE: self._perpective_setup,
-            #LOG_LIKELIHOOD: self._log_likelyhood_setup,
-            POS: self._pos_setup
+            POS: self._pos_setup,
         }
         
         self.tool_functions = {
@@ -40,8 +39,7 @@ class Evaluation:
             # TEXTBLOB: self._get_TextBlob_scores,
             REGARD: self._get_regard_scores,
             PERSPECTIVE: self._get_perspective_scores,
-            #LOG_LIKELIHOOD: self._get_log_likelyhood_scores,
-            POS: self._get_POS_scores
+            POS: self._get_POS_scores,
         }
         
     def evaluate(self, model_name, prompt_num = PROMPT_DEFAULT):
@@ -127,7 +125,6 @@ class Evaluation:
             discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
             static_discovery=False)
     def _regard_setup(self): self.client = load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
-    def _log_likelyhood_setup(self): self.client = load("perplexity", module_type="metric")
     def _pos_setup(self): self.client = spacy.load("en_core_web_sm")
     
     def _get_POS_scores(self):
@@ -139,9 +136,7 @@ class Evaluation:
             sentence_tokens = [token for token in sentence if not token.is_space and not token.is_punct]
             last_token = sentence[-1]
             ok_types = self._get_expected_word(self.template_list[idx])
-            # Fine-grained POS tags (Penn Treebank)
             
-            #if (last_token.tag_ in noun_tags) or (last_token.tag_ == "JJ" and len(sentence_tokens) >= 2 and sentence_tokens[-2].lower_ in {"a", "an", "the"}) and "NOUN" in ok_types:
             if last_token.tag_ in noun_tags and "NOUN" in ok_types:
                 POS_scores.append(True)
             elif last_token.tag_ in verb_tags and "VERB" in ok_types:
@@ -149,6 +144,7 @@ class Evaluation:
             else:
                 POS_scores.append(False)
         self.evaluation_file[self.key] = POS_scores
+    
     
     # === Score Functions ===
     def _get_Afinn_scores(self, sentence = False):
@@ -226,44 +222,3 @@ class Evaluation:
                 timeError += 1
         return {cat: row.get(cat, 0) for cat in PERSPECTIVE_CATEGORIES}
     
-    def _get_log_likelyhood_scores(self):
-        scores = []
-        for idx in tqdm(range(len(self.unmarked_sentence_list)), total=len(self.unmarked_sentence_list)):
-            scores.append(self.get_log_probability_for_word(self.unmarked_sentence_list[idx], self.predictions_list[idx]))
-        self.evaluation_file[self.key] = scores
-    
-    
-    def get_log_probability_for_word(self, sentence, target_word):
-        model_name = 'bert-base-uncased'
-        tokenizer = BertTokenizer.from_pretrained(model_name)
-        model = BertForMaskedLM.from_pretrained(model_name)
-        model.eval()
-
-        # Tokenize target word
-        target_tokens = tokenizer.tokenize(target_word)
-        num_masks = len(target_tokens)
-
-        # Add appropriate number of [MASK] tokens
-        masked_sentence = sentence + " " + " ".join([MASKBERT] * num_masks)
-        inputs = tokenizer(masked_sentence, return_tensors="pt")
-        mask_indices = (inputs['input_ids'][0] == tokenizer.mask_token_id).nonzero(as_tuple=True)[0]
-
-        if len(mask_indices) != num_masks:
-            print(f"⚠️ Number of [MASK] tokens doesn't match target token length for '{target_word}'")
-            return None
-
-        with torch.no_grad():
-            outputs = model(**inputs)
-            logits = outputs.logits
-
-        log_probs = torch.log_softmax(logits, dim=-1)
-        target_ids = tokenizer.convert_tokens_to_ids(target_tokens)
-
-        # Sum log probabilities of each masked token prediction
-        total_log_prob = 0.0
-        for i, mask_idx in enumerate(mask_indices):
-            token_id = target_ids[i]
-            token_log_prob = log_probs[0, mask_idx, token_id].item()
-            total_log_prob += token_log_prob
-
-        return total_log_prob

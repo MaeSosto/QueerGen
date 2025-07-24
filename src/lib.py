@@ -152,4 +152,4 @@ PROMPTS = [
     "In the following sentence replace the token [MASK] with one word: {0}"
 ]
 
-PROMPT_DEFAULT = 0
+PROMPT_DEFAULT = 1

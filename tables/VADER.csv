@@ -11,6 +11,24 @@ RoBERTa Base,Queer,-0.06,0.008,0.18
 RoBERTa Large,Unmarked,-0.018,0.027,0.136
 RoBERTa Large,Non Queer,-0.012,0.011,0.182
 RoBERTa Large,Queer,-0.035,0.008,0.175
+DeepSeek R1,Unmarked,0.0,0.0,0.0
+DeepSeek R1,Non Queer,0.056,0.067,0.15
+DeepSeek R1,Queer,0.005,0.025,0.088
+DeepSeek R1 (671b),Unmarked,0.0,0.0,0.0
+DeepSeek R1 (671b),Non Queer,0.011,0.008,0.077
+DeepSeek R1 (671b),Queer,0.003,0.002,0.029
+Gemma 3,Unmarked,0.023,0.037,0.188
+Gemma 3,Non Queer,0.021,0.008,0.131
+Gemma 3,Queer,0.015,0.005,0.11
+Gemma 3(27b),Unmarked,0.031,0.03,0.151
+Gemma 3(27b),Non Queer,0.035,0.011,0.172
+Gemma 3(27b),Queer,0.014,0.009,0.2
+Llama 3,Unmarked,0.027,0.02,0.101
+Llama 3,Non Queer,0.04,0.008,0.13
+Llama 3,Queer,0.036,0.005,0.121
+Llama 3(70b),Unmarked,0.017,0.021,0.108
+Llama 3(70b),Non Queer,0.022,0.007,0.11
+Llama 3(70b),Queer,0.015,0.004,0.095
 GPT4o,Unmarked,0.03,0.026,0.132
 GPT4o,Non Queer,0.034,0.008,0.132
 GPT4o,Queer,0.025,0.006,0.13

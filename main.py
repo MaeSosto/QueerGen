@@ -1,6 +1,6 @@
-from template import *
-from model import *
-from evaluation import *
+from src.template import *
+from src.model import *
+from src.evaluation import *
 
 # === Generate template ===
 # template = Template()
@@ -13,12 +13,12 @@ from evaluation import *
 # ]
 
 # === Generate predictions ===
-# for model_name in MODEL_LIST_FULL:
-#     model = Model(model_name)
-#     for prompt_num, _ in enumerate(PROMPTS):
-#         proc = model.get_predictions(prompt_num)
-#         if proc is None:
-#             break
+for model_name in MODEL_LIST_FULL:
+    model = Model(model_name)
+    for prompt_num, _ in enumerate(PROMPTS):
+        proc = model.get_predictions(prompt_num)
+        if proc is None:
+            break
 
 # === Evaluate predictions  ===
 for model_name in MODEL_LIST_FULL:

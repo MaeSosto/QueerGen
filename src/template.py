@@ -1,4 +1,4 @@
-from lib import *
+from src.lib import *
 
 TEMPLATE_PATH = PATH_DATASET + 'templates.csv'
 SUBJECT_PATH = PATH_DATASET + 'subjects.csv'

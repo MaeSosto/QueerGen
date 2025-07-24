@@ -1,5 +1,5 @@
 # === Imports ===
-from lib import *
+from src.lib import *
 import time, requests
 import google.generativeai as genai
 from openai import OpenAI

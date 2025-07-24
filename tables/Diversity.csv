@@ -1,25 +1,43 @@
 Model,type,Diversity,CI,STD
 BERT Base,Unmarked,29.0,0.0,0.0
-BERT Base,Non Queer,43.0,2.385,3.333
-BERT Base,Queer,44.2,1.5,3.205
+BERT Base,Non Queer,42.7,2.921,4.084
+BERT Base,Queer,43.05,1.412,3.017
 BERT Large,Unmarked,37.0,0.0,0.0
-BERT Large,Non Queer,45.6,2.845,3.978
-BERT Large,Queer,41.65,1.679,3.588
+BERT Large,Non Queer,47.0,2.524,3.528
+BERT Large,Queer,43.3,1.457,3.114
 RoBERTa Base,Unmarked,39.0,0.0,0.0
-RoBERTa Base,Non Queer,43.1,2.578,3.604
-RoBERTa Base,Queer,47.1,1.663,3.553
+RoBERTa Base,Non Queer,43.5,3.713,5.191
+RoBERTa Base,Queer,46.35,1.245,2.661
 RoBERTa Large,Unmarked,41.0,0.0,0.0
-RoBERTa Large,Non Queer,46.3,2.187,3.057
-RoBERTa Large,Queer,41.65,1.466,3.133
+RoBERTa Large,Non Queer,47.0,2.59,3.621
+RoBERTa Large,Queer,40.4,1.362,2.909
+DeepSeek R1,Unmarked,80.0,0.0,0.0
+DeepSeek R1,Non Queer,62.5,19.059,2.121
+DeepSeek R1,Queer,62.5,6.688,4.203
+DeepSeek R1 (671b),Unmarked,55.0,0.0,0.0
+DeepSeek R1 (671b),Non Queer,61.8,2.955,4.131
+DeepSeek R1 (671b),Queer,60.263,1.98,4.107
+Gemma 3,Unmarked,58.0,0.0,0.0
+Gemma 3,Non Queer,54.5,4.12,5.759
+Gemma 3,Queer,45.75,1.717,3.669
+Gemma 3(27b),Unmarked,49.0,0.0,0.0
+Gemma 3(27b),Non Queer,52.4,3.308,4.624
+Gemma 3(27b),Queer,46.8,1.851,3.955
+Llama 3,Unmarked,57.0,0.0,0.0
+Llama 3,Non Queer,59.5,2.39,3.342
+Llama 3,Queer,61.1,1.104,2.36
+Llama 3(70b),Unmarked,51.0,0.0,0.0
+Llama 3(70b),Non Queer,52.4,2.865,4.006
+Llama 3(70b),Queer,49.05,1.78,3.804
 GPT4o,Unmarked,51.0,0.0,0.0
-GPT4o,Non Queer,54.4,2.413,3.373
-GPT4o,Queer,52.2,1.9,4.06
+GPT4o,Non Queer,54.2,1.575,2.201
+GPT4o,Queer,51.95,1.734,3.706
 GPT4o Mini,Unmarked,54.0,0.0,0.0
-GPT4o Mini,Non Queer,53.7,2.862,4.001
-GPT4o Mini,Queer,48.75,2.2,4.7
+GPT4o Mini,Non Queer,54.1,2.395,3.348
+GPT4o Mini,Queer,48.5,2.497,5.336
 Gemini 2.0 Flash,Unmarked,62.0,0.0,0.0
-Gemini 2.0 Flash,Non Queer,66.8,2.473,3.458
-Gemini 2.0 Flash,Queer,57.7,2.137,4.566
+Gemini 2.0 Flash,Non Queer,62.0,2.92,4.082
+Gemini 2.0 Flash,Queer,56.25,1.821,3.892
 Gemini 2.0 Flash Lite,Unmarked,61.0,0.0,0.0
-Gemini 2.0 Flash Lite,Non Queer,58.8,2.651,3.706
-Gemini 2.0 Flash Lite,Queer,53.2,1.618,3.458
+Gemini 2.0 Flash Lite,Non Queer,56.9,2.298,3.213
+Gemini 2.0 Flash Lite,Queer,53.15,1.273,2.72
