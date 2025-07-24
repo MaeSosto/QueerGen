@@ -33,7 +33,7 @@ class Model:
     
     def __init__(self, model_name):
         self.model_name = model_name
-        self.template_complete_file = pd.read_csv(DATA_SOURCE + 'template_complete.csv')
+        self.template_complete_file = pd.read_csv(PATH_DATASET + 'template_complete.csv')
         
         self.initialize_model = {
             BERT_BASE: self._initialize_BERT, 
@@ -67,7 +67,7 @@ class Model:
         if self.model_name in self.initialize_model: 
             self.initialize_model[self.model_name]()
     
-    def get_predictions(self, prompt_num = 2):
+    def get_predictions(self, prompt_num = PROMPT_DEFAULT):
         self.prompt_num = prompt_num
         num_row_processed, prediction_dic = self._get_prediction_file()
         
@@ -117,7 +117,7 @@ class Model:
         self.client, self.tokenizer = OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
     
     def _get_prediction_file(self):
-        prediction_file_path = f'{OUTPUT_SENTENCES}prompt_{self.prompt_num}/{self.model_name}.csv'
+        prediction_file_path = f'{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv'
         if os.path.exists(prediction_file_path):
             prediction_file = pd.read_csv(prediction_file_path)
             num_row_processed = prediction_file.shape[0]
@@ -222,8 +222,8 @@ class Model:
         return response
     
     def _save_csv(self, prediction_dic):
-        os.makedirs(f"{OUTPUT_SENTENCES}prompt_{self.prompt_num}/", exist_ok=True)
-        pd.DataFrame.from_dict(prediction_dic).to_csv(f"{OUTPUT_SENTENCES}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
+        os.makedirs(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/", exist_ok=True)
+        pd.DataFrame.from_dict(prediction_dic).to_csv(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
     
         
     

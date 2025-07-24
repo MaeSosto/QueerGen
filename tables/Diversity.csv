@@ -1,0 +1,25 @@
+Model,type,Diversity,CI,STD
+BERT Base,Unmarked,29.0,0.0,0.0
+BERT Base,Non Queer,43.0,2.385,3.333
+BERT Base,Queer,44.2,1.5,3.205
+BERT Large,Unmarked,37.0,0.0,0.0
+BERT Large,Non Queer,45.6,2.845,3.978
+BERT Large,Queer,41.65,1.679,3.588
+RoBERTa Base,Unmarked,39.0,0.0,0.0
+RoBERTa Base,Non Queer,43.1,2.578,3.604
+RoBERTa Base,Queer,47.1,1.663,3.553
+RoBERTa Large,Unmarked,41.0,0.0,0.0
+RoBERTa Large,Non Queer,46.3,2.187,3.057
+RoBERTa Large,Queer,41.65,1.466,3.133
+GPT4o,Unmarked,51.0,0.0,0.0
+GPT4o,Non Queer,54.4,2.413,3.373
+GPT4o,Queer,52.2,1.9,4.06
+GPT4o Mini,Unmarked,54.0,0.0,0.0
+GPT4o Mini,Non Queer,53.7,2.862,4.001
+GPT4o Mini,Queer,48.75,2.2,4.7
+Gemini 2.0 Flash,Unmarked,62.0,0.0,0.0
+Gemini 2.0 Flash,Non Queer,66.8,2.473,3.458
+Gemini 2.0 Flash,Queer,57.7,2.137,4.566
+Gemini 2.0 Flash Lite,Unmarked,61.0,0.0,0.0
+Gemini 2.0 Flash Lite,Non Queer,58.8,2.651,3.706
+Gemini 2.0 Flash Lite,Queer,53.2,1.618,3.458

@@ -1,0 +1,25 @@
+Model,type,VADER,CI,STD
+BERT Base,Unmarked,0.012,0.03,0.153
+BERT Base,Non Queer,-0.004,0.007,0.11
+BERT Base,Queer,-0.005,0.006,0.138
+BERT Large,Unmarked,-0.01,0.019,0.097
+BERT Large,Non Queer,-0.003,0.006,0.094
+BERT Large,Queer,-0.017,0.006,0.129
+RoBERTa Base,Unmarked,-0.053,0.038,0.191
+RoBERTa Base,Non Queer,-0.032,0.01,0.158
+RoBERTa Base,Queer,-0.06,0.008,0.18
+RoBERTa Large,Unmarked,-0.018,0.027,0.136
+RoBERTa Large,Non Queer,-0.012,0.011,0.182
+RoBERTa Large,Queer,-0.035,0.008,0.175
+GPT4o,Unmarked,0.03,0.026,0.132
+GPT4o,Non Queer,0.034,0.008,0.132
+GPT4o,Queer,0.025,0.006,0.13
+GPT4o Mini,Unmarked,0.062,0.039,0.196
+GPT4o Mini,Non Queer,0.026,0.011,0.177
+GPT4o Mini,Queer,0.044,0.008,0.19
+Gemini 2.0 Flash,Unmarked,0.009,0.026,0.131
+Gemini 2.0 Flash,Non Queer,0.031,0.008,0.135
+Gemini 2.0 Flash,Queer,0.023,0.005,0.119
+Gemini 2.0 Flash Lite,Unmarked,-0.033,0.025,0.126
+Gemini 2.0 Flash Lite,Non Queer,0.076,0.014,0.226
+Gemini 2.0 Flash Lite,Queer,0.052,0.009,0.212

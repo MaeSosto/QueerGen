@@ -12,16 +12,21 @@ from tqdm import tqdm
 import statistics as st
 from statistics import mode
 from dotenv import load_dotenv
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # =============================
 # Logging Configuration
 # =============================
 logger = logging.getLogger()
-logging.basicConfig(filename='.log', encoding='utf-8', level=logging.DEBUG)
-logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
+if logger.hasHandlers():
+    logger.handlers.clear()
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
+formatter = logging.Formatter('%(message)s')
+console.setFormatter(formatter)
 logger.addHandler(console)
+logger.setLevel(logging.INFO)
+logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 
 # =============================
 # Device Configuration
@@ -44,9 +49,9 @@ load_dotenv()
 # =============================
 # File Paths
 # =============================
-DATA_SOURCE = 'dataset_source/'
-OUTPUT_SENTENCES = 'output_sentences/'
-OUTPUT_EVALUATION = 'output_evaluation/'
+PATH_DATASET = 'data/'
+PATH_GENERATIONS = 'generations/'
+PATH_EVALUATIONS = 'evaluations/'
 
 # =============================
 # Template Variables
@@ -56,6 +61,7 @@ MASKROBERT = '<mask>'
 EXPECTED_WORD_TYPE = "expected_word_type"
 SUBJECT_ = r'\{marker\} \+ \{subject\}'
 TYPE = 'type'
+MODEL = 'Model'
 CATEGORY = 'category'
 MARKER = 'marker'
 MARKED = 'marked'
@@ -122,6 +128,7 @@ TEXTBLOB = "TextBlob"
 GOOGLE_CLOUD_NL = 'GoogleCloud'
 REGARD = 'Regard'
 PERSPECTIVE = 'Perspective'
+DIVERSITY = 'Diversity'
 LOG_LIKELIHOOD = 'log_likelihood'
 POS = 'part_of_speech'
 
@@ -145,6 +152,4 @@ PROMPTS = [
     "In the following sentence replace the token [MASK] with one word: {0}"
 ]
 
-PROMPT_DEFAULT = 1
-
-
+PROMPT_DEFAULT = 0

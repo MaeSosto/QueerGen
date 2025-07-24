@@ -1,9 +1,9 @@
 from lib import *
 
-TEMPLATE_PATH = DATA_SOURCE + 'templates.csv'
-SUBJECT_PATH = DATA_SOURCE + 'subjects.csv'
-MARKER_PATH = DATA_SOURCE + 'markers.csv'
-TEMPLATE_PATH_COMPLETE = DATA_SOURCE + 'template_complete.csv'
+TEMPLATE_PATH = PATH_DATASET + 'templates.csv'
+SUBJECT_PATH = PATH_DATASET + 'subjects.csv'
+MARKER_PATH = PATH_DATASET + 'markers.csv'
+TEMPLATE_PATH_COMPLETE = PATH_DATASET + 'template_complete.csv'
 ADJ = 'adj'
 
 class Template:

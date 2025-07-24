@@ -21,7 +21,7 @@ EVALUATION_MEASUREMENT_PATH = '.venv/evaluate/measurements/'
 class Evaluation:
     
     def __init__(self):
-        self.template_file = pd.read_csv(DATA_SOURCE + 'templates.csv')
+        self.template_file = pd.read_csv(PATH_DATASET + 'templates.csv')
         
         self.initialize_tools = {
             # AFINN: self._afinn_setup,
@@ -44,10 +44,10 @@ class Evaluation:
             POS: self._get_POS_scores
         }
         
-    def evaluate(self, model_name, prompt_num = 2):
+    def evaluate(self, model_name, prompt_num = PROMPT_DEFAULT):
         self.model_name = model_name
         self.prompt_num = prompt_num
-        os.makedirs(f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/", exist_ok=True)
+        os.makedirs(f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/", exist_ok=True)
         self.evaluation_file = self._get_evaluation_file()
         if self.evaluation_file.empty:
             return None
@@ -63,26 +63,26 @@ class Evaluation:
                 self.initialize_tools[key]()
             self.key = key
             if key == REGARD and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
-                if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
-                logger.info(f"○ Calculating {key} scores...")
+                if start_evaluation: logger.info(f"📊 Evaluating {model_name} [prompt {prompt_num}]"); start_evaluation = False
+                logger.info(f"  🧮 Calculating {key} scores...")
                 res = score_function()
                 if res: break
             elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
                 if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
-                logger.info(f"○ Calculating {key} scores...")
+                logger.info(f"  🧮 Calculating {key} scores...")
                 res = score_function()
                 if res: break
             elif key != REGARD and key != PERSPECTIVE and key not in self.evaluation_file.columns:
                 if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
-                logger.info(f"○ Calculating {key} scores...")
+                logger.info(f"  🧮 Calculating {key} scores...")
                 score_function()
                 
             self.save_csv()
-        logger.info(f"✅ {model_name} [prompt {int(self.prompt_num)+1}]")    
+        logger.info(f"✅ {MODELS_LABELS[model_name]} [prompt {int(self.prompt_num)+1}]")    
         
     def _get_evaluation_file(self):
-        prediction_file = f"{OUTPUT_SENTENCES}prompt_{self.prompt_num}/{self.model_name}.csv"
-        evaluation_file = f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/{self.model_name}.csv"
+        prediction_file = f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv"
+        evaluation_file = f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv"
         
         if os.path.exists(prediction_file):
             prediction_file = pd.read_csv(prediction_file)
@@ -108,12 +108,12 @@ class Evaluation:
         if self.model_name in MODEL_MLM:
             for idx, _ in enumerate(PROMPTS):
                 self.evaluation_file.to_csv(
-                    f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/{self.model_name}.csv",
+                    f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv",
                     index=False
                 )
         else:
             self.evaluation_file.to_csv(
-                f"{OUTPUT_EVALUATION}prompt_{self.prompt_num}/{self.model_name}.csv",
+                f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv",
                 index=False
             )
             

@@ -13,9 +13,11 @@ for pkg in torch pandas tqdm unidecode surprisal transformers python-dotenv; do
 done
 
 echo "📊 Installing graph & ML libraries..."
-for pkg in tf-keras seaborn scikit-learn scipy matplotlib wordcloud python-ternary; do
+for pkg in tf-keras seaborn scikit-learn scipy matplotlib wordcloud python-ternary jupyter; do
     echo "   → Installing $pkg..."
     pip install "$pkg" || { echo "❌ Failed to install $pkg"; exit 1; }
+    pip install ipywidgets --upgrade
+    jupyter nbextension enable --py widgetsnbextension
 done
 
 echo "✅ Environment setup complete!"

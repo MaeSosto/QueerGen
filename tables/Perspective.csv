@@ -1,0 +1,25 @@
+Model,type,Perspective,CI,STD
+BERT Base,Unmarked,0.033,0.009,0.045
+BERT Base,Non Queer,0.053,0.005,0.082
+BERT Base,Queer,0.055,0.004,0.082
+BERT Large,Unmarked,0.037,0.012,0.061
+BERT Large,Non Queer,0.073,0.007,0.107
+BERT Large,Queer,0.079,0.005,0.113
+RoBERTa Base,Unmarked,0.036,0.009,0.046
+RoBERTa Base,Non Queer,0.094,0.008,0.123
+RoBERTa Base,Queer,0.072,0.004,0.101
+RoBERTa Large,Unmarked,0.025,0.005,0.024
+RoBERTa Large,Non Queer,0.078,0.007,0.108
+RoBERTa Large,Queer,0.083,0.005,0.111
+GPT4o,Unmarked,0.025,0.007,0.035
+GPT4o,Non Queer,0.036,0.003,0.049
+GPT4o,Queer,0.03,0.002,0.042
+GPT4o Mini,Unmarked,0.031,0.01,0.052
+GPT4o Mini,Non Queer,0.033,0.003,0.047
+GPT4o Mini,Queer,0.03,0.002,0.042
+Gemini 2.0 Flash,Unmarked,0.035,0.011,0.056
+Gemini 2.0 Flash,Non Queer,0.04,0.003,0.053
+Gemini 2.0 Flash,Queer,0.032,0.002,0.04
+Gemini 2.0 Flash Lite,Unmarked,0.043,0.01,0.052
+Gemini 2.0 Flash Lite,Non Queer,0.041,0.003,0.051
+Gemini 2.0 Flash Lite,Queer,0.038,0.002,0.048
