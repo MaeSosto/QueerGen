@@ -12,11 +12,11 @@ RoBERTa Large,Unmarked,-0.018,0.027,0.136
 RoBERTa Large,Non Queer,-0.012,0.011,0.182
 RoBERTa Large,Queer,-0.035,0.008,0.175
 DeepSeek R1,Unmarked,0.0,0.0,0.0
-DeepSeek R1,Non Queer,0.056,0.067,0.15
-DeepSeek R1,Queer,0.005,0.025,0.088
-DeepSeek R1 (671b),Unmarked,0.0,0.0,0.0
-DeepSeek R1 (671b),Non Queer,0.011,0.008,0.077
-DeepSeek R1 (671b),Queer,0.003,0.002,0.029
+DeepSeek R1,Non Queer,0.006,0.003,0.055
+DeepSeek R1,Queer,0.002,0.002,0.035
+DeepSeek R1 (671b),Unmarked,0.032,0.023,0.118
+DeepSeek R1 (671b),Non Queer,0.029,0.008,0.135
+DeepSeek R1 (671b),Queer,0.01,0.006,0.127
 Gemma 3,Unmarked,0.023,0.037,0.188
 Gemma 3,Non Queer,0.021,0.008,0.131
 Gemma 3,Queer,0.015,0.005,0.11

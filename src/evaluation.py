@@ -41,61 +41,85 @@ class Evaluation:
             PERSPECTIVE: self._get_perspective_scores,
             POS: self._get_POS_scores,
         }
-        
+    
     def evaluate(self, model_name, prompt_num = PROMPT_DEFAULT):
         self.model_name = model_name
         self.prompt_num = prompt_num
         os.makedirs(f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/", exist_ok=True)
-        self.evaluation_file = self._get_evaluation_file()
-        if self.evaluation_file.empty:
-            return None
-        
-        self.template_list = [row[TEMPLATE] for _, row in self.evaluation_file.iterrows()]
-        self.predictions_list = [str(row[PREDICTION]) for _, row in self.evaluation_file.iterrows()]
-        self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.evaluation_file.iterrows()]
-        self.xyz_subject = [f"{re.sub('The '+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.evaluation_file.iterrows()]
-        
-        start_evaluation = True
-        for key, score_function in self.tool_functions.items():
-            if key in self.initialize_tools:
-                self.initialize_tools[key]()
-            self.key = key
-            if key == REGARD and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in REGARD_CATEGORIES):
-                if start_evaluation: logger.info(f"📊 Evaluating {model_name} [prompt {prompt_num}]"); start_evaluation = False
-                logger.info(f"  🧮 Calculating {key} scores...")
-                res = score_function()
-                if res: break
-            elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.evaluation_file.columns for cat in PERSPECTIVE_CATEGORIES):
-                if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
-                logger.info(f"  🧮 Calculating {key} scores...")
-                res = score_function()
-                if res: break
-            elif key != REGARD and key != PERSPECTIVE and key not in self.evaluation_file.columns:
-                if start_evaluation: logger.info(f"๏ Evaluating {model_name} [{prompt_num}]"); start_evaluation = False
-                logger.info(f"  🧮 Calculating {key} scores...")
-                score_function()
+        self.df_to_check_list = self._get_evaluation_file()
+        if self.df_to_check_list[0].empty and self.df_to_check_list[1].empty: #There is an error
+            return True 
+        for idx, df in enumerate(self.df_to_check_list):
+            if df.empty:
+                continue
+            self.df_to_check = df
+            self.template_list = [row[TEMPLATE] for _, row in self.df_to_check.iterrows()]
+            self.predictions_list = [str(row[PREDICTION]) for _, row in self.df_to_check.iterrows()]
+            self.unmarked_sentence_list = [f"{row[UNMARKED]} {row[PREDICTION]}" for _, row in self.df_to_check.iterrows()]
+            self.xyz_subject = [f"{re.sub('The '+SUBJECT_, 'xyz', row[TEMPLATE])} {row[PREDICTION]}." for _, row in self.df_to_check.iterrows()]
+                    
+            start_evaluation = True
+            for key, score_function in self.tool_functions.items():
+                if key in self.initialize_tools:
+                    self.initialize_tools[key]()
+                self.key = key
+                if key == REGARD and not any(f"{key} {cat}" in self.df_to_check.columns for cat in REGARD_CATEGORIES):
+                    if start_evaluation: logger.info(f"📊 Evaluating {model_name} [prompt {prompt_num}]"); start_evaluation = False
+                    logger.info(f"  🧮 Calculating {key} scores...")
+                    res = score_function()
+                    if res: break
+                    self.save_csv()
+                elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.df_to_check.columns for cat in PERSPECTIVE_CATEGORIES):
+                    if start_evaluation: logger.info(f"📊 Evaluating {model_name} [prompt {prompt_num}]"); start_evaluation = False
+                    logger.info(f"  🧮 Calculating {key} scores...")
+                    res = score_function()
+                    if res: break
+                    self.save_csv()
+                elif key != REGARD and key != PERSPECTIVE and key not in self.df_to_check.columns:
+                    if start_evaluation: logger.info(f"📊 Evaluating {model_name} [prompt {prompt_num}]"); start_evaluation = False
+                    logger.info(f"  🧮 Calculating {key} scores...")
+                    score_function()
+                    self.save_csv()
+                    
                 
-            self.save_csv()
-        logger.info(f"✅ {MODELS_LABELS[model_name]} [prompt {int(self.prompt_num)+1}]")    
+        logger.info(f"✅ {MODELS_LABELS[model_name]} [prompt {int(self.prompt_num)}]")
+        return False
+        
+
+    def _check_evaluation_file_integrity(self, evaluation_file):
+        for row_idx, row in evaluation_file.iterrows():
+            for col in evaluation_file.columns:
+                value = row[col]
+                if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
+                    if col != PREDICTION:
+                        logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] invalid cell [{row_idx} - {col}]")    
+                        return row_idx
+        return evaluation_file.shape[0]
         
     def _get_evaluation_file(self):
         prediction_file = f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv"
         evaluation_file = f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv"
         
-        if os.path.exists(prediction_file):
+        if os.path.exists(prediction_file): 
             prediction_file = pd.read_csv(prediction_file)
-            if os.path.exists(evaluation_file):
+            if os.path.exists(evaluation_file): 
                 evaluation_file = pd.read_csv(evaluation_file)
-                if evaluation_file.shape[0] < prediction_file.shape[0]:
-                    logger.info(f"🔙 {evaluation_file.shape[0]} sentences imported")
-                prediction_file = prediction_file[evaluation_file.shape[0]:]
-            else:
-                evaluation_file, prediction_file = pd.DataFrame(), prediction_file[0:]
-            prediction_file = pd.concat([evaluation_file, prediction_file]) if not evaluation_file.empty else prediction_file
-            return prediction_file
-        else: 
-            logger.warning(f"○ {self.model_name} with prompt {self.prompt_num} prediction file not found")
-            return pd.DataFrame()
+                num_sample_evaluated = self._check_evaluation_file_integrity(evaluation_file) #Check weather there are empty cells
+                
+                if evaluation_file.shape[0] > prediction_file.shape[0]:
+                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] evaluation file bigger than generation file")    
+                    return [pd.DataFrame(), pd.DataFrame()]
+                elif num_sample_evaluated < prediction_file.shape[0]:
+                    if num_sample_evaluated == 0:
+                        return [pd.DataFrame(), prediction_file]
+                    logger.info(f"🔙 {num_sample_evaluated} sentences imported")
+                    return [evaluation_file[:num_sample_evaluated], prediction_file[num_sample_evaluated:]]
+                return[evaluation_file, pd.DataFrame()] #Evaluation file already completed, needs to be checked
+            else:    
+                return [pd.DataFrame(), prediction_file]
+        else: #If pred does not exist ERROR
+            logger.warning(f"⚠️ {self.model_name} [prompt {self.prompt_num}] prediction file not found ⚠️")
+            return [pd.DataFrame(), pd.DataFrame()]
     
     def _get_expected_word(self, sentence):
             for _, row in self.template_file.iterrows():
@@ -103,14 +127,15 @@ class Evaluation:
                     return row[EXPECTED_WORD_TYPE].split()
 
     def save_csv(self):
+        df = pd.concat(self.df_to_check_list)
         if self.model_name in MODEL_MLM:
             for idx, _ in enumerate(PROMPTS):
-                self.evaluation_file.to_csv(
+                df.to_csv(
                     f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv",
                     index=False
                 )
         else:
-            self.evaluation_file.to_csv(
+            df.to_csv(
                 f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv",
                 index=False
             )
@@ -143,29 +168,29 @@ class Evaluation:
                 POS_scores.append(True)
             else:
                 POS_scores.append(False)
-        self.evaluation_file[self.key] = POS_scores
+        self.df_to_check[self.key] = POS_scores
     
     
     # === Score Functions ===
     def _get_Afinn_scores(self, sentence = False):
         if sentence:
-            self.evaluation_file[self.key] = [self.client.score(pred) for pred in self.unmarked_sentence_list]
-        self.evaluation_file[self.key] = [self.client.score(pred) for pred in self.predictions_list]
+            self.df_to_check[self.key] = [self.client.score(pred) for pred in self.unmarked_sentence_list]
+        self.df_to_check[self.key] = [self.client.score(pred) for pred in self.predictions_list]
     
     def _get_VADER_scores(self, sentence = False):
         if sentence:
-            self.evaluation_file[self.key] = [round(self.client.polarity_scores(pred)['compound'], 2) for pred in self.unmarked_sentence_list]
-        self.evaluation_file[self.key] = [round(self.client.polarity_scores(pred)['compound'], 2) for pred in self.predictions_list]
+            self.df_to_check[self.key] = [round(self.client.polarity_scores(pred)['compound'], 2) for pred in self.unmarked_sentence_list]
+        self.df_to_check[self.key] = [round(self.client.polarity_scores(pred)['compound'], 2) for pred in self.predictions_list]
     
     def _get_FLAIR_scores(self, sentence = False):
         if sentence:
-            self.evaluation_file[self.key] = [self.client.predict(Sentence(pred)).tag for pred in self.unmarked_sentence_list]
-        self.evaluation_file[self.key] = [self.client.predict(Sentence(pred)).tag for pred in self.predictions_list]
+            self.df_to_check[self.key] = [self.client.predict(Sentence(pred)).tag for pred in self.unmarked_sentence_list]
+        self.df_to_check[self.key] = [self.client.predict(Sentence(pred)).tag for pred in self.predictions_list]
     
     def _get_TextBlob_scores(self, sentence = False):
         if sentence:
-            self.evaluation_file[self.key] = [TextBlob(pred).sentences[0].sentiment.polarity for pred in self.unmarked_sentence_list]
-        self.evaluation_file[self.key] = [TextBlob(pred).sentences[0].sentiment.polarity for pred in self.predictions_list]
+            self.df_to_check[self.key] = [TextBlob(pred).sentences[0].sentiment.polarity for pred in self.unmarked_sentence_list]
+        self.df_to_check[self.key] = [TextBlob(pred).sentences[0].sentiment.polarity for pred in self.predictions_list]
     
     def _get_regard_scores(self): 
         try:
@@ -179,7 +204,7 @@ class Evaluation:
                         except Exception as e: 
                             logger.error("extractRegardScores: "+str(e))
             for cat in REGARD_CATEGORIES:
-                self.evaluation_file[f"{REGARD} {cat}"] = scores_df[cat]
+                self.df_to_check[f"{REGARD} {cat}"] = scores_df[cat]
             return False
         except Exception as e:
             logger.error("_get_regard_scores: "+str(e))
@@ -193,7 +218,7 @@ class Evaluation:
                 for key in item:
                     scores_df[key].append(item[key])
             for cat in PERSPECTIVE_CATEGORIES:
-                self.evaluation_file[f"{PERSPECTIVE} {cat}"] = scores_df[cat]
+                self.df_to_check[f"{PERSPECTIVE} {cat}"] = scores_df[cat]
             return False
         except Exception as e:
             logger.error("_get_perspective_scores: "+str(e))

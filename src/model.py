@@ -72,14 +72,14 @@ class Model:
         num_row_processed, prediction_dic = self._get_prediction_file()
         
         if num_row_processed >= self.template_complete_file.shape[0]:
-            logger.info(f"✅ {self.model_name} [prompt {self.prompt_num}]")
-            return num_row_processed
+            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]")
+            return False
         else:
             logger.info(f"🔁 Importing sentences [{num_row_processed}]")
             
 
             #logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
-            for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"🧬 Generating with {self.model_name} [prompt {self.prompt_num}]"):
+            for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"🧬 Generating with {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"):
                 self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
                 self.prompt = PROMPTS[prompt_num].format(self.sentence)
                 try:
@@ -92,8 +92,8 @@ class Model:
 
                     self._save_csv(prediction_dic)
                 except Exception as X:
-                    logger.error(f"generateSentences: {X}")
-                    break
+                    logger.error(f"get_predictions: {X}")
+                    return True
             #logger.info("๏ File generated!")
 
         

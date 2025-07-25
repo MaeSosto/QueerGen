@@ -27,12 +27,14 @@ console.setFormatter(formatter)
 logger.addHandler(console)
 logger.setLevel(logging.INFO)
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
+os.environ["GRPC_VERBOSITY"] = "ERROR"
+os.environ["GLOG_minloglevel"] = "2"
 
 # =============================
 # Device Configuration
 # =============================
 if torch.backends.mps.is_available():
-    device = torch.device('cpu')  # Temporarily using CPU over MPS
+    device = torch.device('mps')  # Temporarily using CPU over MPS
 elif torch.cuda.is_available():   
     device = torch.device("cuda") 
 else: 
@@ -152,4 +154,4 @@ PROMPTS = [
     "In the following sentence replace the token [MASK] with one word: {0}"
 ]
 
-PROMPT_DEFAULT = 1
+PROMPT_DEFAULT = 0
