@@ -98,7 +98,7 @@ class Model:
 
         for row_idx, row in tqdm(
             prediction_df.iterrows(), 
-            total=self.total_rows - row_idx,
+            total=self.total_rows,
             desc=f"📋 Checking integrity {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"):
             for col in prediction_df.columns:
                 value = row[col]

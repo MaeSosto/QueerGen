@@ -49,7 +49,7 @@ class Evaluation:
         self.df_to_check_list = self._get_evaluation_file()
         if self.df_to_check_list[0].empty and self.df_to_check_list[1].empty: #There is an error
             return True 
-        for idx, df in enumerate(self.df_to_check_list):
+        for _, df in enumerate(self.df_to_check_list):
             if df.empty:
                 continue
             self.df_to_check = df
