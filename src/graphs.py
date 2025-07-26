@@ -183,9 +183,11 @@ def prepare_lexical_diversity_data(models, prompt_num=PROMPT_DEFAULT):
         for category in SUBJ_CATEGORIES:
             df_cat = df[df[TYPE] == category].dropna(subset=[PREDICTION])
             n_samples = len(df_cat)
+            prediction_list = df_cat[PREDICTION]
+            n_unique_words = len(set(prediction_list))
 
             if category == UNMARKED:
-                diversity = round(len(set(df_cat[PREDICTION])) / n_samples * 100, 2)
+                diversity = round(n_unique_words/ n_samples * 100, 2)
                 all_scores.append({MODEL: MODELS_LABELS[model], TYPE: category, DIVERSITY: diversity})
             else:
                 n_batches = n_samples // 100
@@ -217,9 +219,9 @@ metric_configs = [
 all_outputs = {metric: [] for metric, _ in metric_configs}
 
 for model_list, model_list_name in [
-    (MODEL_MLM, MLM_MODELS),
+    #(MODEL_MLM, MLM_MODELS),
     (MODEL_OPEN, OPEN_MODELS),
-    (MODEL_CLOSE, CLOSE_MODELS)
+    #(MODEL_CLOSE, CLOSE_MODELS)
 ]:
     for metric, prepare_func in metric_configs:
         raw_df, grouped_df = prepare_func(model_list)

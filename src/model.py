@@ -66,36 +66,71 @@ class Model:
         
         if self.model_name in self.initialize_model: 
             self.initialize_model[self.model_name]()
-    
-    def get_predictions(self, prompt_num = PROMPT_DEFAULT):
-        self.prompt_num = prompt_num
-        num_row_processed, prediction_dic = self._get_prediction_file()
-        
-        if num_row_processed >= self.template_complete_file.shape[0]:
-            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]")
-            return False
-        else:
-            logger.info(f"🔁 Importing sentences [{num_row_processed}]")
             
+    def _generate_prediction_from_row(self, row, target_col=None, row_idx=None):
+        self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
+        self.prompt = PROMPTS[self.prompt_num].format(self.sentence)
 
-            #logger.info(f"๏ Generating sentences with {self.prompt_num} and {self.model_name} model...")
-            for _, row in tqdm(self.template_complete_file[num_row_processed:].iterrows(), total= self.template_complete_file.shape[0] - num_row_processed, desc=f"🧬 Generating with {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"):
-                self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
-                self.prompt = PROMPTS[prompt_num].format(self.sentence)
-                try:
-                    response = self.send_request[self.model_name]()
+        try:
+            response = self.send_request[self.model_name]()
+            if response is None:
+                return None
+
+            if target_col is not None and row_idx is not None:
+                # Used in _check_evaluation_file_integrity
+                self.prediction_dic[target_col][row_idx] = response
+            else:
+                # Used in get_predictions
+                for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
+                    self.prediction_dic[key].append(row[key])
+                self.prediction_dic[PREDICTION].append(response)
+
+            self._save_csv(self.prediction_dic)
+            return response
+
+        except Exception as e:
+            context = "integrity check" if target_col else "prediction"
+            logger.error(f"Error during {context}: {e}")
+            return None
+    
+    def _check_evaluation_file_integrity(self):
+        prediction_df = pd.DataFrame.from_dict(self.prediction_dic)
+
+        for row_idx, row in tqdm(
+            prediction_df.iterrows(), 
+            total=self.total_rows - row_idx,
+            desc=f"📋 Checking integrity {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"):
+            for col in prediction_df.columns:
+                value = row[col]
+
+                if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
+                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] missing value at [{row_idx} - {col}]")
+
+                    response = self._generate_prediction_from_row(row, target_col=col, row_idx=row_idx)
                     if response is None:
-                        return None
-                    for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
-                        prediction_dic[key].append(row[key])
-                    prediction_dic[PREDICTION].append(response)
+                        return True  # Abort if request fails
+        return False
+    
+    def get_predictions(self, prompt_num=PROMPT_DEFAULT):
+        self.prompt_num = prompt_num
+        num_row_processed, self.prediction_dic = self._get_prediction_file()
+        self.total_rows = self.template_complete_file.shape[0]
 
-                    self._save_csv(prediction_dic)
-                except Exception as X:
-                    logger.error(f"get_predictions: {X}")
-                    return True
-            #logger.info("๏ File generated!")
+        if num_row_processed >= self.total_rows:
+            self._check_evaluation_file_integrity()
+            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            return False
 
+        logger.info(f"🔁 Resuming from row {num_row_processed}")
+
+        for _, row in tqdm(
+            self.template_complete_file.iloc[num_row_processed:].iterrows(),
+            total=self.total_rows - num_row_processed,
+            desc=f"🧬 Generating with {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"
+        ):
+            response = self._generate_prediction_from_row(row)
+            if response is None:
+                return True  # Abort if request fails
         
     # === Initialization Functions ===
     def _initialize_BERT(self): 
@@ -118,7 +153,7 @@ class Model:
     
     def _get_prediction_file(self):
         prediction_file_path = f'{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv'
-        if os.path.exists(prediction_file_path):
+        if os.path.exists(prediction_file_path): #If file exist read file
             prediction_file = pd.read_csv(prediction_file_path)
             num_row_processed = prediction_file.shape[0]
             prediction_dic = {col: prediction_file[col].tolist() for col in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED, PREDICTION]}

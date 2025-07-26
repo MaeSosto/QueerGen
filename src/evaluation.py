@@ -91,9 +91,9 @@ class Evaluation:
             for col in evaluation_file.columns:
                 value = row[col]
                 if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
-                    if col != PREDICTION:
-                        logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] invalid cell [{row_idx} - {col}]")    
-                        return row_idx
+                    #if col != PREDICTION:
+                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] invalid cell [{row_idx} - {col}]")    
+                    return row_idx
         return evaluation_file.shape[0]
         
     def _get_evaluation_file(self):

@@ -1,43 +1,19 @@
 Model,type,Diversity,CI,STD
-BERT Base,Unmarked,29.0,0.0,0.0
-BERT Base,Non Queer,44.2,2.496,3.49
-BERT Base,Queer,43.8,1.122,2.397
-BERT Large,Unmarked,37.0,0.0,0.0
-BERT Large,Non Queer,46.6,3.167,4.427
-BERT Large,Queer,43.5,1.844,3.94
-RoBERTa Base,Unmarked,39.0,0.0,0.0
-RoBERTa Base,Non Queer,41.5,2.166,3.028
-RoBERTa Base,Queer,45.25,1.125,2.403
-RoBERTa Large,Unmarked,41.0,0.0,0.0
-RoBERTa Large,Non Queer,47.1,2.118,2.961
-RoBERTa Large,Queer,41.35,1.236,2.641
-DeepSeek R1,Unmarked,80.0,0.0,0.0
-DeepSeek R1,Non Queer,57.0,12.706,1.414
-DeepSeek R1,Queer,59.25,6.007,3.775
-DeepSeek R1 (671b),Unmarked,55.0,0.0,0.0
-DeepSeek R1 (671b),Non Queer,61.6,3.492,4.881
-DeepSeek R1 (671b),Queer,60.789,1.771,3.675
+DeepSeek R1,Unmarked,100.0,0.0,0.0
+DeepSeek R1,Non Queer,100.0,0.0,0.0
+DeepSeek R1,Queer,100.0,0.0,0.0
+DeepSeek R1 (671b),Unmarked,56.0,0.0,0.0
+DeepSeek R1 (671b),Non Queer,61.8,1.841,2.573
+DeepSeek R1 (671b),Queer,60.3,1.678,3.585
 Gemma 3,Unmarked,58.0,0.0,0.0
-Gemma 3,Non Queer,55.8,2.519,3.521
-Gemma 3,Queer,46.7,2.094,4.473
-Gemma 3(27b),Unmarked,49.0,0.0,0.0
-Gemma 3(27b),Non Queer,52.5,2.765,3.866
-Gemma 3(27b),Queer,44.65,1.886,4.03
-Llama 3,Unmarked,57.0,0.0,0.0
-Llama 3,Non Queer,62.1,1.598,2.234
-Llama 3,Queer,59.75,1.846,3.945
-Llama 3(70b),Unmarked,51.0,0.0,0.0
-Llama 3(70b),Non Queer,51.9,1.799,2.514
-Llama 3(70b),Queer,46.65,1.805,3.856
-GPT4o,Unmarked,51.0,0.0,0.0
-GPT4o,Non Queer,53.3,2.338,3.268
-GPT4o,Queer,50.6,1.483,3.169
-GPT4o Mini,Unmarked,54.0,0.0,0.0
-GPT4o Mini,Non Queer,53.3,1.688,2.359
-GPT4o Mini,Queer,49.35,2.039,4.356
-Gemini 2.0 Flash,Unmarked,62.0,0.0,0.0
-Gemini 2.0 Flash,Non Queer,63.3,3.128,4.373
-Gemini 2.0 Flash,Queer,57.55,2.29,4.893
-Gemini 2.0 Flash Lite,Unmarked,61.0,0.0,0.0
-Gemini 2.0 Flash Lite,Non Queer,59.3,2.862,4.001
-Gemini 2.0 Flash Lite,Queer,54.25,1.683,3.596
+Gemma 3,Non Queer,64.0,1.937,2.708
+Gemma 3,Queer,56.75,2.103,4.494
+Gemma 3(27b),Unmarked,52.0,0.0,0.0
+Gemma 3(27b),Non Queer,55.4,2.681,3.748
+Gemma 3(27b),Queer,50.0,1.751,3.742
+Llama 3,Unmarked,59.0,0.0,0.0
+Llama 3,Non Queer,55.5,3.239,4.528
+Llama 3,Queer,47.2,2.193,4.686
+Llama 3(70b),Unmarked,53.0,0.0,0.0
+Llama 3(70b),Non Queer,55.5,3.36,4.696
+Llama 3(70b),Queer,47.95,2.017,4.31
