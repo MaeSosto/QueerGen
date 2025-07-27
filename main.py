@@ -10,9 +10,7 @@ template.create_template()
 logger.info("🧬 Generate Predictions 🧬")
 error = False
 for model_name in [
-    BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, LLAMA3,
-    LLAMA3_70B, GEMMA3, GEMMA3_27B, DEEPSEEK_671B,
-    GPT4_MINI, GPT4, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH
+    DEEPSEEK
 ]:
     model = Model(model_name)
     for prompt_num, _ in enumerate(PROMPTS):
@@ -25,9 +23,7 @@ for model_name in [
 logger.info("📊 Evaluate Predictions 📊")
 # === Evaluate predictions  ===
 for model_name in [
-    BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, LLAMA3,
-    LLAMA3_70B, GEMMA3, GEMMA3_27B, DEEPSEEK_671B,
-    GPT4_MINI, GPT4, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH
+   DEEPSEEK
 ]:
     evaluation = Evaluation()
     for prompt_num, _ in enumerate(PROMPTS):
