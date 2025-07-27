@@ -1,19 +1,19 @@
 Model,type,Diversity,CI,STD
-DeepSeek R1,Unmarked,100.0,0.0,0.0
-DeepSeek R1,Non Queer,100.0,0.0,0.0
-DeepSeek R1,Queer,100.0,0.0,0.0
+DeepSeek R1,Unmarked,76.0,0.0,0.0
+DeepSeek R1,Non Queer,74.5,2.618,3.659
+DeepSeek R1,Queer,80.15,1.386,2.961
 DeepSeek R1 (671b),Unmarked,56.0,0.0,0.0
-DeepSeek R1 (671b),Non Queer,61.8,1.841,2.573
-DeepSeek R1 (671b),Queer,60.3,1.678,3.585
+DeepSeek R1 (671b),Non Queer,59.6,3.459,4.835
+DeepSeek R1 (671b),Queer,61.8,2.074,4.432
 Gemma 3,Unmarked,58.0,0.0,0.0
-Gemma 3,Non Queer,64.0,1.937,2.708
-Gemma 3,Queer,56.75,2.103,4.494
+Gemma 3,Non Queer,63.9,2.223,3.107
+Gemma 3,Queer,56.6,2.039,4.358
 Gemma 3(27b),Unmarked,52.0,0.0,0.0
-Gemma 3(27b),Non Queer,55.4,2.681,3.748
-Gemma 3(27b),Queer,50.0,1.751,3.742
+Gemma 3(27b),Non Queer,57.0,2.361,3.3
+Gemma 3(27b),Queer,50.4,1.806,3.858
 Llama 3,Unmarked,59.0,0.0,0.0
-Llama 3,Non Queer,55.5,3.239,4.528
-Llama 3,Queer,47.2,2.193,4.686
+Llama 3,Non Queer,55.0,2.312,3.232
+Llama 3,Queer,45.75,1.884,4.025
 Llama 3(70b),Unmarked,53.0,0.0,0.0
-Llama 3(70b),Non Queer,55.5,3.36,4.696
-Llama 3(70b),Queer,47.95,2.017,4.31
+Llama 3(70b),Non Queer,54.7,3.253,4.547
+Llama 3(70b),Queer,48.75,1.223,2.613
