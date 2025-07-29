@@ -12,7 +12,7 @@ logging.set_verbosity_error()
 
 # === Constants ===
 NUM_PREDICTION = 1
-URL_OLLAMA_LOCAL = "http://localhost:11434/api/generate"
+URL_OLLAMA_LOCAL = "http://localhost:11434/api"
 URL_DEEPSEEK = "https://api.deepseek.com"
 
 MODEL_NAME = {
@@ -35,13 +35,18 @@ class Model:
         self.model_name = model_name
         self.template_complete_file = pd.read_csv(PATH_DATASET + 'template_complete.csv')
         
-        self.initialize_model = {
+        self.func_initialize_model = {
             BERT_BASE: self._initialize_BERT, 
             BERT_LARGE: self._initialize_BERT,
             ROBERTA_BASE: self._initialize_RoBERTa, 
             ROBERTA_LARGE: self._initialize_RoBERTa,
+            LLAMA3: self._initialize_Ollama, 
+            LLAMA3_70B: self._initialize_Ollama, 
+            GEMMA3: self._initialize_Ollama,
+            GEMMA3_27B: self._initialize_Ollama, 
             GPT4: self._initialize_GPT, 
             GPT4_MINI: self._initialize_GPT,
+            DEEPSEEK: self._initialize_Ollama,
             DEEPSEEK_671B: self._initialize_DeepSeeek,
             GEMINI_2_0_FLASH: self._initialize_Gemini, 
             GEMINI_2_0_FLASH_LITE: self._initialize_Gemini,
@@ -64,9 +69,12 @@ class Model:
             GEMINI_2_0_FLASH_LITE: self._request_gemini,
         }
         
-        if self.model_name in self.initialize_model: 
-            self.initialize_model[self.model_name]()
-            
+    def initialize_model(self):
+        if self.model_name in self.func_initialize_model: 
+            err = self.func_initialize_model[self.model_name]()
+            return err
+        return False
+
     def _generate_prediction_from_row(self, row, target_col=None, row_idx=None):
         self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
         self.prompt = PROMPTS[self.prompt_num].format(self.sentence)
@@ -93,19 +101,24 @@ class Model:
             logger.error(f"Error during {context}: {e}")
             return None
     
-    def _check_evaluation_file_integrity(self):
+    def _check_generation_file_integrity(self):
         prediction_df = pd.DataFrame.from_dict(self.prediction_dic)
 
-        for row_idx, row in tqdm(
-            prediction_df.iterrows(), 
-            total=self.total_rows,
-            desc=f"📋 Checking integrity {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"):
+        # for row_idx, row in tqdm(
+        #     prediction_df.iterrows(), 
+        #     total=self.total_rows,
+        #     desc=f"📋 Checking integrity {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"):
+        for row_idx, row in prediction_df.iterrows():
             for col in prediction_df.columns:
                 value = row[col]
 
-                if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
-                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] missing value at [{row_idx} - {col}]")
-
+                # if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
+                #     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] missing value at [{row_idx} - {col}]")
+                if pd.isna(value):
+                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] NULL value at [{row_idx} - {col}]")
+                elif isinstance(value, str) and value.strip().lower() in [""]:
+                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] EMPTY or 'none' string at [{row_idx} - {col}]")
+            
                     response = self._generate_prediction_from_row(row, target_col=col, row_idx=row_idx)
                     if response is None:
                         return True  # Abort if request fails
@@ -117,7 +130,7 @@ class Model:
         self.total_rows = self.template_complete_file.shape[0]
 
         if num_row_processed >= self.total_rows:
-            self._check_evaluation_file_integrity()
+            self._check_generation_file_integrity()
             logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
             return False
 
@@ -136,20 +149,47 @@ class Model:
     def _initialize_BERT(self): 
         val = MODEL_NAME[self.model_name]
         self.client, self.tokenizer = BertForMaskedLM.from_pretrained(val), BertTokenizer.from_pretrained(val)
+        return False
     
     def _initialize_RoBERTa(self): 
         self.client, self.tokenizer = RobertaForMaskedLM.from_pretrained(MODEL_NAME[self.model_name]), RobertaTokenizer.from_pretrained(MODEL_NAME[self.model_name])
+        return False
     
     def _initialize_Gemini(self): 
-        genai.configure(api_key=os.getenv('GENAI_API_KEY')) 
+        api_key = os.getenv('GENAI_API_KEY')
+        if api_key is None:
+            logger.error(f"⚠️ GENAI_API_KEY is missing")
+            return True
+        genai.configure(api_key=api_key) 
         self.client, self.tokenizer = genai.GenerativeModel(self.model_name), None
+        return False
     
     def _initialize_GPT(self): 
         api_key = os.getenv('OPENAI_API_KEY')
+        if api_key is None:
+            logger.error(f"⚠️ OPENAI_API_KEY is missing")
+            return True
         self.client, self.tokenizer = OpenAI(api_key=api_key), None
+        return False
+    
+    def _initialize_Ollama(self):
+        try:
+            response = requests.get(f"{URL_OLLAMA_LOCAL}/tags")
+            if not(response.status_code == 200):
+                logger.error(f"⚠️ Ollama server is not running")
+                return True
+            return False
+        except requests.RequestException:
+            logger.error(f"⚠️ Ollama server is not running")
+            return True
     
     def _initialize_DeepSeeek(self): 
-        self.client, self.tokenizer = OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url=URL_DEEPSEEK), None
+        api_key = os.getenv('DEEPSEEK_API_KEY')
+        if api_key is None:
+            logger.error(f"⚠️ DEEPSEEK_API_KEY is missing")
+            return True
+        self.client, self.tokenizer = OpenAI(api_key=api_key, base_url=URL_DEEPSEEK), None
+        return False
     
     def _get_prediction_file(self):
         prediction_file_path = f'{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv'
@@ -203,14 +243,18 @@ class Model:
     
     def _request_ollama(self):
         try:
-            response = requests.post(URL_OLLAMA_LOCAL, headers={"Content-Type": 'application/json'}, json={
+            response = requests.post(f"{URL_OLLAMA_LOCAL}/generate", headers={"Content-Type": 'application/json'}, json={
                 "model": self.model_name,
                 "prompt": self.prompt,
                 "messages": [{"role": "user", "content": self.prompt}],
                 "options": {"temperature": 0},
                 "stream": False
             })
-            return self._clean_response(response.json()['response'])
+            response = response.json()['response']
+            if response == None or response == "":
+                logger.error(f"_request_ollama: {response}")
+                return None
+            return self._clean_response(response)
         
         except Exception as X:
             logger.error(f"_request_ollama: {response['text']}")
@@ -254,7 +298,7 @@ class Model:
         response = response[-1]
         response = response.replace(r"is:", "")
         response = re.sub(r'[^a-zA-Z0-9]', '', response)
-        return response
+        return str(response)
     
     def _save_csv(self, prediction_dic):
         os.makedirs(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/", exist_ok=True)

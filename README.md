@@ -42,27 +42,32 @@ bash env_config.sh --evaluate     # Install tools for evaluating sentence comple
 ## 📁 Project Structure
 ```
 .
-├── dataset_source/                         # Folder containing input datasets and template components
+├── dataset/                         # Folder containing input datasets and template components
 │   ├── template_complete.csv              # Final dataset of all generated prompt templates
 │   ├── markers.csv                        # CSV file containing the queer and non-queer markers
 │   ├── subjects.csv                       # CSV file containing subject terms (e.g. person identities)
 │   ├── templates.csv                      # CSV file with sentence template structures for prompt generation
 │
-├── output_sentences/                      # Model sentence completions are saved here
+├── generations/                      # Model sentence completions are saved here (sub-folder divided by prompt type)
 │
-├── output_evaluation/                     # Evaluation scores (sentiment, regard, toxicity) are stored here
+├── evaluations/                     # Evaluation scores (sentiment, regard, toxicity) are stored here (sub-folder divided by prompt type)
 │
-├── output_graphs/                         # Visualizations and comparative analysis plots are saved here
+├── graphs/                         # Visualizations and comparative analysis plots are saved here
+|
+├── tables/                         # Tables and data analysis are saved here
 │
 ├── env_config.sh                          # Environment setup script to install dependencies and models
 │
-├── createTemplate.py                      # Script that generates template_complete.csv from CSV components
+├── ├── src/                         # Folder containing the scripts to:
+│   ├── evaluation.py               Evaluates model outputs on sentiment, regard, and toxicity
+│   ├── lib.py                       # Shared utility contants used across other Python scripts
+|   ├── models.py                           # Runs sentence completion using  language models
+│   ├── template.py                     # Script that generates template_complete.csv from CSV components 
+│                 
 │
-├── generateSentences.py                   # Runs sentence completion using installed language models
+├── graphs.ipynb                 # Evaluates model outputs on sentiment, regard, and toxicity
 │
-├── evaluateCompletions.py                 # Evaluates model outputs on sentiment, regard, and toxicity
-│
-├── generateGraphs.py                      # Generates plots comparing evaluation scores across models
+├── main.py                      # main 
 │
 ├── lib.py                                 # Shared utility functions used across other Python scripts
 │

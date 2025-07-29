@@ -61,7 +61,9 @@ class Evaluation:
             start_evaluation = True
             for key, score_function in self.tool_functions.items():
                 if key in self.initialize_tools:
-                    self.initialize_tools[key]()
+                    err = self.initialize_tools[key]()
+                    if err:
+                        break
                 self.key = key
                 if key == REGARD and not any(f"{key} {cat}" in self.df_to_check.columns for cat in REGARD_CATEGORIES):
                     if start_evaluation: logger.info(f"📊 Evaluating {model_name} [prompt {prompt_num}]"); start_evaluation = False
@@ -81,19 +83,19 @@ class Evaluation:
                     score_function()
                     self.save_csv()
                     
-                
-        logger.info(f"✅ {MODELS_LABELS[model_name]} [prompt {int(self.prompt_num)}]")
-        return False
-        
+        if not (err and res): #No Error
+            logger.info(f"✅ {MODELS_LABELS[model_name]} [prompt {int(self.prompt_num)}]")
+            return False
+        return True #Error
 
     def _check_evaluation_file_integrity(self, evaluation_file):
         for row_idx, row in evaluation_file.iterrows():
             for col in evaluation_file.columns:
-                value = row[col]
+                value = str(row[col])
                 if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
-                    #if col != PREDICTION:
-                    logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] invalid cell [{row_idx} - {col}]")    
-                    return row_idx
+                    if col != PREDICTION:
+                        logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] invalid cell [{row_idx} - {col}]")    
+                        return row_idx
         return evaluation_file.shape[0]
         
     def _get_evaluation_file(self):
@@ -141,16 +143,21 @@ class Evaluation:
             )
             
     # === Setup Functions ===
-    def _afinn_setup(self): self.client = Afinn()
-    def _VADER_setup(self): self.client = SentimentIntensityAnalyzer()
-    def _FLAIR_setup(self): self.client = Classifier.load('sentiment')
+    def _afinn_setup(self): self.client = Afinn(); return False
+    def _VADER_setup(self): self.client = SentimentIntensityAnalyzer(); return False
+    def _FLAIR_setup(self): self.client = Classifier.load('sentiment'); return False
     def _perpective_setup(self):
+        api_key = os.getenv('PERSPECTIVE_API_KEY')
+        if api_key is None:
+            logger.error(f"⚠️ PERSPECTIVE_API_KEY is missing")
+            return True
         self.client = build("commentanalyzer", "v1alpha1",
-            developerKey=os.getenv('PERSPECTIVE_API_KEY'),
+            developerKey=api_key,
             discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
             static_discovery=False)
-    def _regard_setup(self): self.client = load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement")
-    def _pos_setup(self): self.client = spacy.load("en_core_web_sm")
+        return False
+    def _regard_setup(self): self.client = load(EVALUATION_MEASUREMENT_PATH+"regard", module_type="measurement"); return False
+    def _pos_setup(self): self.client = spacy.load("en_core_web_sm"); return False
     
     def _get_POS_scores(self):
         noun_tags = {"NN", "NNS", "NNP", "NNPS"}
@@ -158,7 +165,7 @@ class Evaluation:
         POS_scores = []
         for idx, sentence in tqdm(enumerate(self.unmarked_sentence_list), total=len(self.unmarked_sentence_list)):
             sentence = self.client(sentence)
-            sentence_tokens = [token for token in sentence if not token.is_space and not token.is_punct]
+            #sentence_tokens = [token for token in sentence if not token.is_space and not token.is_punct]
             last_token = sentence[-1]
             ok_types = self._get_expected_word(self.template_list[idx])
             
@@ -169,6 +176,7 @@ class Evaluation:
             else:
                 POS_scores.append(False)
         self.df_to_check[self.key] = POS_scores
+        return False
     
     
     # === Score Functions ===
