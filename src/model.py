@@ -1,6 +1,6 @@
 # === Imports ===
 from src.lib import *
-import time, requests
+import requests, shutil, subprocess
 import google.generativeai as genai
 from openai import OpenAI
 from transformers import (
@@ -76,7 +76,10 @@ class Model:
         return False
 
     def _generate_prediction_from_row(self, row, target_col=None, row_idx=None):
-        self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
+        if self.prompt_num != 3:
+            self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
+        else: 
+            self.sentence = row.loc[MARKED]
         self.prompt = PROMPTS[self.prompt_num].format(self.sentence)
 
         try:
@@ -126,6 +129,10 @@ class Model:
     
     def get_predictions(self, prompt_num=PROMPT_DEFAULT):
         self.prompt_num = prompt_num
+        if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
+            self.copy_file(f"{PATH_GENERATIONS}prompt_0/{self.model_name}.csv", f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
+            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            return False
         num_row_processed, self.prediction_dic = self._get_prediction_file()
         self.total_rows = self.template_complete_file.shape[0]
 
@@ -173,15 +180,10 @@ class Model:
         return False
     
     def _initialize_Ollama(self):
-        try:
-            response = requests.get(f"{URL_OLLAMA_LOCAL}/tags")
-            if not(response.status_code == 200):
-                logger.error(f"⚠️ Ollama server is not running")
-                return True
-            return False
-        except requests.RequestException:
-            logger.error(f"⚠️ Ollama server is not running")
-            return True
+        if not self.check_ollama_server():
+            if not self.check_model_is_downloaded():
+                return False
+        return True
     
     def _initialize_DeepSeeek(self): 
         api_key = os.getenv('DEEPSEEK_API_KEY')
@@ -283,6 +285,54 @@ class Model:
             return None
         
     # === Utils ===
+
+    def check_ollama_server(self):
+        try:
+            response = requests.get(f"{URL_OLLAMA_LOCAL}/tags")
+            if not(response.status_code == 200):
+                logger.error(f"⚠️ Ollama server is not running")
+                return True
+            return False
+        except requests.RequestException:
+            logger.error(f"⚠️ Ollama server is not running")
+            return True
+        
+    def check_model_is_downloaded(self):
+        
+        try:
+            # Step 1: Check if model is downloaded
+            list_output = subprocess.check_output(["ollama", "list"], text=True)
+            list_output = self.clean_ollama_list(list_output)
+            if self.model_name not in list_output:
+                print(f"❌ Model '{self.model_name}' not found in Ollama. Try: ollama pull {self.model_name}")
+                return True
+            
+            # Step 2: Test if model is functional with a small prompt
+            test_prompt = "Hello, are you working?"
+            subprocess.run(
+                ["ollama", "run", self.model_name],
+                input=test_prompt,
+                text=True,
+                check=True,
+                capture_output=True
+            )
+            return False
+        
+        except subprocess.CalledProcessError as e:
+            self.model_name(f"⚠️ Error running model '{self.model_name}': {e}")
+            return True
+        except FileNotFoundError:
+            logging.error("❌ Ollama is not installed or not in PATH.")
+            return True
+    
+    def clean_ollama_list(self, list):
+        #list = list.replace("NAME                  ID              SIZE      MODIFIED    ", "")
+        list = list.split("\n")
+        del list[0]
+        list = [elem.split(" ", 1)[0].replace(":latest", "") for elem in list]
+        list = [s for s in list if s != ""]
+        return list
+    
     def _clean_response(self, response):
         response = re.sub(r'\n', '', response)
         response = re.sub(r'\"', '', response)
@@ -303,6 +353,20 @@ class Model:
     def _save_csv(self, prediction_dic):
         os.makedirs(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/", exist_ok=True)
         pd.DataFrame.from_dict(prediction_dic).to_csv(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
+        
+
+    def copy_file(self, input_path, output_path):
+        # Ensure the source file exists
+        if not os.path.isfile(input_path):
+            logger.error(f"Source file not found: {input_path}")
+            return True
+        # Ensure the output directory exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        
+        # Copy the file
+        shutil.copy2(input_path, output_path)  # copy2 preserves metadata
+        #print(f"Copied {input_path} -> {output_path}")
+        return False
     
         
     

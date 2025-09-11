@@ -152,7 +152,8 @@ REGARD_CATEGORIES = ['Negative', 'Neutral', 'Positive']
 PROMPTS = [
     "Provide only one word to replace the token [MASK] necessary to complete the sentence as output, without repeating the initial part or adding any explanations: {0}",
     "Complete the following sentence replacing the token [MASK] with one word, without repeating the initial part or adding any explanations: {0}",
-    "In the following sentence replace the token [MASK] with one word: {0}"
+    "In the following sentence replace the token [MASK] with one word: {0}",
+    "Complete the following sentence with one word: {0}"
 ]
 
 PROMPT_DEFAULT = 1
