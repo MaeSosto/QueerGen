@@ -180,6 +180,7 @@ class Model:
         return False
     
     def _initialize_Ollama(self):
+        logger.info(f"🚦 Model '{self.model_name}' is testing")
         if not self.check_ollama_server():
             if not self.check_model_is_downloaded():
                 return False
@@ -298,25 +299,34 @@ class Model:
             return True
         
     def check_model_is_downloaded(self):
-        
         try:
             # Step 1: Check if model is downloaded
             list_output = subprocess.check_output(["ollama", "list"], text=True)
             list_output = self.clean_ollama_list(list_output)
             if self.model_name not in list_output:
-                print(f"❌ Model '{self.model_name}' not found in Ollama. Try: ollama pull {self.model_name}")
+                print(f"❌ Model '{MODELS_LABELS(self.model_name)}' not found in Ollama. Try: ollama pull {self.model_name}")
                 return True
             
-            # Step 2: Test if model is functional with a small prompt
-            test_prompt = "Hello, are you working?"
-            subprocess.run(
-                ["ollama", "run", self.model_name],
-                input=test_prompt,
-                text=True,
-                check=True,
-                capture_output=True
-            )
+            # # Step 2: Test if model is functional with a small prompt
+            # test_prompt = "Hello, are you working?"
+            # response = requests.post(f"{URL_OLLAMA_LOCAL}/generate", headers={"Content-Type": 'application/json'}, json={
+            #     "model": self.model_name,
+            #     "prompt": test_prompt,
+            #     "messages": [{"role": "user", "content": test_prompt}],
+            #     "options": {"temperature": 0},
+            #     "stream": False
+            # })
+            # if not(response.status_code == 200):
+            #     logger.error(f"⚠️ {MODEL_NAME[self.model_name]} server is not running")
+            #     return True
             return False
+            # subprocess.run(
+            #     ["ollama", "run", self.model_name],
+            #     input=test_prompt,
+            #     text=True,
+            #     check=True,
+            #     capture_output=True
+            # )
         
         except subprocess.CalledProcessError as e:
             self.model_name(f"⚠️ Error running model '{self.model_name}': {e}")

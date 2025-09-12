@@ -45,6 +45,12 @@ class Evaluation:
     def evaluate(self, model_name, prompt_num = PROMPT_DEFAULT):
         self.model_name = model_name
         self.prompt_num = prompt_num
+        
+        if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
+            self.copy_file(f"{PATH_EVALUATIONS}prompt_0/{self.model_name}.csv", f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
+            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            return False
+        
         os.makedirs(f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/", exist_ok=True)
         self.df_to_check_list = self._get_evaluation_file()
         if self.df_to_check_list[0].empty and self.df_to_check_list[1].empty: #There is an error
