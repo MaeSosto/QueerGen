@@ -10,8 +10,7 @@ template.create_template()
 logger.info("🧬 Generate Predictions 🧬")
 error = False
 for model_name in [
-   BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE,
-   DEEPSEEK, DEEPSEEK_671B
+    GEMMA3, GEMMA3_27B
 ]:
     model = Model(model_name)
     initialized = False
@@ -30,9 +29,8 @@ for model_name in [
 if not error:
     logger.info("📊 Evaluate Predictions 📊")
     # === Evaluate predictions  ===
-    for model_name in  [
-   BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE,
-   DEEPSEEK, DEEPSEEK_671B
+    for model_name in [
+    GEMMA3, GEMMA3_27B
 ]:
         evaluation = Evaluation()
         for prompt_num, _ in enumerate(PROMPTS):
