@@ -34,7 +34,8 @@ class Model:
     def __init__(self, model_name):
         self.model_name = model_name
         self.template_complete_file = pd.read_csv(PATH_DATASET + 'template_complete.csv')
-        
+        self.initialized = False
+
         self.func_initialize_model = {
             BERT_BASE: self._initialize_BERT, 
             BERT_LARGE: self._initialize_BERT,
@@ -119,6 +120,11 @@ class Model:
                 #     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] missing value at [{row_idx} - {col}]")
                 if pd.isna(value):
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] NULL value at [{row_idx} - {col}]")
+                    response = ""
+                    while response == "":
+                        response = self._generate_prediction_from_row(row, target_col=col, row_idx=row_idx)
+                        if response == "":
+                            logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] prompting again [{row_idx} - {col}]")
                 elif isinstance(value, str) and value.strip().lower() in [""]:
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] EMPTY or 'none' string at [{row_idx} - {col}]")
             
@@ -129,18 +135,29 @@ class Model:
     
     def get_predictions(self, prompt_num=PROMPT_DEFAULT):
         self.prompt_num = prompt_num
+
+        #BERT family model generate only with prompt 1, copy and paste files in other prompts folder otherwise
         if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
             self.copy_file(f"{PATH_GENERATIONS}prompt_0/{self.model_name}.csv", f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
             logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
             return False
+        
         num_row_processed, self.prediction_dic = self._get_prediction_file()
         self.total_rows = self.template_complete_file.shape[0]
 
+        #Evaluation file is completed
         if num_row_processed >= self.total_rows:
-            self._check_generation_file_integrity()
-            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
-            return False
+            err = self._check_generation_file_integrity()
+            if not err: 
+                logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            return err
 
+        #Initialize model
+        if not self.initialized:
+            err = self.initialize_model()
+            self.initialized = True
+
+        #Evaluation file is incomplete, start from where it left
         logger.info(f"🔁 Resuming from row {num_row_processed}")
 
         for _, row in tqdm(
@@ -257,7 +274,8 @@ class Model:
             if response == None or response == "":
                 logger.error(f"_request_ollama: {response}")
                 return None
-            return self._clean_response(response)
+            response = self._clean_response(response)
+            return response
         
         except Exception as X:
             logger.error(f"_request_ollama: {response['text']}")
@@ -344,7 +362,15 @@ class Model:
         return list
     
     def _clean_response(self, response):
-        response = re.sub(r'\n', '', response)
+        #response = re.sub(r'\n', '', response)
+        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
+        response = response.split("\n")
+        i = len(response)-1
+        while response[i] == "" and i > 0:
+            i = i-1
+        response = response[i]
+        sent = re.sub(r"\[MASK\].", "", self.sentence).replace(r"[", "").replace(r"]", "").replace(".", "").replace(r" '", "").replace(r"*", "")
+        response = response.replace(sent, "")
         response = re.sub(r'\"', '', response)
         response = re.sub(r'`', '', response)
         response = response.replace('.', '')
@@ -353,9 +379,11 @@ class Model:
         response = response.replace(r"[", "")
         response = response.replace(r"]", "")
         response = response.lower()
-        response = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
         response = response.split(" ")
-        response = response[-1]
+        i = len(response)-1
+        while response[i] == "" and i > 0:
+            i = i-1
+        response = response[i]
         response = response.replace(r"is:", "")
         response = re.sub(r'[^a-zA-Z0-9]', '', response)
         return str(response)
