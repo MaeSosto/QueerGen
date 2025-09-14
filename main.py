@@ -5,13 +5,11 @@ from src.evaluation import *
 # === Generate template ===
 template = Template()
 template.create_template()
+error = False
 
 # # === Generate predictions ===
 logger.info("🧬 Generate Predictions 🧬")
-error = False
-for model_name in [
-    GEMMA3, GEMMA3_27B
-]:
+for model_name in MODEL_LIST_FULL:
     model = Model(model_name)
     initialized = False
     if error:
@@ -29,9 +27,7 @@ for model_name in [
 if not error:
     logger.info("📊 Evaluate Predictions 📊")
     # === Evaluate predictions  ===
-    for model_name in [
-    GEMMA3, GEMMA3_27B
-]:
+    for model_name in MODEL_LIST_FULL:
         evaluation = Evaluation()
         for prompt_num, _ in enumerate(PROMPTS):
             if not os.path.exists(f"{PATH_GENERATIONS}prompt_{prompt_num}/{model_name}.csv"):

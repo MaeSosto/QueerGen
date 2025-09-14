@@ -261,3 +261,15 @@ class Evaluation:
                 timeError += 1
         return {cat: row.get(cat, 0) for cat in PERSPECTIVE_CATEGORIES}
     
+    def copy_file(self, input_path, output_path):
+        # Ensure the source file exists
+        if not os.path.isfile(input_path):
+            logger.error(f"Source file not found: {input_path}")
+            return True
+        # Ensure the output directory exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        
+        # Copy the file
+        shutil.copy2(input_path, output_path)  # copy2 preserves metadata
+        #print(f"Copied {input_path} -> {output_path}")
+        return False

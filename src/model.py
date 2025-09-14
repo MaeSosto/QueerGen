@@ -1,6 +1,6 @@
 # === Imports ===
 from src.lib import *
-import requests, shutil, subprocess
+import requests, subprocess
 import google.generativeai as genai
 from openai import OpenAI
 from transformers import (
