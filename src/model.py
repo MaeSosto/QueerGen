@@ -121,10 +121,12 @@ class Model:
                 if pd.isna(value):
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] NULL value at [{row_idx} - {col}]")
                     response = ""
-                    while response == "":
+                    exit = 5
+                    while response == "" and exit > 0:
                         response = self._generate_prediction_from_row(row, target_col=col, row_idx=row_idx)
                         if response == "":
                             logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] prompting again [{row_idx} - {col}]")
+                            exit = exit -1
                 elif isinstance(value, str) and value.strip().lower() in [""]:
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] EMPTY or 'none' string at [{row_idx} - {col}]")
             
