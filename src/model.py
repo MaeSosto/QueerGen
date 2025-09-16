@@ -119,6 +119,7 @@ class Model:
                 # if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
                 #     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] missing value at [{row_idx} - {col}]")
                 if pd.isna(value):
+                    str_val = str(row[col])
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] NULL value at [{row_idx} - {col}]")
                     response = ""
                     exit = 5

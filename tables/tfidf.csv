@@ -1,0 +1,1597 @@
+Word,Unmarked,Non Queer,Queer,MaxScore,MaxCategory
+child,0.401,0.098,0.095,0.401,Unmarked
+teacher,0.395,0.388,0.238,0.395,Unmarked
+dance,0.142,0.222,0.373,0.373,Queer
+person,0.106,0.136,0.346,0.346,Queer
+consultant,0.254,0.23,0.328,0.328,Queer
+doctor,0.325,0.15,0.136,0.325,Unmarked
+norm,0.0,0.313,0.0,0.313,Non Queer
+woman,0.03,0.23,0.221,0.23,Non Queer
+leader,0.218,0.048,0.036,0.218,Unmarked
+writer,0.112,0.114,0.216,0.216,Queer
+cook,0.207,0.12,0.079,0.207,Unmarked
+lesbian,0.0,0.204,0.159,0.204,Non Queer
+threat,0.118,0.12,0.201,0.201,Queer
+artist,0.071,0.11,0.191,0.191,Queer
+flirt,0.0,0.181,0.125,0.181,Non Queer
+advocate,0.0,0.174,0.063,0.174,Non Queer
+musician,0.171,0.031,0.079,0.171,Unmarked
+hero,0.165,0.048,0.065,0.165,Unmarked
+prostitute,0.006,0.15,0.159,0.159,Queer
+man,0.006,0.151,0.099,0.151,Non Queer
+math,0.142,0.13,0.095,0.142,Unmarked
+therapist,0.0,0.1,0.139,0.139,Queer
+read,0.136,0.092,0.085,0.136,Unmarked
+model,0.018,0.113,0.135,0.135,Queer
+team,0.13,0.037,0.02,0.13,Unmarked
+it,0.13,0.076,0.112,0.13,Unmarked
+navigate,0.047,0.098,0.121,0.121,Queer
+lover,0.0,0.12,0.054,0.12,Non Queer
+manager,0.118,0.099,0.055,0.118,Unmarked
+homosexual,0.0,0.116,0.039,0.116,Non Queer
+friend,0.106,0.108,0.087,0.108,Non Queer
+date,0.0,0.108,0.049,0.108,Non Queer
+vote,0.106,0.034,0.02,0.106,Unmarked
+love,0.0,0.079,0.106,0.106,Queer
+carpenter,0.053,0.106,0.037,0.106,Non Queer
+supporter,0.0,0.102,0.001,0.102,Non Queer
+talk,0.094,0.101,0.079,0.101,Non Queer
+volunteer,0.1,0.044,0.013,0.1,Unmarked
+lawyer,0.1,0.065,0.043,0.1,Unmarked
+farmer,0.094,0.044,0.033,0.094,Unmarked
+chameleon,0.012,0.008,0.089,0.089,Queer
+stranger,0.089,0.033,0.02,0.089,Unmarked
+gentleman,0.0,0.086,0.035,0.086,Non Queer
+partner,0.0,0.085,0.048,0.085,Non Queer
+swim,0.083,0.014,0.01,0.083,Unmarked
+guide,0.083,0.054,0.04,0.083,Unmarked
+star,0.083,0.012,0.038,0.083,Unmarked
+father,0.0,0.077,0.038,0.077,Non Queer
+rebel,0.006,0.018,0.077,0.077,Queer
+work,0.077,0.046,0.032,0.077,Unmarked
+dancing,0.012,0.043,0.074,0.074,Queer
+stereotype,0.0,0.074,0.023,0.074,Non Queer
+designer,0.006,0.005,0.073,0.073,Queer
+this,0.012,0.072,0.056,0.072,Non Queer
+explore,0.071,0.027,0.061,0.071,Unmarked
+with,0.0,0.0,0.071,0.071,Queer
+individual,0.0,0.018,0.071,0.071,Queer
+nurse,0.018,0.069,0.052,0.069,Non Queer
+express,0.0,0.002,0.068,0.068,Queer
+performer,0.006,0.015,0.068,0.068,Queer
+cooking,0.035,0.066,0.044,0.066,Non Queer
+professional,0.065,0.046,0.044,0.065,Unmarked
+male,0.018,0.065,0.038,0.065,Non Queer
+play,0.065,0.023,0.018,0.065,Unmarked
+chef,0.065,0.021,0.042,0.065,Unmarked
+tourist,0.065,0.05,0.019,0.065,Unmarked
+guest,0.065,0.029,0.026,0.065,Unmarked
+citizen,0.065,0.016,0.025,0.065,Unmarked
+romantic,0.0,0.063,0.033,0.063,Non Queer
+sports,0.012,0.063,0.016,0.063,Non Queer
+heterosexual,0.0,0.06,0.002,0.06,Non Queer
+actor,0.0,0.06,0.035,0.06,Non Queer
+counselor,0.0,0.06,0.05,0.06,Non Queer
+nuisance,0.059,0.003,0.001,0.059,Unmarked
+astronaut,0.059,0.027,0.031,0.059,Unmarked
+garden,0.059,0.054,0.045,0.059,Unmarked
+ally,0.0,0.058,0.028,0.058,Non Queer
+outcast,0.0,0.012,0.057,0.057,Queer
+flirting,0.0,0.056,0.018,0.056,Non Queer
+librarian,0.0,0.013,0.056,0.056,Queer
+behave,0.035,0.054,0.011,0.054,Non Queer
+pioneer,0.0,0.0,0.054,0.054,Queer
+dog,0.053,0.012,0.016,0.053,Unmarked
+gardening,0.053,0.029,0.027,0.053,Unmarked
+robot,0.053,0.029,0.02,0.053,Unmarked
+art,0.0,0.001,0.05,0.05,Queer
+listening,0.006,0.05,0.021,0.05,Non Queer
+replacement,0.0,0.04,0.05,0.05,Queer
+thrive,0.006,0.006,0.048,0.048,Queer
+mother,0.0,0.048,0.031,0.048,Non Queer
+relative,0.047,0.006,0.004,0.047,Unmarked
+code,0.03,0.047,0.029,0.047,Non Queer
+human,0.012,0.024,0.047,0.047,Queer
+chess,0.047,0.012,0.019,0.047,Unmarked
+translator,0.047,0.044,0.046,0.047,Unmarked
+trailblazer,0.0,0.0,0.046,0.046,Queer
+brat,0.046,0.0,0.001,0.046,Unmarked
+act,0.03,0.044,0.045,0.045,Queer
+connect,0.0,0.045,0.04,0.045,Non Queer
+create,0.0,0.0,0.044,0.044,Queer
+support,0.0,0.044,0.006,0.044,Non Queer
+champion,0.006,0.043,0.004,0.043,Non Queer
+waiter,0.041,0.043,0.031,0.043,Non Queer
+transgender,0.0,0.043,0.005,0.043,Non Queer
+coding,0.006,0.025,0.042,0.042,Queer
+driver,0.041,0.007,0.002,0.041,Unmarked
+clown,0.041,0.001,0.007,0.041,Unmarked
+painting,0.041,0.018,0.031,0.041,Unmarked
+subject,0.041,0.001,0.001,0.041,Unmarked
+genius,0.04,0.0,0.0,0.04,Unmarked
+parent,0.0,0.028,0.039,0.039,Queer
+ballerina,0.0,0.018,0.038,0.038,Queer
+engineer,0.024,0.038,0.012,0.038,Non Queer
+dress,0.0,0.038,0.027,0.038,Non Queer
+conformist,0.0,0.037,0.0,0.037,Non Queer
+listen,0.0,0.036,0.004,0.036,Non Queer
+rockstar,0.035,0.019,0.017,0.035,Unmarked
+drawing,0.035,0.005,0.015,0.035,Unmarked
+relax,0.035,0.016,0.008,0.035,Unmarked
+fool,0.035,0.015,0.004,0.035,Unmarked
+tutor,0.035,0.012,0.008,0.035,Unmarked
+gardener,0.035,0.003,0.01,0.035,Unmarked
+bartender,0.0,0.035,0.032,0.035,Non Queer
+problemsolving,0.035,0.005,0.006,0.035,Unmarked
+developer,0.024,0.034,0.034,0.034,Non Queer
+outsider,0.018,0.032,0.034,0.034,Queer
+superhero,0.0,0.024,0.033,0.033,Queer
+travel,0.024,0.033,0.016,0.033,Non Queer
+minority,0.0,0.029,0.033,0.033,Queer
+normal,0.0,0.032,0.001,0.032,Non Queer
+queen,0.0,0.015,0.032,0.032,Queer
+sexual,0.0,0.015,0.03,0.03,Queer
+eat,0.03,0.023,0.017,0.03,Unmarked
+plumber,0.03,0.02,0.003,0.03,Unmarked
+socialize,0.0,0.03,0.02,0.03,Non Queer
+feminist,0.0,0.03,0.007,0.03,Non Queer
+adapt,0.03,0.011,0.028,0.03,Unmarked
+bully,0.03,0.014,0.012,0.03,Unmarked
+intern,0.03,0.001,0.001,0.03,Unmarked
+learn,0.03,0.002,0.001,0.03,Unmarked
+jerk,0.03,0.019,0.008,0.03,Unmarked
+nonbinary,0.0,0.001,0.029,0.029,Queer
+unicorn,0.0,0.014,0.029,0.029,Queer
+dancer,0.006,0.011,0.029,0.029,Queer
+respected,0.0,0.028,0.007,0.028,Non Queer
+mediator,0.024,0.024,0.026,0.026,Queer
+matchmaker,0.0,0.026,0.011,0.026,Non Queer
+straight,0.0,0.026,0.001,0.026,Non Queer
+programmer,0.0,0.024,0.025,0.025,Queer
+normative,0.0,0.025,0.0,0.025,Non Queer
+activist,0.0,0.025,0.021,0.025,Non Queer
+participant,0.024,0.004,0.005,0.024,Unmarked
+king,0.024,0.009,0.013,0.024,Unmarked
+worker,0.024,0.016,0.014,0.024,Unmarked
+member,0.024,0.002,0.008,0.024,Unmarked
+host,0.024,0.019,0.017,0.024,Unmarked
+contractor,0.024,0.016,0.007,0.024,Unmarked
+sing,0.024,0.004,0.013,0.024,Unmarked
+solve,0.024,0.001,0.001,0.024,Unmarked
+fight,0.024,0.014,0.02,0.024,Unmarked
+speaker,0.024,0.003,0.004,0.024,Unmarked
+servant,0.024,0.001,0.007,0.024,Unmarked
+party,0.0,0.014,0.024,0.024,Queer
+freelancer,0.024,0.003,0.007,0.024,Unmarked
+playing,0.024,0.005,0.001,0.024,Unmarked
+liability,0.024,0.003,0.006,0.024,Unmarked
+hike,0.0,0.023,0.006,0.023,Non Queer
+celebrity,0.012,0.023,0.016,0.023,Non Queer
+teamplayer,0.023,0.003,0.0,0.023,Unmarked
+lady,0.0,0.017,0.021,0.021,Queer
+waitress,0.012,0.017,0.021,0.021,Queer
+enigmatic,0.0,0.004,0.021,0.021,Queer
+colleague,0.0,0.021,0.01,0.021,Non Queer
+mirror,0.0,0.02,0.007,0.02,Non Queer
+theater,0.018,0.02,0.007,0.02,Non Queer
+operate,0.02,0.0,0.0,0.02,Unmarked
+pilot,0.018,0.02,0.014,0.02,Non Queer
+god,0.006,0.02,0.005,0.02,Non Queer
+empathy,0.0,0.019,0.015,0.019,Non Queer
+vegetarian,0.0,0.019,0.009,0.019,Non Queer
+adapting,0.0,0.006,0.019,0.019,Queer
+supportive,0.0,0.019,0.003,0.019,Non Queer
+singing,0.018,0.003,0.019,0.019,Queer
+clerk,0.018,0.014,0.008,0.018,Unmarked
+draw,0.018,0.003,0.009,0.018,Unmarked
+fisherman,0.018,0.001,0.003,0.018,Unmarked
+collaborate,0.018,0.003,0.003,0.018,Unmarked
+florist,0.0,0.015,0.018,0.018,Queer
+princess,0.0,0.018,0.005,0.018,Non Queer
+else,0.0,0.011,0.018,0.018,Queer
+diplomat,0.0,0.007,0.018,0.018,Queer
+debating,0.018,0.002,0.001,0.018,Unmarked
+think,0.018,0.002,0.001,0.018,Unmarked
+communication,0.012,0.018,0.014,0.018,Non Queer
+ghost,0.018,0.002,0.01,0.018,Unmarked
+negotiating,0.018,0.006,0.001,0.018,Unmarked
+neighbor,0.018,0.007,0.005,0.018,Unmarked
+multitasking,0.018,0.006,0.014,0.018,Unmarked
+mentor,0.0,0.018,0.005,0.018,Non Queer
+local,0.018,0.005,0.001,0.018,Unmarked
+valuable,0.018,0.001,0.003,0.018,Unmarked
+sheep,0.018,0.002,0.001,0.018,Unmarked
+photographer,0.018,0.01,0.018,0.018,Unmarked
+voter,0.018,0.004,0.001,0.018,Unmarked
+live,0.018,0.012,0.017,0.018,Unmarked
+sewing,0.0,0.009,0.017,0.017,Queer
+recluse,0.006,0.012,0.017,0.017,Queer
+poet,0.006,0.005,0.017,0.017,Queer
+advocacy,0.0,0.017,0.005,0.017,Non Queer
+connecting,0.0,0.013,0.017,0.017,Queer
+cisgender,0.0,0.017,0.003,0.017,Non Queer
+neutral,0.0,0.0,0.016,0.016,Queer
+novelty,0.0,0.016,0.009,0.016,Non Queer
+sew,0.0,0.013,0.016,0.016,Queer
+diva,0.006,0.003,0.016,0.016,Queer
+superstar,0.0,0.004,0.016,0.016,Queer
+transition,0.0,0.0,0.015,0.015,Queer
+contributor,0.015,0.0,0.001,0.015,Unmarked
+good,0.015,0.0,0.001,0.015,Unmarked
+mystery,0.006,0.001,0.015,0.015,Queer
+relationships,0.0,0.015,0.005,0.015,Non Queer
+bridge,0.006,0.007,0.015,0.015,Queer
+singer,0.0,0.002,0.015,0.015,Queer
+journalist,0.006,0.005,0.015,0.015,Queer
+enigma,0.0,0.004,0.015,0.015,Queer
+eccentric,0.0,0.007,0.015,0.015,Queer
+improvise,0.015,0.0,0.0,0.015,Unmarked
+conform,0.0,0.015,0.0,0.015,Non Queer
+paint,0.006,0.014,0.015,0.015,Queer
+female,0.0,0.014,0.01,0.014,Non Queer
+beekeeper,0.0,0.01,0.014,0.014,Queer
+curiosity,0.0,0.011,0.014,0.014,Queer
+help,0.006,0.014,0.002,0.014,Non Queer
+mermaid,0.0,0.005,0.013,0.013,Queer
+firefighter,0.0,0.013,0.007,0.013,Non Queer
+celebrate,0.0,0.001,0.013,0.013,Queer
+square,0.0,0.013,0.0,0.013,Non Queer
+they,0.0,0.0,0.013,0.013,Queer
+tomboy,0.0,0.013,0.006,0.013,Non Queer
+hybrid,0.0,0.013,0.009,0.013,Non Queer
+solving,0.012,0.002,0.0,0.012,Unmarked
+complex,0.0,0.004,0.012,0.012,Queer
+sovereign,0.012,0.001,0.001,0.012,Unmarked
+fix,0.012,0.005,0.002,0.012,Unmarked
+liar,0.012,0.002,0.002,0.012,Unmarked
+fish,0.012,0.005,0.003,0.012,Unmarked
+visitor,0.012,0.005,0.002,0.012,Unmarked
+platonic,0.0,0.011,0.012,0.012,Queer
+privileged,0.0,0.012,0.0,0.012,Non Queer
+pirate,0.012,0.001,0.001,0.012,Unmarked
+accountant,0.006,0.012,0.009,0.012,Non Queer
+drink,0.0,0.008,0.012,0.012,Queer
+pillar,0.012,0.005,0.001,0.012,Unmarked
+student,0.012,0.012,0.007,0.012,Unmarked
+swimming,0.012,0.001,0.001,0.012,Unmarked
+whole,0.012,0.009,0.009,0.012,Unmarked
+delight,0.012,0.001,0.006,0.012,Unmarked
+entertain,0.012,0.001,0.005,0.012,Unmarked
+default,0.0,0.012,0.0,0.012,Non Queer
+excel,0.012,0.002,0.003,0.012,Unmarked
+president,0.012,0.001,0.001,0.012,Unmarked
+communicating,0.0,0.012,0.01,0.012,Non Queer
+criminal,0.012,0.006,0.007,0.012,Unmarked
+bake,0.012,0.01,0.011,0.012,Unmarked
+painter,0.0,0.005,0.012,0.012,Queer
+substitute,0.012,0.005,0.005,0.012,Unmarked
+hermit,0.0,0.003,0.012,0.012,Queer
+share,0.012,0.006,0.0,0.012,Unmarked
+server,0.012,0.003,0.004,0.012,Unmarked
+boss,0.012,0.007,0.001,0.012,Unmarked
+troublemaker,0.012,0.001,0.002,0.012,Unmarked
+myth,0.0,0.007,0.012,0.012,Queer
+traveler,0.012,0.002,0.006,0.012,Unmarked
+blend,0.0,0.011,0.002,0.011,Non Queer
+slave,0.0,0.004,0.011,0.011,Queer
+bride,0.0,0.011,0.01,0.011,Non Queer
+communicate,0.0,0.011,0.01,0.011,Non Queer
+dreamer,0.0,0.005,0.011,0.011,Queer
+introvert,0.0,0.011,0.005,0.011,Non Queer
+advocating,0.0,0.011,0.001,0.011,Non Queer
+blending,0.0,0.011,0.004,0.011,Non Queer
+maid,0.0,0.011,0.003,0.011,Non Queer
+empathizing,0.0,0.005,0.011,0.011,Queer
+deviant,0.0,0.01,0.009,0.01,Non Queer
+networking,0.0,0.01,0.007,0.01,Non Queer
+parrot,0.01,0.0,0.0,0.01,Unmarked
+contender,0.01,0.0,0.0,0.01,Unmarked
+predator,0.0,0.01,0.006,0.01,Non Queer
+demisexual,0.0,0.01,0.0,0.01,Non Queer
+depart,0.01,0.0,0.0,0.01,Unmarked
+whiner,0.01,0.0,0.0,0.01,Unmarked
+talking,0.01,0.0,0.0,0.01,Unmarked
+reliable,0.0,0.01,0.0,0.01,Non Queer
+homebody,0.01,0.0,0.0,0.01,Unmarked
+magician,0.0,0.01,0.001,0.01,Non Queer
+knit,0.0,0.01,0.006,0.01,Non Queer
+participate,0.01,0.0,0.0,0.01,Unmarked
+typical,0.0,0.01,0.0,0.01,Non Queer
+machine,0.01,0.0,0.0,0.01,Unmarked
+studies,0.01,0.0,0.0,0.01,Unmarked
+passionate,0.0,0.01,0.0,0.01,Non Queer
+innovate,0.01,0.0,0.0,0.01,Unmarked
+buffoon,0.01,0.0,0.0,0.01,Unmarked
+troubleshooting,0.01,0.0,0.0,0.01,Unmarked
+senior,0.01,0.0,0.0,0.01,Unmarked
+vulnerable,0.01,0.0,0.0,0.01,Unmarked
+smart,0.01,0.0,0.0,0.01,Unmarked
+cat,0.0,0.002,0.01,0.01,Queer
+professions,0.01,0.0,0.0,0.01,Unmarked
+paintrunreadplaycode,0.01,0.0,0.0,0.01,Unmarked
+charm,0.0,0.003,0.01,0.01,Queer
+facilitator,0.0,0.006,0.01,0.01,Queer
+diligent,0.01,0.0,0.0,0.01,Unmarked
+acting,0.0,0.006,0.01,0.01,Queer
+spy,0.006,0.003,0.009,0.009,Queer
+salesman,0.0,0.009,0.0,0.009,Non Queer
+spirit,0.0,0.0,0.009,0.009,Queer
+baking,0.0,0.008,0.009,0.009,Queer
+transwoman,0.0,0.009,0.0,0.009,Non Queer
+nonconformist,0.0,0.004,0.009,0.009,Queer
+romance,0.0,0.009,0.002,0.009,Non Queer
+loner,0.0,0.001,0.009,0.009,Queer
+professor,0.006,0.009,0.006,0.009,Non Queer
+unique,0.0,0.002,0.009,0.009,Queer
+baker,0.0,0.008,0.009,0.009,Queer
+teammate,0.0,0.009,0.0,0.009,Non Queer
+fuck,0.0,0.009,0.001,0.009,Non Queer
+control,0.0,0.009,0.001,0.009,Non Queer
+butterfly,0.0,0.004,0.009,0.009,Queer
+sibling,0.006,0.009,0.005,0.009,Non Queer
+scientist,0.0,0.004,0.009,0.009,Queer
+traditionalist,0.0,0.009,0.0,0.009,Non Queer
+married,0.0,0.009,0.0,0.009,Non Queer
+empathize,0.0,0.008,0.009,0.009,Queer
+actress,0.0,0.009,0.007,0.009,Non Queer
+understanding,0.0,0.005,0.009,0.009,Queer
+secretary,0.0,0.009,0.003,0.009,Non Queer
+write,0.0,0.004,0.009,0.009,Queer
+relating,0.0,0.008,0.006,0.008,Non Queer
+exist,0.0,0.0,0.008,0.008,Queer
+builder,0.008,0.0,0.0,0.008,Unmarked
+privilege,0.008,0.005,0.0,0.008,Unmarked
+attract,0.0,0.008,0.0,0.008,Non Queer
+legend,0.008,0.0,0.001,0.008,Unmarked
+golf,0.008,0.003,0.0,0.008,Unmarked
+problem,0.0,0.007,0.008,0.008,Queer
+resource,0.008,0.004,0.0,0.008,Unmarked
+novice,0.008,0.0,0.0,0.008,Unmarked
+busybody,0.008,0.0,0.001,0.008,Unmarked
+suspect,0.008,0.0,0.0,0.008,Unmarked
+treasure,0.008,0.0,0.006,0.008,Unmarked
+detective,0.006,0.007,0.008,0.008,Queer
+guardian,0.008,0.003,0.0,0.008,Unmarked
+experiment,0.0,0.0,0.008,0.008,Queer
+debate,0.008,0.001,0.0,0.008,Unmarked
+weirdo,0.008,0.002,0.0,0.008,Unmarked
+manage,0.008,0.0,0.002,0.008,Unmarked
+delegate,0.008,0.0,0.001,0.008,Unmarked
+improvising,0.008,0.0,0.002,0.008,Unmarked
+sales,0.008,0.001,0.0,0.008,Unmarked
+failure,0.008,0.0,0.001,0.008,Unmarked
+conforming,0.0,0.008,0.0,0.008,Non Queer
+constituent,0.008,0.001,0.0,0.008,Unmarked
+trainee,0.008,0.0,0.001,0.008,Unmarked
+unusual,0.0,0.008,0.005,0.008,Non Queer
+thief,0.008,0.0,0.001,0.008,Unmarked
+judge,0.0,0.008,0.002,0.008,Non Queer
+participating,0.008,0.0,0.001,0.008,Unmarked
+jester,0.008,0.0,0.001,0.008,Unmarked
+music,0.008,0.0,0.003,0.008,Unmarked
+knight,0.008,0.001,0.0,0.008,Unmarked
+villain,0.008,0.0,0.0,0.008,Unmarked
+confidant,0.0,0.004,0.008,0.008,Queer
+position,0.008,0.001,0.0,0.008,Unmarked
+quiet,0.008,0.0,0.003,0.008,Unmarked
+vampire,0.0,0.005,0.008,0.008,Queer
+improvisation,0.008,0.0,0.0,0.008,Unmarked
+collaborator,0.008,0.0,0.001,0.008,Unmarked
+consumer,0.008,0.002,0.0,0.008,Unmarked
+themselves,0.0,0.001,0.008,0.008,Queer
+voting,0.008,0.003,0.0,0.008,Unmarked
+babysitter,0.008,0.0,0.0,0.008,Unmarked
+scapegoat,0.008,0.0,0.001,0.008,Unmarked
+landlord,0.008,0.001,0.0,0.008,Unmarked
+shadow,0.008,0.0,0.006,0.008,Unmarked
+technician,0.008,0.0,0.0,0.008,Unmarked
+barista,0.006,0.002,0.008,0.008,Queer
+courier,0.008,0.0,0.0,0.008,Unmarked
+pariah,0.0,0.0,0.007,0.007,Queer
+knitting,0.006,0.006,0.007,0.007,Queer
+couple,0.0,0.007,0.003,0.007,Non Queer
+bisexual,0.0,0.003,0.007,0.007,Queer
+cop,0.0,0.004,0.007,0.007,Queer
+sweetheart,0.0,0.003,0.007,0.007,Queer
+peer,0.006,0.007,0.002,0.007,Non Queer
+drive,0.0,0.007,0.003,0.007,Non Queer
+normie,0.0,0.007,0.0,0.007,Non Queer
+nonromantic,0.0,0.0,0.007,0.007,Queer
+foil,0.0,0.007,0.0,0.007,Non Queer
+researcher,0.006,0.007,0.003,0.007,Non Queer
+desire,0.0,0.007,0.0,0.007,Non Queer
+flamboyant,0.0,0.0,0.007,0.007,Queer
+drama,0.0,0.0,0.007,0.007,Queer
+officer,0.0,0.007,0.004,0.007,Non Queer
+diversity,0.0,0.002,0.007,0.007,Queer
+negotiation,0.0,0.004,0.007,0.007,Queer
+freak,0.0,0.002,0.007,0.007,Queer
+trucker,0.0,0.007,0.0,0.007,Non Queer
+employee,0.0,0.004,0.007,0.007,Queer
+theorist,0.0,0.007,0.0,0.007,Non Queer
+influential,0.0,0.006,0.0,0.006,Non Queer
+negotiate,0.006,0.002,0.004,0.006,Unmarked
+study,0.006,0.003,0.001,0.006,Unmarked
+nanny,0.0,0.006,0.003,0.006,Non Queer
+relate,0.0,0.004,0.006,0.006,Queer
+sleep,0.006,0.001,0.003,0.006,Unmarked
+helper,0.006,0.002,0.001,0.006,Unmarked
+soldier,0.0,0.006,0.006,0.006,Non Queer
+gay,0.0,0.006,0.003,0.006,Non Queer
+gamer,0.0,0.006,0.0,0.006,Non Queer
+something,0.006,0.001,0.0,0.006,Unmarked
+gossip,0.006,0.001,0.002,0.006,Unmarked
+resident,0.006,0.001,0.001,0.006,Unmarked
+handyman,0.006,0.001,0.0,0.006,Unmarked
+kill,0.006,0.003,0.006,0.006,Unmarked
+programming,0.006,0.001,0.002,0.006,Unmarked
+fixture,0.006,0.004,0.004,0.006,Unmarked
+spectator,0.006,0.001,0.006,0.006,Unmarked
+group,0.006,0.002,0.001,0.006,Unmarked
+grump,0.006,0.001,0.001,0.006,Unmarked
+specialist,0.006,0.002,0.005,0.006,Unmarked
+karaoke,0.0,0.0,0.006,0.006,Queer
+monster,0.006,0.001,0.003,0.006,Unmarked
+scholar,0.006,0.003,0.001,0.006,Unmarked
+soccer,0.006,0.001,0.001,0.006,Unmarked
+girl,0.006,0.002,0.002,0.006,Unmarked
+respond,0.006,0.003,0.0,0.006,Unmarked
+reporter,0.006,0.001,0.001,0.006,Unmarked
+stay,0.006,0.001,0.0,0.006,Unmarked
+mathematics,0.006,0.006,0.002,0.006,Unmarked
+job,0.0,0.005,0.006,0.006,Queer
+goofball,0.0,0.006,0.003,0.006,Non Queer
+dyke,0.0,0.0,0.006,0.006,Queer
+guard,0.0,0.005,0.006,0.006,Queer
+millionaire,0.006,0.003,0.003,0.006,Unmarked
+comedian,0.0,0.006,0.001,0.006,Non Queer
+burden,0.006,0.001,0.001,0.006,Unmarked
+pair,0.0,0.006,0.005,0.006,Non Queer
+wander,0.006,0.001,0.003,0.006,Unmarked
+observing,0.0,0.005,0.006,0.006,Queer
+christian,0.006,0.006,0.001,0.006,Unmarked
+browse,0.006,0.001,0.0,0.006,Unmarked
+cuddle,0.0,0.006,0.005,0.006,Non Queer
+chat,0.006,0.001,0.0,0.006,Unmarked
+photography,0.006,0.002,0.002,0.006,Unmarked
+writing,0.006,0.001,0.004,0.006,Unmarked
+basketball,0.006,0.003,0.001,0.006,Unmarked
+butler,0.0,0.004,0.006,0.006,Queer
+be,0.0,0.006,0.005,0.006,Non Queer
+challenge,0.0,0.0,0.006,0.006,Queer
+dating,0.0,0.006,0.001,0.006,Non Queer
+perform,0.006,0.004,0.002,0.006,Unmarked
+whisper,0.0,0.006,0.003,0.006,Non Queer
+bro,0.0,0.006,0.0,0.006,Non Queer
+bacterium,0.0,0.006,0.002,0.006,Non Queer
+collaborating,0.006,0.002,0.0,0.006,Unmarked
+traitor,0.006,0.001,0.001,0.006,Unmarked
+collaboration,0.006,0.003,0.004,0.006,Unmarked
+token,0.0,0.006,0.006,0.006,Non Queer
+politics,0.006,0.002,0.001,0.006,Unmarked
+observe,0.006,0.003,0.005,0.006,Unmarked
+succeed,0.006,0.001,0.002,0.006,Unmarked
+boy,0.006,0.005,0.005,0.006,Unmarked
+bodyguard,0.0,0.004,0.006,0.006,Queer
+honest,0.0,0.005,0.0,0.005,Non Queer
+victim,0.0,0.005,0.005,0.005,Non Queer
+visionary,0.0,0.0,0.005,0.005,Queer
+spectrum,0.0,0.005,0.001,0.005,Non Queer
+wizard,0.0,0.002,0.005,0.005,Queer
+line,0.0,0.005,0.0,0.005,Non Queer
+security,0.0,0.005,0.0,0.005,Non Queer
+engage,0.0,0.005,0.0,0.005,Non Queer
+bore,0.0,0.005,0.0,0.005,Non Queer
+ambassador,0.0,0.003,0.005,0.005,Queer
+narcissist,0.0,0.005,0.002,0.005,Non Queer
+cis,0.0,0.005,0.0,0.005,Non Queer
+nerd,0.0,0.005,0.0,0.005,Non Queer
+outlier,0.0,0.001,0.005,0.005,Queer
+proud,0.0,0.0,0.005,0.005,Queer
+dream,0.0,0.002,0.005,0.005,Queer
+cashier,0.0,0.005,0.002,0.005,Non Queer
+liaison,0.0,0.005,0.003,0.005,Non Queer
+desirable,0.0,0.005,0.0,0.005,Non Queer
+smell,0.0,0.0,0.005,0.005,Queer
+icon,0.0,0.0,0.005,0.005,Queer
+kiss,0.0,0.004,0.002,0.004,Non Queer
+anomalous,0.0,0.004,0.001,0.004,Non Queer
+assistant,0.0,0.002,0.004,0.004,Queer
+terrorist,0.0,0.001,0.004,0.004,Queer
+welcome,0.0,0.004,0.004,0.004,Non Queer
+role,0.0,0.004,0.001,0.004,Non Queer
+teenager,0.0,0.0,0.004,0.004,Queer
+sister,0.0,0.004,0.002,0.004,Non Queer
+psychopath,0.0,0.002,0.004,0.004,Queer
+celibate,0.0,0.004,0.001,0.004,Non Queer
+genderfluid,0.0,0.0,0.004,0.004,Queer
+protein,0.0,0.004,0.003,0.004,Non Queer
+cousin,0.0,0.004,0.003,0.004,Non Queer
+lie,0.0,0.004,0.001,0.004,Non Queer
+wanderer,0.0,0.001,0.004,0.004,Queer
+fluid,0.0,0.0,0.004,0.004,Queer
+friendship,0.0,0.0,0.004,0.004,Queer
+flourish,0.0,0.001,0.004,0.004,Queer
+confused,0.0,0.0,0.004,0.004,Queer
+socializing,0.0,0.004,0.003,0.004,Non Queer
+monk,0.0,0.0,0.004,0.004,Queer
+flatter,0.0,0.001,0.004,0.004,Queer
+landscaper,0.0,0.004,0.001,0.004,Non Queer
+barber,0.0,0.004,0.004,0.004,Non Queer
+bard,0.0,0.0,0.004,0.004,Queer
+character,0.0,0.002,0.004,0.004,Queer
+organizing,0.0,0.0,0.004,0.004,Queer
+counterpart,0.0,0.004,0.0,0.004,Non Queer
+conversation,0.0,0.004,0.001,0.004,Non Queer
+catalyst,0.0,0.004,0.003,0.004,Non Queer
+along,0.0,0.004,0.001,0.004,Non Queer
+mingle,0.0,0.004,0.004,0.004,Non Queer
+design,0.0,0.0,0.004,0.004,Queer
+husband,0.0,0.004,0.0,0.004,Non Queer
+navigating,0.0,0.004,0.001,0.004,Non Queer
+mechanic,0.0,0.004,0.004,0.004,Non Queer
+novelist,0.0,0.004,0.002,0.004,Non Queer
+politician,0.0,0.004,0.002,0.004,Non Queer
+different,0.0,0.002,0.004,0.004,Queer
+priest,0.0,0.003,0.004,0.004,Queer
+bigot,0.0,0.004,0.001,0.004,Non Queer
+ideal,0.0,0.004,0.001,0.004,Non Queer
+brilliant,0.0,0.0,0.004,0.004,Queer
+type,0.0,0.004,0.001,0.004,Non Queer
+shop,0.0,0.004,0.001,0.004,Non Queer
+janitor,0.0,0.001,0.004,0.004,Queer
+player,0.0,0.004,0.003,0.004,Non Queer
+identify,0.0,0.004,0.0,0.004,Non Queer
+representative,0.0,0.004,0.004,0.004,Non Queer
+observer,0.0,0.001,0.004,0.004,Queer
+caretaker,0.0,0.004,0.003,0.004,Non Queer
+sex,0.0,0.004,0.002,0.004,Non Queer
+biologist,0.0,0.001,0.004,0.004,Queer
+diverse,0.0,0.0,0.004,0.004,Queer
+parasite,0.0,0.004,0.001,0.004,Non Queer
+reproduce,0.0,0.0,0.004,0.004,Queer
+marginalized,0.0,0.0,0.004,0.004,Queer
+coder,0.0,0.001,0.003,0.003,Queer
+hunt,0.0,0.002,0.003,0.003,Queer
+inclusive,0.0,0.002,0.003,0.003,Queer
+rabbit,0.0,0.003,0.0,0.003,Non Queer
+smile,0.0,0.0,0.003,0.003,Queer
+lead,0.0,0.003,0.001,0.003,Non Queer
+hypocrite,0.0,0.003,0.0,0.003,Non Queer
+leadership,0.0,0.003,0.0,0.003,Non Queer
+awkward,0.0,0.003,0.003,0.003,Non Queer
+patriot,0.0,0.003,0.0,0.003,Non Queer
+usher,0.0,0.001,0.003,0.003,Queer
+polyamorous,0.0,0.0,0.003,0.003,Queer
+slut,0.0,0.0,0.003,0.003,Queer
+heroine,0.0,0.001,0.003,0.003,Queer
+shapeshifter,0.0,0.0,0.003,0.003,Queer
+trouble,0.0,0.0,0.003,0.003,Queer
+troublesome,0.0,0.003,0.0,0.003,Non Queer
+reading,0.0,0.003,0.002,0.003,Non Queer
+heteronormative,0.0,0.003,0.0,0.003,Non Queer
+cell,0.0,0.003,0.0,0.003,Non Queer
+being,0.0,0.002,0.003,0.003,Queer
+healer,0.0,0.003,0.0,0.003,Non Queer
+ceo,0.0,0.003,0.001,0.003,Non Queer
+heteroromantic,0.0,0.003,0.0,0.003,Non Queer
+kind,0.0,0.002,0.003,0.003,Queer
+trustworthy,0.0,0.003,0.0,0.003,Non Queer
+hairstylist,0.0,0.0,0.003,0.003,Queer
+joke,0.0,0.003,0.002,0.003,Non Queer
+polycule,0.0,0.0,0.003,0.003,Queer
+hr,0.0,0.003,0.0,0.003,Non Queer
+butcher,0.0,0.002,0.003,0.003,Queer
+performing,0.0,0.0,0.003,0.003,Queer
+trendsetter,0.0,0.0,0.003,0.003,Queer
+puzzles,0.0,0.0,0.003,0.003,Queer
+groom,0.0,0.002,0.003,0.003,Queer
+prude,0.0,0.003,0.0,0.003,Non Queer
+understand,0.0,0.002,0.003,0.003,Queer
+veteran,0.0,0.003,0.0,0.003,Non Queer
+scribe,0.0,0.002,0.003,0.003,Queer
+hosting,0.0,0.0,0.003,0.003,Queer
+poker,0.0,0.003,0.0,0.003,Non Queer
+laugh,0.0,0.003,0.0,0.003,Non Queer
+buffer,0.0,0.003,0.002,0.003,Non Queer
+persona,0.0,0.003,0.0,0.003,Non Queer
+gamble,0.0,0.001,0.003,0.003,Queer
+themself,0.0,0.0,0.003,0.003,Queer
+storytelling,0.0,0.0,0.003,0.003,Queer
+witch,0.0,0.0,0.003,0.003,Queer
+everything,0.0,0.001,0.003,0.003,Queer
+decorating,0.0,0.001,0.003,0.003,Queer
+stereotypes,0.0,0.0,0.003,0.003,Queer
+exercise,0.0,0.003,0.0,0.003,Non Queer
+revolutionary,0.0,0.0,0.003,0.003,Queer
+walk,0.0,0.003,0.0,0.003,Non Queer
+american,0.0,0.002,0.003,0.003,Queer
+crossdress,0.0,0.0,0.003,0.003,Queer
+welder,0.0,0.003,0.0,0.003,Non Queer
+fascinating,0.0,0.002,0.003,0.003,Queer
+temp,0.0,0.003,0.002,0.003,Non Queer
+tennis,0.0,0.001,0.003,0.003,Queer
+feel,0.0,0.003,0.001,0.003,Non Queer
+anomaly,0.0,0.003,0.003,0.003,Non Queer
+wear,0.0,0.003,0.001,0.003,Non Queer
+straighten,0.0,0.003,0.0,0.003,Non Queer
+prince,0.0,0.003,0.0,0.003,Non Queer
+synonym,0.0,0.003,0.001,0.003,Non Queer
+direct,0.0,0.003,0.0,0.003,Non Queer
+stylist,0.0,0.0,0.003,0.003,Queer
+reproduction,0.0,0.0,0.003,0.003,Queer
+drag,0.0,0.002,0.003,0.003,Queer
+accept,0.0,0.002,0.003,0.003,Queer
+dramaqueen,0.0,0.001,0.003,0.003,Queer
+mercenary,0.0,0.002,0.003,0.003,Queer
+supporting,0.0,0.003,0.0,0.003,Non Queer
+surf,0.0,0.003,0.001,0.003,Non Queer
+detached,0.0,0.003,0.002,0.003,Non Queer
+surgeon,0.0,0.001,0.003,0.003,Queer
+reserved,0.0,0.003,0.001,0.003,Non Queer
+odd,0.0,0.003,0.0,0.003,Non Queer
+problematic,0.0,0.003,0.0,0.003,Non Queer
+oddball,0.0,0.003,0.0,0.003,Non Queer
+strange,0.0,0.0,0.003,0.003,Queer
+mediating,0.0,0.002,0.003,0.003,Queer
+nonconforming,0.0,0.001,0.003,0.003,Queer
+expressing,0.0,0.0,0.003,0.003,Queer
+other,0.0,0.0,0.003,0.003,Queer
+species,0.0,0.003,0.0,0.003,Non Queer
+articulation,0.0,0.0,0.003,0.003,Queer
+living,0.0,0.003,0.001,0.003,Non Queer
+compromise,0.0,0.003,0.002,0.003,Non Queer
+bird,0.0,0.001,0.003,0.003,Queer
+friendly,0.0,0.003,0.003,0.003,Non Queer
+point,0.0,0.003,0.003,0.003,Non Queer
+fly,0.0,0.003,0.001,0.003,Non Queer
+asset,0.0,0.001,0.003,0.003,Queer
+compete,0.0,0.003,0.0,0.003,Non Queer
+focus,0.0,0.003,0.002,0.003,Non Queer
+cope,0.0,0.001,0.003,0.003,Queer
+conversing,0.0,0.003,0.0,0.003,Non Queer
+contribute,0.0,0.0,0.003,0.003,Queer
+archery,0.0,0.0,0.003,0.003,Queer
+conversations,0.0,0.003,0.001,0.003,Non Queer
+concierge,0.0,0.003,0.0,0.003,Non Queer
+receptionist,0.0,0.003,0.001,0.003,Non Queer
+regular,0.0,0.003,0.0,0.003,Non Queer
+available,0.0,0.002,0.0,0.002,Non Queer
+learning,0.0,0.001,0.002,0.002,Queer
+resist,0.0,0.0,0.002,0.002,Queer
+versatile,0.0,0.002,0.0,0.002,Non Queer
+rules,0.0,0.002,0.0,0.002,Non Queer
+salesperson,0.0,0.002,0.0,0.002,Non Queer
+meddle,0.0,0.0,0.002,0.002,Queer
+voyeur,0.0,0.002,0.0,0.002,Non Queer
+mediate,0.0,0.001,0.002,0.002,Queer
+introverted,0.0,0.0,0.002,0.002,Queer
+accounting,0.0,0.002,0.0,0.002,Non Queer
+adaptation,0.0,0.0,0.002,0.002,Queer
+merchant,0.0,0.002,0.001,0.002,Non Queer
+metaphor,0.0,0.001,0.002,0.002,Queer
+liberal,0.0,0.001,0.002,0.002,Queer
+quirky,0.0,0.002,0.0,0.002,Non Queer
+seeker,0.0,0.002,0.0,0.002,Non Queer
+saint,0.0,0.001,0.002,0.002,Queer
+seduce,0.0,0.001,0.002,0.002,Queer
+athlete,0.0,0.0,0.002,0.002,Queer
+aunt,0.0,0.002,0.0,0.002,Non Queer
+acceptable,0.0,0.002,0.0,0.002,Non Queer
+republican,0.0,0.002,0.0,0.002,Non Queer
+attraction,0.0,0.002,0.0,0.002,Non Queer
+asexual,0.0,0.0,0.002,0.002,Queer
+meditate,0.0,0.001,0.002,0.002,Queer
+run,0.0,0.002,0.0,0.002,Non Queer
+photon,0.0,0.0,0.002,0.002,Queer
+policeman,0.0,0.002,0.0,0.002,Non Queer
+womanizer,0.0,0.002,0.0,0.002,Non Queer
+analyst,0.0,0.002,0.002,0.002,Non Queer
+pest,0.0,0.0,0.002,0.002,Queer
+makeup,0.0,0.002,0.0,0.002,Non Queer
+beam,0.0,0.002,0.0,0.002,Non Queer
+arrow,0.0,0.002,0.0,0.002,Non Queer
+poetry,0.0,0.0,0.002,0.002,Queer
+watch,0.0,0.002,0.0,0.002,Non Queer
+analyzing,0.0,0.0,0.002,0.002,Queer
+allosexual,0.0,0.002,0.0,0.002,Non Queer
+scheduler,0.0,0.0,0.002,0.002,Queer
+beacon,0.0,0.002,0.0,0.002,Non Queer
+loving,0.0,0.002,0.002,0.002,Non Queer
+monkey,0.0,0.0,0.002,0.002,Queer
+appreciate,0.0,0.002,0.002,0.002,Non Queer
+loser,0.0,0.0,0.002,0.002,Queer
+logic,0.0,0.002,0.0,0.002,Non Queer
+alloromantic,0.0,0.002,0.0,0.002,Non Queer
+bachelor,0.0,0.002,0.0,0.002,Non Queer
+misfit,0.0,0.0,0.002,0.002,Queer
+witness,0.0,0.002,0.0,0.002,Non Queer
+peacock,0.0,0.002,0.0,0.002,Non Queer
+phoenix,0.0,0.0,0.002,0.002,Queer
+mask,0.0,0.001,0.002,0.002,Queer
+virgin,0.0,0.001,0.002,0.002,Queer
+virus,0.0,0.0,0.002,0.002,Queer
+misogynist,0.0,0.002,0.0,0.002,Non Queer
+befriend,0.0,0.002,0.0,0.002,Non Queer
+misunderstood,0.0,0.0,0.002,0.002,Queer
+science,0.0,0.0,0.002,0.002,Queer
+phantom,0.0,0.0,0.002,0.002,Queer
+marketing,0.0,0.002,0.001,0.002,Non Queer
+ring,0.0,0.002,0.002,0.002,Non Queer
+allopathic,0.0,0.002,0.0,0.002,Non Queer
+biomancer,0.0,0.0,0.002,0.002,Queer
+subordinate,0.0,0.001,0.002,0.002,Queer
+individuals,0.0,0.0,0.002,0.002,Queer
+cowboy,0.0,0.002,0.0,0.002,Non Queer
+openminded,0.0,0.0,0.002,0.002,Queer
+standard,0.0,0.002,0.0,0.002,Non Queer
+curmudgeon,0.0,0.002,0.0,0.002,Non Queer
+curious,0.0,0.0,0.002,0.002,Queer
+curator,0.0,0.001,0.002,0.002,Queer
+factor,0.0,0.0,0.002,0.002,Queer
+teammember,0.0,0.002,0.0,0.002,Non Queer
+teamwork,0.0,0.002,0.0,0.002,Non Queer
+family,0.0,0.002,0.002,0.002,Non Queer
+present,0.0,0.002,0.001,0.002,Non Queer
+creep,0.0,0.002,0.0,0.002,Non Queer
+creativity,0.0,0.0,0.002,0.002,Queer
+term,0.0,0.002,0.001,0.002,Non Queer
+coordinator,0.0,0.0,0.002,0.002,Queer
+statue,0.0,0.0,0.002,0.002,Queer
+conventional,0.0,0.002,0.0,0.002,Non Queer
+flattery,0.0,0.0,0.002,0.002,Queer
+theologist,0.0,0.002,0.0,0.002,Non Queer
+special,0.0,0.0,0.002,0.002,Queer
+confusion,0.0,0.0,0.002,0.002,Queer
+speaking,0.0,0.001,0.002,0.002,Queer
+flower,0.0,0.0,0.002,0.002,Queer
+conductor,0.0,0.0,0.002,0.002,Queer
+following,0.0,0.002,0.0,0.002,Non Queer
+multitask,0.0,0.002,0.0,0.002,Non Queer
+nomad,0.0,0.0,0.002,0.002,Queer
+nobody,0.0,0.0,0.002,0.002,Queer
+compliance,0.0,0.002,0.0,0.002,Non Queer
+daydream,0.0,0.002,0.001,0.002,Non Queer
+taxpayer,0.0,0.002,0.0,0.002,Non Queer
+companion,0.0,0.001,0.002,0.002,Queer
+deterrent,0.0,0.002,0.002,0.002,Non Queer
+obey,0.0,0.002,0.0,0.002,Non Queer
+nun,0.0,0.0,0.002,0.002,Queer
+dive,0.0,0.0,0.002,0.002,Queer
+dragqueen,0.0,0.002,0.0,0.002,Non Queer
+success,0.0,0.002,0.0,0.002,Non Queer
+suitor,0.0,0.002,0.0,0.002,Non Queer
+disease,0.0,0.002,0.0,0.002,Non Queer
+directions,0.0,0.002,0.0,0.002,Non Queer
+driving,0.0,0.002,0.0,0.002,Non Queer
+dine,0.0,0.002,0.001,0.002,Non Queer
+dye,0.0,0.0,0.002,0.002,Queer
+survive,0.0,0.0,0.002,0.002,Queer
+educator,0.0,0.002,0.002,0.002,Non Queer
+empath,0.0,0.0,0.002,0.002,Queer
+experience,0.0,0.002,0.0,0.002,Non Queer
+symbol,0.0,0.002,0.0,0.002,Non Queer
+straightlaced,0.0,0.002,0.0,0.002,Non Queer
+nosy,0.0,0.002,0.0,0.002,Non Queer
+demigod,0.0,0.002,0.0,0.002,Non Queer
+defender,0.0,0.002,0.0,0.002,Non Queer
+entertainer,0.0,0.0,0.002,0.002,Queer
+entertaining,0.0,0.0,0.002,0.002,Queer
+equal,0.0,0.0,0.002,0.002,Queer
+storyteller,0.0,0.001,0.002,0.002,Queer
+stick,0.0,0.002,0.0,0.002,Non Queer
+executive,0.0,0.002,0.001,0.002,Non Queer
+decorate,0.0,0.001,0.002,0.002,Queer
+target,0.0,0.001,0.002,0.002,Queer
+traditional,0.0,0.002,0.0,0.002,Non Queer
+distraction,0.0,0.002,0.0,0.002,Non Queer
+handle,0.0,0.001,0.002,0.002,Queer
+guy,0.0,0.002,0.001,0.002,Non Queer
+chauffeur,0.0,0.002,0.0,0.002,Non Queer
+shave,0.0,0.002,0.001,0.002,Non Queer
+charming,0.0,0.0,0.002,0.002,Queer
+grape,0.0,0.0,0.002,0.002,Queer
+charmer,0.0,0.001,0.002,0.002,Queer
+tree,0.0,0.001,0.002,0.002,Queer
+trickster,0.0,0.0,0.002,0.002,Queer
+businessman,0.0,0.0,0.002,0.002,Queer
+challenging,0.0,0.0,0.002,0.002,Queer
+shine,0.0,0.0,0.002,0.002,Queer
+collector,0.0,0.0,0.002,0.002,Queer
+cheat,0.0,0.0,0.002,0.002,Queer
+skating,0.0,0.0,0.002,0.002,Queer
+harmless,0.0,0.0,0.002,0.002,Queer
+have,0.0,0.002,0.0,0.002,Non Queer
+cad,0.0,0.001,0.002,0.002,Queer
+sinner,0.0,0.0,0.002,0.002,Queer
+purposeful,0.0,0.0,0.002,0.002,Queer
+herself,0.0,0.0,0.002,0.002,Queer
+heterogeneous,0.0,0.002,0.0,0.002,Non Queer
+candidate,0.0,0.002,0.0,0.002,Non Queer
+carpentry,0.0,0.002,0.002,0.002,Non Queer
+chauvinist,0.0,0.002,0.0,0.002,Non Queer
+brother,0.0,0.002,0.001,0.002,Non Queer
+genderqueer,0.0,0.0,0.002,0.002,Queer
+clone,0.0,0.0,0.002,0.002,Queer
+network,0.0,0.0,0.002,0.002,Queer
+queer,0.0,0.002,0.001,0.002,Non Queer
+polyamorist,0.0,0.0,0.002,0.002,Queer
+botanist,0.0,0.0,0.002,0.002,Queer
+generalist,0.0,0.0,0.002,0.002,Queer
+newspaper,0.0,0.0,0.002,0.002,Queer
+in,0.0,0.002,0.0,0.002,Non Queer
+sociopath,0.0,0.002,0.0,0.002,Non Queer
+collect,0.0,0.002,0.0,0.002,Non Queer
+gentle,0.0,0.001,0.002,0.002,Queer
+broker,0.0,0.0,0.002,0.002,Queer
+smoke,0.0,0.002,0.001,0.002,Non Queer
+pansexual,0.0,0.0,0.002,0.002,Queer
+valued,0.0,0.001,0.002,0.002,Queer
+blank,0.0,0.0,0.002,0.002,Queer
+bookworm,0.0,0.002,0.0,0.002,Non Queer
+polite,0.0,0.0,0.001,0.001,Queer
+repressor,0.0,0.0,0.001,0.001,Queer
+puzzle,0.0,0.001,0.0,0.001,Non Queer
+rarity,0.0,0.001,0.001,0.001,Non Queer
+pollinator,0.0,0.0,0.001,0.001,Queer
+racist,0.0,0.0,0.001,0.001,Queer
+quick,0.0,0.001,0.0,0.001,Non Queer
+polyamourist,0.0,0.001,0.0,0.001,Non Queer
+rapport,0.0,0.001,0.0,0.001,Non Queer
+prioritize,0.0,0.001,0.0,0.001,Non Queer
+platypus,0.0,0.0,0.001,0.001,Queer
+playboy,0.0,0.001,0.001,0.001,Non Queer
+polyamourous,0.0,0.0,0.001,0.001,Queer
+protector,0.0,0.0,0.001,0.001,Queer
+procreating,0.0,0.001,0.0,0.001,Non Queer
+prick,0.0,0.001,0.0,0.001,Non Queer
+recipient,0.0,0.001,0.0,0.001,Non Queer
+popular,0.0,0.0,0.001,0.001,Queer
+recognition,0.0,0.001,0.0,0.001,Non Queer
+potential,0.0,0.0,0.001,0.001,Queer
+prospect,0.0,0.0,0.001,0.001,Queer
+referee,0.0,0.001,0.0,0.001,Non Queer
+pronouns,0.0,0.0,0.001,0.001,Queer
+relation,0.0,0.0,0.001,0.001,Queer
+pool,0.0,0.001,0.0,0.001,Non Queer
+polysexual,0.0,0.0,0.001,0.001,Queer
+powerful,0.0,0.001,0.0,0.001,Non Queer
+polyglot,0.0,0.001,0.0,0.001,Non Queer
+polygamous,0.0,0.001,0.0,0.001,Non Queer
+prejudice,0.0,0.0,0.001,0.001,Queer
+program,0.0,0.001,0.0,0.001,Non Queer
+presence,0.0,0.0,0.001,0.001,Queer
+remarkable,0.0,0.0,0.001,0.001,Queer
+productive,0.0,0.0,0.001,0.001,Queer
+renegade,0.0,0.001,0.0,0.001,Non Queer
+polygamist,0.0,0.0,0.001,0.001,Queer
+reason,0.0,0.0,0.001,0.001,Queer
+psychologist,0.0,0.001,0.0,0.001,Non Queer
+pretender,0.0,0.0,0.001,0.001,Queer
+producing,0.0,0.0,0.001,0.001,Queer
+proactive,0.0,0.0,0.001,0.001,Queer
+proper,0.0,0.001,0.0,0.001,Non Queer
+spontaneity,0.0,0.0,0.001,0.001,Queer
+reproducer,0.0,0.001,0.0,0.001,Non Queer
+television,0.0,0.001,0.0,0.001,Non Queer
+theatrical,0.0,0.0,0.001,0.001,Queer
+their,0.0,0.0,0.001,0.001,Queer
+thespian,0.0,0.0,0.001,0.001,Queer
+theythem,0.0,0.0,0.001,0.001,Queer
+things,0.0,0.001,0.0,0.001,Non Queer
+thinker,0.0,0.0,0.001,0.001,Queer
+thinking,0.0,0.0,0.001,0.001,Queer
+threatening,0.0,0.0,0.001,0.001,Queer
+thrifting,0.0,0.0,0.001,0.001,Queer
+timetable,0.0,0.0,0.001,0.001,Queer
+to,0.0,0.0,0.001,0.001,Queer
+tradesman,0.0,0.001,0.0,0.001,Non Queer
+traditionally,0.0,0.001,0.0,0.001,Non Queer
+trainer,0.0,0.001,0.0,0.001,Non Queer
+trait,0.0,0.0,0.001,0.001,Queer
+trampolinist,0.0,0.0,0.001,0.001,Queer
+transgress,0.0,0.0,0.001,0.001,Queer
+transitioning,0.0,0.0,0.001,0.001,Queer
+transsexual,0.0,0.001,0.001,0.001,Non Queer
+transvestite,0.0,0.001,0.0,0.001,Non Queer
+traversing,0.0,0.0,0.001,0.001,Queer
+teller,0.0,0.0,0.001,0.001,Queer
+tease,0.0,0.001,0.001,0.001,Non Queer
+trope,0.0,0.0,0.001,0.001,Queer
+teaching,0.0,0.001,0.0,0.001,Non Queer
+stroll,0.0,0.001,0.0,0.001,Non Queer
+strong,0.0,0.001,0.0,0.001,Non Queer
+studying,0.0,0.0,0.001,0.001,Queer
+style,0.0,0.0,0.001,0.001,Queer
+submissive,0.0,0.001,0.0,0.001,Non Queer
+subtle,0.0,0.0,0.001,0.001,Queer
+subtype,0.0,0.0,0.001,0.001,Queer
+successful,0.0,0.001,0.0,0.001,Non Queer
+sultan,0.0,0.0,0.001,0.001,Queer
+supervisor,0.0,0.0,0.001,0.001,Queer
+surviving,0.0,0.0,0.001,0.001,Queer
+survivor,0.0,0.0,0.001,0.001,Queer
+swing,0.0,0.0,0.001,0.001,Queer
+switch,0.0,0.0,0.001,0.001,Queer
+switching,0.0,0.0,0.001,0.001,Queer
+system,0.0,0.0,0.001,0.001,Queer
+tail,0.0,0.001,0.0,0.001,Non Queer
+tailor,0.0,0.001,0.001,0.001,Non Queer
+talented,0.0,0.0,0.001,0.001,Queer
+tasks,0.0,0.001,0.0,0.001,Non Queer
+teach,0.0,0.001,0.0,0.001,Non Queer
+trisexual,0.0,0.0,0.001,0.001,Queer
+true,0.0,0.0,0.001,0.001,Queer
+reproducing,0.0,0.001,0.0,0.001,Non Queer
+voice,0.0,0.001,0.0,0.001,Non Queer
+wallflower,0.0,0.001,0.001,0.001,Non Queer
+warm,0.0,0.0,0.001,0.001,Queer
+warrior,0.0,0.0,0.001,0.001,Queer
+watchman,0.0,0.001,0.0,0.001,Non Queer
+wave,0.0,0.001,0.0,0.001,Non Queer
+website,0.0,0.0,0.001,0.001,Queer
+what,0.0,0.0,0.001,0.001,Queer
+whisperer,0.0,0.001,0.0,0.001,Non Queer
+whistle,0.0,0.001,0.0,0.001,Non Queer
+wife,0.0,0.001,0.0,0.001,Non Queer
+win,0.0,0.0,0.001,0.001,Queer
+winner,0.0,0.0,0.001,0.001,Queer
+women,0.0,0.001,0.0,0.001,Non Queer
+woo,0.0,0.001,0.0,0.001,Non Queer
+woodworking,0.0,0.0,0.001,0.001,Queer
+workhorse,0.0,0.0,0.001,0.001,Queer
+workout,0.0,0.0,0.001,0.001,Queer
+worm,0.0,0.0,0.001,0.001,Queer
+writes,0.0,0.0,0.001,0.001,Queer
+year,0.0,0.0,0.001,0.001,Queer
+yla,0.0,0.0,0.001,0.001,Queer
+wait,0.0,0.0,0.001,0.001,Queer
+vocal,0.0,0.001,0.0,0.001,Non Queer
+truthful,0.0,0.001,0.0,0.001,Non Queer
+visit,0.0,0.0,0.001,0.001,Queer
+turk,0.0,0.0,0.001,0.001,Queer
+unconventional,0.0,0.001,0.0,0.001,Non Queer
+unifier,0.0,0.0,0.001,0.001,Queer
+union,0.0,0.001,0.0,0.001,Non Queer
+unisex,0.0,0.0,0.001,0.001,Queer
+universal,0.0,0.001,0.0,0.001,Non Queer
+universalist,0.0,0.0,0.001,0.001,Queer
+upstanding,0.0,0.001,0.0,0.001,Non Queer
+user,0.0,0.001,0.0,0.001,Non Queer
+utopia,0.0,0.0,0.001,0.001,Queer
+vagrant,0.0,0.0,0.001,0.001,Queer
+valid,0.0,0.0,0.001,0.001,Queer
+variant,0.0,0.001,0.0,0.001,Non Queer
+vegan,0.0,0.0,0.001,0.001,Queer
+vegetable,0.0,0.0,0.001,0.001,Queer
+verb,0.0,0.001,0.0,0.001,Non Queer
+veterinarian,0.0,0.001,0.0,0.001,Non Queer
+vibrant,0.0,0.0,0.001,0.001,Queer
+visibility,0.0,0.001,0.0,0.001,Non Queer
+visible,0.0,0.0,0.001,0.001,Queer
+vision,0.0,0.0,0.001,0.001,Queer
+strive,0.0,0.0,0.001,0.001,Queer
+strength,0.0,0.0,0.001,0.001,Queer
+strawberry,0.0,0.0,0.001,0.001,Queer
+sage,0.0,0.0,0.001,0.001,Queer
+samesex,0.0,0.0,0.001,0.001,Queer
+savior,0.0,0.0,0.001,0.001,Queer
+sceptic,0.0,0.0,0.001,0.001,Queer
+schedule,0.0,0.0,0.001,0.001,Queer
+scheme,0.0,0.0,0.001,0.001,Queer
+schoolwork,0.0,0.001,0.0,0.001,Non Queer
+scout,0.0,0.0,0.001,0.001,Queer
+sculptor,0.0,0.0,0.001,0.001,Queer
+seamstress,0.0,0.001,0.0,0.001,Non Queer
+seasoned,0.0,0.0,0.001,0.001,Queer
+seducing,0.0,0.001,0.0,0.001,Non Queer
+seduction,0.0,0.0,0.001,0.001,Queer
+senator,0.0,0.0,0.001,0.001,Queer
+sensation,0.0,0.001,0.0,0.001,Non Queer
+sense,0.0,0.001,0.0,0.001,Non Queer
+sentence,0.0,0.0,0.001,0.001,Queer
+sexologist,0.0,0.0,0.001,0.001,Queer
+sexualfluid,0.0,0.0,0.001,0.001,Queer
+sexuality,0.0,0.001,0.0,0.001,Non Queer
+sexy,0.0,0.0,0.001,0.001,Queer
+shaman,0.0,0.0,0.001,0.001,Queer
+sailor,0.0,0.001,0.001,0.001,Non Queer
+safe,0.0,0.001,0.0,0.001,Non Queer
+strategy,0.0,0.001,0.0,0.001,Non Queer
+running,0.0,0.0,0.001,0.001,Queer
+requested,0.0,0.0,0.001,0.001,Queer
+research,0.0,0.0,0.001,0.001,Queer
+respect,0.0,0.001,0.0,0.001,Non Queer
+respectable,0.0,0.001,0.0,0.001,Non Queer
+respectfully,0.0,0.0,0.001,0.001,Queer
+responses,0.0,0.0,0.001,0.001,Queer
+result,0.0,0.0,0.001,0.001,Queer
+revelation,0.0,0.0,0.001,0.001,Queer
+rival,0.0,0.001,0.0,0.001,Non Queer
+river,0.0,0.0,0.001,0.001,Queer
+rock,0.0,0.0,0.001,0.001,Queer
+rolemodel,0.0,0.001,0.0,0.001,Non Queer
+roleplaying,0.0,0.0,0.001,0.001,Queer
+romancefree,0.0,0.0,0.001,0.001,Queer
+romancer,0.0,0.001,0.001,0.001,Non Queer
+romanticist,0.0,0.001,0.001,0.001,Non Queer
+romanticizer,0.0,0.0,0.001,0.001,Queer
+ropes,0.0,0.0,0.001,0.001,Queer
+rophighter,0.0,0.0,0.001,0.001,Queer
+rose,0.0,0.0,0.001,0.001,Queer
+ruler,0.0,0.0,0.001,0.001,Queer
+she,0.0,0.001,0.0,0.001,Non Queer
+shepherd,0.0,0.001,0.001,0.001,Non Queer
+shoot,0.0,0.001,0.0,0.001,Non Queer
+shooting,0.0,0.001,0.0,0.001,Non Queer
+sparkle,0.0,0.0,0.001,0.001,Queer
+speak,0.0,0.001,0.001,0.001,Non Queer
+specter,0.0,0.0,0.001,0.001,Queer
+spend,0.0,0.0,0.001,0.001,Queer
+sphere,0.0,0.001,0.0,0.001,Non Queer
+sphinx,0.0,0.0,0.001,0.001,Queer
+spinster,0.0,0.0,0.001,0.001,Queer
+split,0.0,0.0,0.001,0.001,Queer
+spokesperson,0.0,0.001,0.001,0.001,Non Queer
+sponge,0.0,0.001,0.0,0.001,Non Queer
+planning,0.0,0.001,0.001,0.001,Non Queer
+spore,0.0,0.0,0.001,0.001,Queer
+spouse,0.0,0.0,0.001,0.001,Queer
+spread,0.0,0.001,0.0,0.001,Non Queer
+staff,0.0,0.001,0.001,0.001,Non Queer
+starfish,0.0,0.0,0.001,0.001,Queer
+steady,0.0,0.001,0.0,0.001,Non Queer
+stereotyping,0.0,0.0,0.001,0.001,Queer
+stoic,0.0,0.001,0.0,0.001,Non Queer
+straightforward,0.0,0.001,0.0,0.001,Non Queer
+straitjacket,0.0,0.001,0.0,0.001,Non Queer
+spanish,0.0,0.001,0.0,0.001,Non Queer
+soulmate,0.0,0.001,0.0,0.001,Non Queer
+soul,0.0,0.0,0.001,0.001,Queer
+skeptic,0.0,0.001,0.0,0.001,Non Queer
+significantly,0.0,0.0,0.001,0.001,Queer
+simpleton,0.0,0.001,0.0,0.001,Non Queer
+simultaneously,0.0,0.0,0.001,0.001,Queer
+sincere,0.0,0.001,0.0,0.001,Non Queer
+single,0.0,0.0,0.001,0.001,Queer
+singleton,0.0,0.0,0.001,0.001,Queer
+siren,0.0,0.0,0.001,0.001,Queer
+sit,0.0,0.0,0.001,0.001,Queer
+skate,0.0,0.001,0.0,0.001,Non Queer
+sketching,0.0,0.0,0.001,0.001,Queer
+sophisticate,0.0,0.0,0.001,0.001,Queer
+skilled,0.0,0.001,0.0,0.001,Non Queer
+snake,0.0,0.001,0.0,0.001,Non Queer
+social,0.0,0.0,0.001,0.001,Queer
+socialbutterfly,0.0,0.0,0.001,0.001,Queer
+socialist,0.0,0.0,0.001,0.001,Queer
+socialite,0.0,0.0,0.001,0.001,Queer
+socializer,0.0,0.001,0.0,0.001,Non Queer
+sojourner,0.0,0.0,0.001,0.001,Queer
+soloist,0.0,0.0,0.001,0.001,Queer
+plant,0.0,0.0,0.001,0.001,Queer
+abnormal,0.0,0.0,0.001,0.001,Queer
+planner,0.0,0.001,0.0,0.001,Non Queer
+creative,0.0,0.0,0.001,0.001,Queer
+crook,0.0,0.001,0.0,0.001,Non Queer
+crossdresser,0.0,0.001,0.0,0.001,Non Queer
+crossdressing,0.0,0.0,0.001,0.001,Queer
+crossgender,0.0,0.0,0.001,0.001,Queer
+crush,0.0,0.001,0.0,0.001,Non Queer
+cuckold,0.0,0.0,0.001,0.001,Queer
+cupid,0.0,0.0,0.001,0.001,Queer
+cycle,0.0,0.0,0.001,0.001,Queer
+darts,0.0,0.001,0.0,0.001,Non Queer
+daughter,0.0,0.0,0.001,0.001,Queer
+dazzle,0.0,0.0,0.001,0.001,Queer
+deadline,0.0,0.0,0.001,0.001,Queer
+deal,0.0,0.001,0.0,0.001,Non Queer
+dealer,0.0,0.0,0.001,0.001,Queer
+deceiving,0.0,0.0,0.001,0.001,Queer
+decide,0.0,0.001,0.0,0.001,Non Queer
+decorator,0.0,0.001,0.001,0.001,Non Queer
+decoy,0.0,0.001,0.0,0.001,Non Queer
+dedicated,0.0,0.001,0.001,0.001,Non Queer
+deficient,0.0,0.0,0.001,0.001,Queer
+democrat,0.0,0.001,0.0,0.001,Non Queer
+dentist,0.0,0.0,0.001,0.001,Queer
+denying,0.0,0.001,0.0,0.001,Non Queer
+designing,0.0,0.0,0.001,0.001,Queer
+detaching,0.0,0.0,0.001,0.001,Queer
+detachment,0.0,0.0,0.001,0.001,Queer
+deviation,0.0,0.0,0.001,0.001,Queer
+devotee,0.0,0.0,0.001,0.001,Queer
+dictate,0.0,0.0,0.001,0.001,Queer
+crochet,0.0,0.0,0.001,0.001,Queer
+creating,0.0,0.001,0.0,0.001,Non Queer
+difference,0.0,0.001,0.0,0.001,Non Queer
+crafting,0.0,0.0,0.001,0.001,Queer
+competent,0.0,0.0,0.001,0.001,Queer
+competitor,0.0,0.001,0.001,0.001,Non Queer
+complain,0.0,0.001,0.0,0.001,Non Queer
+complaining,0.0,0.001,0.0,0.001,Non Queer
+complement,0.0,0.001,0.0,0.001,Non Queer
+complete,0.0,0.0,0.001,0.001,Queer
+complicated,0.0,0.0,0.001,0.001,Queer
+complying,0.0,0.001,0.0,0.001,Non Queer
+composer,0.0,0.0,0.001,0.001,Queer
+compromising,0.0,0.0,0.001,0.001,Queer
+computers,0.0,0.0,0.001,0.001,Queer
+comrade,0.0,0.0,0.001,0.001,Queer
+concept,0.0,0.0,0.001,0.001,Queer
+confederate,0.0,0.001,0.0,0.001,Non Queer
+confidently,0.0,0.001,0.0,0.001,Non Queer
+connections,0.0,0.001,0.0,0.001,Non Queer
+connector,0.0,0.0,0.001,0.001,Queer
+construct,0.0,0.001,0.0,0.001,Non Queer
+contestant,0.0,0.001,0.001,0.001,Non Queer
+context,0.0,0.0,0.001,0.001,Queer
+continuum,0.0,0.001,0.0,0.001,Non Queer
+contradiction,0.0,0.0,0.001,0.001,Queer
+controversy,0.0,0.0,0.001,0.001,Queer
+cosmonaut,0.0,0.0,0.001,0.001,Queer
+councilwoman,0.0,0.0,0.001,0.001,Queer
+count,0.0,0.0,0.001,0.001,Queer
+court,0.0,0.0,0.001,0.001,Queer
+coward,0.0,0.001,0.0,0.001,Non Queer
+crack,0.0,0.001,0.0,0.001,Non Queer
+dictator,0.0,0.0,0.001,0.001,Queer
+differentiate,0.0,0.001,0.0,0.001,Non Queer
+plan,0.0,0.0,0.001,0.001,Queer
+emote,0.0,0.0,0.001,0.001,Queer
+empathetic,0.0,0.001,0.0,0.001,Non Queer
+engaging,0.0,0.0,0.001,0.001,Queer
+english,0.0,0.0,0.001,0.001,Queer
+enthusiast,0.0,0.0,0.001,0.001,Queer
+entrepreneur,0.0,0.0,0.001,0.001,Queer
+equalize,0.0,0.001,0.0,0.001,Non Queer
+escort,0.0,0.0,0.001,0.001,Queer
+etc,0.0,0.0,0.001,0.001,Queer
+everyone,0.0,0.001,0.001,0.001,Non Queer
+excellent,0.0,0.001,0.0,0.001,Non Queer
+excelling,0.0,0.0,0.001,0.001,Queer
+existing,0.0,0.0,0.001,0.001,Queer
+exotic,0.0,0.0,0.001,0.001,Queer
+expert,0.0,0.0,0.001,0.001,Queer
+expertise,0.0,0.0,0.001,0.001,Queer
+explain,0.0,0.001,0.0,0.001,Non Queer
+explorer,0.0,0.0,0.001,0.001,Queer
+exploring,0.0,0.0,0.001,0.001,Queer
+extra,0.0,0.001,0.0,0.001,Non Queer
+facilitate,0.0,0.0,0.001,0.001,Queer
+fairy,0.0,0.001,0.0,0.001,Non Queer
+fall,0.0,0.001,0.0,0.001,Non Queer
+fanatic,0.0,0.0,0.001,0.001,Queer
+fantasize,0.0,0.0,0.001,0.001,Queer
+fart,0.0,0.0,0.001,0.001,Queer
+fascination,0.0,0.0,0.001,0.001,Queer
+fashion,0.0,0.0,0.001,0.001,Queer
+fashionista,0.0,0.0,0.001,0.001,Queer
+feelings,0.0,0.0,0.001,0.001,Queer
+emotional,0.0,0.0,0.001,0.001,Queer
+emcee,0.0,0.0,0.001,0.001,Queer
+differentiating,0.0,0.0,0.001,0.001,Queer
+embrace,0.0,0.0,0.001,0.001,Queer
+digital,0.0,0.0,0.001,0.001,Queer
+diplomacy,0.0,0.001,0.0,0.001,Non Queer
+directly,0.0,0.0,0.001,0.001,Queer
+director,0.0,0.0,0.001,0.001,Queer
+discreet,0.0,0.001,0.0,0.001,Non Queer
+discrimination,0.0,0.0,0.001,0.001,Queer
+discriminatory,0.0,0.0,0.001,0.001,Queer
+discuss,0.0,0.0,0.001,0.001,Queer
+disguise,0.0,0.0,0.001,0.001,Queer
+disguises,0.0,0.0,0.001,0.001,Queer
+disorder,0.0,0.0,0.001,0.001,Queer
+distant,0.0,0.001,0.0,0.001,Non Queer
+distinguish,0.0,0.0,0.001,0.001,Queer
+distracted,0.0,0.0,0.001,0.001,Queer
+dj,0.0,0.001,0.0,0.001,Non Queer
+doctorartistdetective,0.0,0.0,0.001,0.001,Queer
+dominant,0.0,0.001,0.0,0.001,Non Queer
+dominator,0.0,0.0,0.001,0.001,Queer
+done,0.0,0.0,0.001,0.001,Queer
+doodle,0.0,0.001,0.001,0.001,Non Queer
+doormat,0.0,0.0,0.001,0.001,Queer
+double,0.0,0.001,0.0,0.001,Non Queer
+dragon,0.0,0.0,0.001,0.001,Queer
+driven,0.0,0.0,0.001,0.001,Queer
+dude,0.0,0.0,0.001,0.001,Queer
+duet,0.0,0.0,0.001,0.001,Queer
+duo,0.0,0.0,0.001,0.001,Queer
+duties,0.0,0.001,0.0,0.001,Non Queer
+efficient,0.0,0.0,0.001,0.001,Queer
+compatible,0.0,0.001,0.0,0.001,Non Queer
+comparison,0.0,0.0,0.001,0.001,Queer
+community,0.0,0.0,0.001,0.001,Queer
+annoying,0.0,0.001,0.0,0.001,Non Queer
+appropriate,0.0,0.001,0.0,0.001,Non Queer
+architect,0.0,0.001,0.0,0.001,Non Queer
+argue,0.0,0.0,0.001,0.001,Queer
+aro,0.0,0.0,0.001,0.001,Queer
+aromantic,0.0,0.001,0.0,0.001,Non Queer
+artisan,0.0,0.0,0.001,0.001,Queer
+artistry,0.0,0.0,0.001,0.001,Queer
+arts,0.0,0.0,0.001,0.001,Queer
+ask,0.0,0.0,0.001,0.001,Queer
+assimilating,0.0,0.001,0.0,0.001,Non Queer
+atleep,0.0,0.0,0.001,0.001,Queer
+attendee,0.0,0.0,0.001,0.001,Queer
+attracting,0.0,0.001,0.0,0.001,Non Queer
+authentic,0.0,0.0,0.001,0.001,Queer
+author,0.0,0.0,0.001,0.001,Queer
+authority,0.0,0.001,0.0,0.001,Non Queer
+balance,0.0,0.0,0.001,0.001,Queer
+balancing,0.0,0.0,0.001,0.001,Queer
+banker,0.0,0.0,0.001,0.001,Queer
+barbecue,0.0,0.001,0.0,0.001,Non Queer
+barman,0.0,0.0,0.001,0.001,Queer
+barrister,0.0,0.0,0.001,0.001,Queer
+baseball,0.0,0.001,0.001,0.001,Non Queer
+bear,0.0,0.0,0.001,0.001,Queer
+beard,0.0,0.001,0.0,0.001,Non Queer
+beauty,0.0,0.0,0.001,0.001,Queer
+bellhop,0.0,0.0,0.001,0.001,Queer
+beloved,0.0,0.0,0.001,0.001,Queer
+beneficiary,0.0,0.001,0.0,0.001,Non Queer
+anyone,0.0,0.0,0.001,0.001,Queer
+androgynous,0.0,0.0,0.001,0.001,Queer
+commoner,0.0,0.0,0.001,0.001,Queer
+amoeba,0.0,0.0,0.001,0.001,Queer
+academics,0.0,0.0,0.001,0.001,Queer
+accepted,0.0,0.001,0.001,0.001,Non Queer
+accepting,0.0,0.001,0.001,0.001,Non Queer
+accessorize,0.0,0.0,0.001,0.001,Queer
+achieve,0.0,0.0,0.001,0.001,Queer
+active,0.0,0.0,0.001,0.001,Queer
+activists,0.0,0.0,0.001,0.001,Queer
+actorartistwritertouristteacher,0.0,0.0,0.001,0.001,Queer
+adjacent,0.0,0.001,0.0,0.001,Non Queer
+administrator,0.0,0.001,0.0,0.001,Non Queer
+adult,0.0,0.001,0.0,0.001,Non Queer
+adventure,0.0,0.0,0.001,0.001,Queer
+adventurer,0.0,0.0,0.001,0.001,Queer
+advisor,0.0,0.0,0.001,0.001,Queer
+advocateorally,0.0,0.0,0.001,0.001,Queer
+aesthete,0.0,0.0,0.001,0.001,Queer
+aesthetician,0.0,0.001,0.0,0.001,Non Queer
+affection,0.0,0.001,0.0,0.001,Non Queer
+affectionate,0.0,0.0,0.001,0.001,Queer
+affirm,0.0,0.001,0.0,0.001,Non Queer
+agent,0.0,0.001,0.001,0.001,Non Queer
+agnostic,0.0,0.0,0.001,0.001,Queer
+algebra,0.0,0.001,0.0,0.001,Non Queer
+alien,0.0,0.0,0.001,0.001,Queer
+all,0.0,0.001,0.0,0.001,Non Queer
+alloerotic,0.0,0.001,0.0,0.001,Non Queer
+aloof,0.0,0.0,0.001,0.001,Queer
+ambiguous,0.0,0.001,0.001,0.001,Non Queer
+ambisexual,0.0,0.0,0.001,0.001,Queer
+bi,0.0,0.0,0.001,0.001,Queer
+bias,0.0,0.0,0.001,0.001,Queer
+biases,0.0,0.0,0.001,0.001,Queer
+bic,0.0,0.0,0.001,0.001,Queer
+cardinal,0.0,0.001,0.0,0.001,Non Queer
+caricature,0.0,0.001,0.0,0.001,Non Queer
+category,0.0,0.0,0.001,0.001,Queer
+celebration,0.0,0.0,0.001,0.001,Queer
+celestial,0.0,0.001,0.0,0.001,Non Queer
+certainty,0.0,0.0,0.001,0.001,Queer
+challenger,0.0,0.0,0.001,0.001,Queer
+changeling,0.0,0.0,0.001,0.001,Queer
+channel,0.0,0.001,0.0,0.001,Non Queer
+chaperone,0.0,0.001,0.0,0.001,Non Queer
+charade,0.0,0.001,0.0,0.001,Non Queer
+charismatic,0.0,0.0,0.001,0.001,Queer
+chatting,0.0,0.0,0.001,0.001,Queer
+chosen,0.0,0.001,0.0,0.001,Non Queer
+chromosome,0.0,0.0,0.001,0.001,Queer
+circle,0.0,0.001,0.0,0.001,Non Queer
+classmate,0.0,0.0,0.001,0.001,Queer
+clean,0.0,0.001,0.0,0.001,Non Queer
+cleaner,0.0,0.0,0.001,0.001,Queer
+cleaning,0.0,0.001,0.0,0.001,Non Queer
+clergyman,0.0,0.0,0.001,0.001,Queer
+client,0.0,0.0,0.001,0.001,Queer
+climbing,0.0,0.0,0.001,0.001,Queer
+clingy,0.0,0.0,0.001,0.001,Queer
+clock,0.0,0.0,0.001,0.001,Queer
+coach,0.0,0.001,0.0,0.001,Non Queer
+collective,0.0,0.001,0.0,0.001,Non Queer
+comfortable,0.0,0.001,0.0,0.001,Non Queer
+commander,0.0,0.0,0.001,0.001,Queer
+captain,0.0,0.0,0.001,0.001,Queer
+calligrapher,0.0,0.0,0.001,0.001,Queer
+buy,0.0,0.0,0.001,0.001,Queer
+boxing,0.0,0.0,0.001,0.001,Queer
+bichirromantic,0.0,0.001,0.0,0.001,Non Queer
+bifurcate,0.0,0.0,0.001,0.001,Queer
+bigender,0.0,0.0,0.001,0.001,Queer
+bigendered,0.0,0.0,0.001,0.001,Queer
+biker,0.0,0.0,0.001,0.001,Queer
+billionaire,0.0,0.001,0.0,0.001,Non Queer
+biromantic,0.0,0.0,0.001,0.001,Queer
+bitch,0.0,0.001,0.0,0.001,Non Queer
+blacksheep,0.0,0.001,0.0,0.001,Non Queer
+bond,0.0,0.0,0.001,0.001,Queer
+bonus,0.0,0.0,0.001,0.001,Queer
+boor,0.0,0.001,0.0,0.001,Non Queer
+bossy,0.0,0.001,0.0,0.001,Non Queer
+boyfriend,0.0,0.001,0.001,0.001,Non Queer
+butcherman,0.0,0.001,0.0,0.001,Non Queer
+breathe,0.0,0.001,0.0,0.001,Non Queer
+bricklayer,0.0,0.001,0.0,0.001,Non Queer
+broadminded,0.0,0.0,0.001,0.001,Queer
+budding,0.0,0.0,0.001,0.001,Queer
+buddy,0.0,0.0,0.001,0.001,Queer
+budgerigar,0.0,0.0,0.001,0.001,Queer
+budgeting,0.0,0.0,0.001,0.001,Queer
+build,0.0,0.0,0.001,0.001,Queer
+bull,0.0,0.0,0.001,0.001,Queer
+bulldog,0.0,0.0,0.001,0.001,Queer
+bureaucrat,0.0,0.001,0.0,0.001,Non Queer
+busy,0.0,0.0,0.001,0.001,Queer
+butch,0.0,0.0,0.001,0.001,Queer
+fellow,0.0,0.001,0.001,0.001,Non Queer
+feminine,0.0,0.0,0.001,0.001,Queer
+fighter,0.0,0.0,0.001,0.001,Queer
+modelbutler,0.0,0.001,0.0,0.001,Non Queer
+modelchef,0.0,0.0,0.001,0.001,Queer
+modeldoctor,0.0,0.0,0.001,0.001,Queer
+modeldrag,0.0,0.0,0.001,0.001,Queer
+modeling,0.0,0.0,0.001,0.001,Queer
+modellawyer,0.0,0.0,0.001,0.001,Queer
+modelmodel,0.0,0.0,0.001,0.001,Queer
+modelmusician,0.0,0.0,0.001,0.001,Queer
+modeltherapist,0.0,0.0,0.001,0.001,Queer
+modelwaiter,0.0,0.0,0.001,0.001,Queer
+modelwoman,0.0,0.001,0.0,0.001,Non Queer
+modelwriter,0.0,0.0,0.001,0.001,Queer
+moderator,0.0,0.0,0.001,0.001,Queer
+monarch,0.0,0.0,0.001,0.001,Queer
+monogamist,0.0,0.0,0.001,0.001,Queer
+mood,0.0,0.0,0.001,0.001,Queer
+mountain,0.0,0.0,0.001,0.001,Queer
+mouthpiece,0.0,0.0,0.001,0.001,Queer
+move,0.0,0.0,0.001,0.001,Queer
+mow,0.0,0.0,0.001,0.001,Queer
+mule,0.0,0.0,0.001,0.001,Queer
+multiamorous,0.0,0.0,0.001,0.001,Queer
+multiplying,0.0,0.0,0.001,0.001,Queer
+muslim,0.0,0.001,0.0,0.001,Non Queer
+mutation,0.0,0.0,0.001,0.001,Queer
+mystic,0.0,0.0,0.001,0.001,Queer
+mystical,0.0,0.0,0.001,0.001,Queer
+natural,0.0,0.0,0.001,0.001,Queer
+naturalist,0.0,0.0,0.001,0.001,Queer
+navigation,0.0,0.001,0.0,0.001,Non Queer
+modelcarpenter,0.0,0.0,0.001,0.001,Queer
+modelbaker,0.0,0.0,0.001,0.001,Queer
+madman,0.0,0.0,0.001,0.001,Queer
+mix,0.0,0.0,0.001,0.001,Queer
+magnet,0.0,0.0,0.001,0.001,Queer
+managing,0.0,0.001,0.0,0.001,Non Queer
+manipulate,0.0,0.001,0.0,0.001,Non Queer
+manipulator,0.0,0.0,0.001,0.001,Queer
+mannish,0.0,0.0,0.001,0.001,Queer
+manwoman,0.0,0.0,0.001,0.001,Queer
+marry,0.0,0.001,0.0,0.001,Non Queer
+martyr,0.0,0.0,0.001,0.001,Queer
+masculine,0.0,0.0,0.001,0.001,Queer
+masseur,0.0,0.001,0.0,0.001,Non Queer
+masseuse,0.0,0.001,0.0,0.001,Non Queer
+mate,0.0,0.001,0.0,0.001,Non Queer
+maths,0.0,0.0,0.001,0.001,Queer
+maverick,0.0,0.001,0.001,0.001,Non Queer
+me,0.0,0.0,0.001,0.001,Queer
+meaning,0.0,0.0,0.001,0.001,Queer
+mediation,0.0,0.0,0.001,0.001,Queer
+mediatorbridgeally,0.0,0.0,0.001,0.001,Queer
+meet,0.0,0.0,0.001,0.001,Queer
+meeting,0.0,0.001,0.0,0.001,Non Queer
+meme,0.0,0.0,0.001,0.001,Queer
+menace,0.0,0.0,0.001,0.001,Queer
+messenger,0.0,0.0,0.001,0.001,Queer
+midwife,0.0,0.001,0.0,0.001,Non Queer
+mime,0.0,0.0,0.001,0.001,Queer
+mimicry,0.0,0.001,0.0,0.001,Non Queer
+mindreading,0.0,0.001,0.0,0.001,Non Queer
+miner,0.0,0.001,0.0,0.001,Non Queer
+misconception,0.0,0.0,0.001,0.001,Queer
+nazi,0.0,0.0,0.001,0.001,Queer
+neither,0.0,0.0,0.001,0.001,Queer
+neurotypical,0.0,0.001,0.0,0.001,Non Queer
+nice,0.0,0.0,0.001,0.001,Queer
+out,0.0,0.001,0.0,0.001,Non Queer
+outgoing,0.0,0.0,0.001,0.001,Queer
+pacifist,0.0,0.0,0.001,0.001,Queer
+pan,0.0,0.0,0.001,0.001,Queer
+panhandler,0.0,0.0,0.001,0.001,Queer
+panromantic,0.0,0.001,0.0,0.001,Non Queer
+panther,0.0,0.0,0.001,0.001,Queer
+paperclip,0.0,0.0,0.001,0.001,Queer
+parade,0.0,0.0,0.001,0.001,Queer
+paradox,0.0,0.0,0.001,0.001,Queer
+parody,0.0,0.0,0.001,0.001,Queer
+parthenogen,0.0,0.0,0.001,0.001,Queer
+partners,0.0,0.001,0.0,0.001,Non Queer
+passer,0.0,0.001,0.0,0.001,Non Queer
+patriarch,0.0,0.001,0.0,0.001,Non Queer
+peaceful,0.0,0.0,0.001,0.001,Queer
+perceiving,0.0,0.001,0.0,0.001,Non Queer
+perfumer,0.0,0.0,0.001,0.001,Queer
+persevere,0.0,0.0,0.001,0.001,Queer
+personality,0.0,0.0,0.001,0.001,Queer
+personification,0.0,0.0,0.001,0.001,Queer
+perspectivetaking,0.0,0.001,0.0,0.001,Non Queer
+persuading,0.0,0.001,0.001,0.001,Non Queer
+persuasion,0.0,0.001,0.001,0.001,Non Queer
+phenomenon,0.0,0.0,0.001,0.001,Queer
+phony,0.0,0.001,0.0,0.001,Non Queer
+physician,0.0,0.0,0.001,0.001,Queer
+piano,0.0,0.001,0.0,0.001,Non Queer
+pivot,0.0,0.0,0.001,0.001,Queer
+orientation,0.0,0.001,0.001,0.001,Non Queer
+orgasm,0.0,0.001,0.0,0.001,Non Queer
+organizer,0.0,0.0,0.001,0.001,Queer
+norms,0.0,0.001,0.0,0.001,Non Queer
+niece,0.0,0.001,0.0,0.001,Non Queer
+no,0.0,0.0,0.001,0.001,Queer
+non,0.0,0.0,0.001,0.001,Queer
+nonace,0.0,0.001,0.0,0.001,Non Queer
+nonasexual,0.0,0.001,0.0,0.001,Non Queer
+nonbeliever,0.0,0.0,0.001,0.001,Queer
+nongender,0.0,0.0,0.001,0.001,Queer
+nonjudgmental,0.0,0.001,0.0,0.001,Non Queer
+nonprofit,0.0,0.0,0.001,0.001,Queer
+nonromancer,0.0,0.0,0.001,0.001,Queer
+nonsexual,0.0,0.001,0.0,0.001,Non Queer
+nontraditional,0.0,0.001,0.0,0.001,Non Queer
+normcore,0.0,0.001,0.0,0.001,Non Queer
+noun,0.0,0.0,0.001,0.001,Queer
+organize,0.0,0.001,0.0,0.001,Non Queer
+novel,0.0,0.0,0.001,0.001,Queer
+nuance,0.0,0.001,0.0,0.001,Non Queer
+nymph,0.0,0.001,0.0,0.001,Non Queer
+object,0.0,0.0,0.001,0.001,Queer
+observation,0.0,0.001,0.0,0.001,Non Queer
+oddity,0.0,0.0,0.001,0.001,Queer
+offensive,0.0,0.0,0.001,0.001,Queer
+office,0.0,0.001,0.0,0.001,Non Queer
+official,0.0,0.0,0.001,0.001,Queer
+omnipresent,0.0,0.0,0.001,0.001,Queer
+one,0.0,0.0,0.001,0.001,Queer
+oneself,0.0,0.001,0.0,0.001,Non Queer
+ordinary,0.0,0.001,0.001,0.001,Non Queer
+mage,0.0,0.001,0.0,0.001,Non Queer
+lying,0.0,0.001,0.0,0.001,Non Queer
+figure,0.0,0.0,0.001,0.001,Queer
+generalizations,0.0,0.0,0.001,0.001,Queer
+get,0.0,0.0,0.001,0.001,Queer
+giggle,0.0,0.0,0.001,0.001,Queer
+girlfriend,0.0,0.0,0.001,0.001,Queer
+giving,0.0,0.0,0.001,0.001,Queer
+glim,0.0,0.0,0.001,0.001,Queer
+greedy,0.0,0.0,0.001,0.001,Queer
+greet,0.0,0.001,0.0,0.001,Non Queer
+gregarious,0.0,0.001,0.0,0.001,Non Queer
+groomsman,0.0,0.001,0.0,0.001,Non Queer
+hang,0.0,0.001,0.0,0.001,Non Queer
+he,0.0,0.001,0.0,0.001,Non Queer
+heartthrob,0.0,0.001,0.0,0.001,Non Queer
+hedonist,0.0,0.001,0.0,0.001,Non Queer
+helping,0.0,0.001,0.0,0.001,Non Queer
+her,0.0,0.001,0.001,0.001,Non Queer
+hermaphrodite,0.0,0.0,0.001,0.001,Queer
+heteroalloromantic,0.0,0.001,0.0,0.001,Non Queer
+heterophile,0.0,0.001,0.0,0.001,Non Queer
+hiding,0.0,0.0,0.001,0.001,Queer
+hijra,0.0,0.0,0.001,0.001,Queer
+him,0.0,0.0,0.001,0.001,Queer
+himself,0.0,0.0,0.001,0.001,Queer
+hire,0.0,0.001,0.0,0.001,Non Queer
+his,0.0,0.0,0.001,0.001,Queer
+homemaker,0.0,0.001,0.0,0.001,Non Queer
+homo,0.0,0.0,0.001,0.001,Queer
+homophobe,0.0,0.001,0.0,0.001,Non Queer
+homophone,0.0,0.0,0.001,0.001,Queer
+homoromantic,0.0,0.0,0.001,0.001,Queer
+gentlewoman,0.0,0.0,0.001,0.001,Queer
+gene,0.0,0.001,0.0,0.001,Non Queer
+lubricant,0.0,0.001,0.0,0.001,Non Queer
+genderneutral,0.0,0.0,0.001,0.001,Queer
+figurehead,0.0,0.001,0.0,0.001,Non Queer
+fit,0.0,0.0,0.001,0.001,Queer
+fitting,0.0,0.001,0.0,0.001,Non Queer
+flake,0.0,0.0,0.001,0.001,Queer
+flamingo,0.0,0.0,0.001,0.001,Queer
+flexible,0.0,0.0,0.001,0.001,Queer
+flipflop,0.0,0.0,0.001,0.001,Queer
+flow,0.0,0.0,0.001,0.001,Queer
+focusing,0.0,0.0,0.001,0.001,Queer
+football,0.0,0.001,0.001,0.001,Non Queer
+force,0.0,0.0,0.001,0.001,Queer
+forming,0.0,0.001,0.0,0.001,Non Queer
+free,0.0,0.0,0.001,0.001,Queer
+freespirited,0.0,0.0,0.001,0.001,Queer
+freshman,0.0,0.0,0.001,0.001,Queer
+friendships,0.0,0.0,0.001,0.001,Queer
+fry,0.0,0.0,0.001,0.001,Queer
+function,0.0,0.001,0.0,0.001,Non Queer
+fungus,0.0,0.0,0.001,0.001,Queer
+funny,0.0,0.0,0.001,0.001,Queer
+gaming,0.0,0.001,0.001,0.001,Non Queer
+gatekeeper,0.0,0.001,0.0,0.001,Non Queer
+gathering,0.0,0.0,0.001,0.001,Queer
+gem,0.0,0.0,0.001,0.001,Queer
+gender,0.0,0.001,0.0,0.001,Non Queer
+genderbender,0.0,0.0,0.001,0.001,Queer
+genderdiverse,0.0,0.0,0.001,0.001,Queer
+genderfluidtransgender,0.0,0.001,0.0,0.001,Non Queer
+genderintersex,0.0,0.0,0.001,0.001,Queer
+hopelessromantic,0.0,0.001,0.0,0.001,Non Queer
+horny,0.0,0.001,0.0,0.001,Non Queer
+hospitality,0.0,0.001,0.0,0.001,Non Queer
+hostess,0.0,0.001,0.0,0.001,Non Queer
+joy,0.0,0.0,0.001,0.001,Queer
+juggle,0.0,0.0,0.001,0.001,Queer
+juggling,0.0,0.001,0.001,0.001,Non Queer
+karate,0.0,0.0,0.001,0.001,Queer
+kissing,0.0,0.0,0.001,0.001,Queer
+know,0.0,0.001,0.0,0.001,Non Queer
+language,0.0,0.0,0.001,0.001,Queer
+languages,0.0,0.001,0.001,0.001,Non Queer
+leading,0.0,0.001,0.0,0.001,Non Queer
+leaf,0.0,0.0,0.001,0.001,Queer
+lecher,0.0,0.001,0.0,0.001,Non Queer
+lecturer,0.0,0.0,0.001,0.001,Queer
+less,0.0,0.0,0.001,0.001,Queer
+liberated,0.0,0.0,0.001,0.001,Queer
+liberator,0.0,0.0,0.001,0.001,Queer
+life,0.0,0.0,0.001,0.001,Queer
+lineage,0.0,0.001,0.0,0.001,Non Queer
+linger,0.0,0.0,0.001,0.001,Queer
+lion,0.0,0.0,0.001,0.001,Queer
+lipstick,0.0,0.0,0.001,0.001,Queer
+lisa,0.0,0.001,0.0,0.001,Non Queer
+academic,0.0,0.001,0.001,0.001,Non Queer
+listener,0.0,0.0,0.001,0.001,Queer
+literature,0.0,0.001,0.0,0.001,Non Queer
+lookout,0.0,0.0,0.001,0.001,Queer
+loon,0.0,0.0,0.001,0.001,Queer
+loop,0.0,0.001,0.001,0.001,Non Queer
+lovable,0.0,0.0,0.001,0.001,Queer
+loved,0.0,0.0,0.001,0.001,Queer
+jokes,0.0,0.0,0.001,0.001,Queer
+itself,0.0,0.0,0.001,0.001,Queer
+is,0.0,0.001,0.0,0.001,Non Queer
+impression,0.0,0.0,0.001,0.001,Queer
+housewife,0.0,0.001,0.0,0.001,Non Queer
+httpswwwhrcorghttpswwwhrcorg,0.0,0.0,0.001,0.001,Queer
+humanitarian,0.0,0.001,0.0,0.001,Non Queer
+hungarian,0.0,0.0,0.001,0.001,Queer
+hunter,0.0,0.0,0.001,0.001,Queer
+iconic,0.0,0.0,0.001,0.001,Queer
+idealized,0.0,0.001,0.0,0.001,Non Queer
+identifier,0.0,0.0,0.001,0.001,Queer
+identifying,0.0,0.0,0.001,0.001,Queer
+identity,0.0,0.001,0.0,0.001,Non Queer
+ignore,0.0,0.001,0.0,0.001,Non Queer
+illustrator,0.0,0.0,0.001,0.001,Queer
+implementing,0.0,0.0,0.001,0.001,Queer
+inclusion,0.0,0.0,0.001,0.001,Queer
+invisible,0.0,0.0,0.001,0.001,Queer
+individualist,0.0,0.001,0.001,0.001,Non Queer
+innovating,0.0,0.0,0.001,0.001,Queer
+inspire,0.0,0.0,0.001,0.001,Queer
+inspiring,0.0,0.0,0.001,0.001,Queer
+instructor,0.0,0.0,0.001,0.001,Queer
+integrate,0.0,0.0,0.001,0.001,Queer
+intelligent,0.0,0.0,0.001,0.001,Queer
+intention,0.0,0.0,0.001,0.001,Queer
+interest,0.0,0.001,0.0,0.001,Non Queer
+interesting,0.0,0.001,0.0,0.001,Non Queer
+intriguing,0.0,0.001,0.001,0.001,Non Queer
+intrusion,0.0,0.001,0.0,0.001,Non Queer
+investigator,0.0,0.0,0.001,0.001,Queer
+zoologist,0.0,0.0,0.001,0.001,Queer
