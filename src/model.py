@@ -20,13 +20,13 @@ MODEL_NAME = {
     BERT_LARGE: 'bert-large-uncased',
     ROBERTA_BASE: 'roberta-base',
     ROBERTA_LARGE: 'roberta-large',
-    LLAMA3: 'llama3',
+    LLAMA3_8B: 'llama3',
     LLAMA3_70B: 'llama3:70b',
-    GEMMA3: 'gemma2',
+    GEMMA3_4B: 'gemma2',
     GEMMA3_27B: 'gemma2:27b',
-    DEEPSEEK: 'deepseek-ai/DeepSeek-r1',
-    DEEPSEEK_671B: 'deepseek-chat',
-    GPT4: 'gpt-4o'
+    DEEPSEEK_R1_8B: 'deepseek-ai/DeepSeek-r1',
+    DEEPSEEK_R1_671B: 'deepseek-chat',
+    GPT4O: 'gpt-4o'
 }
         
 class Model:
@@ -41,14 +41,14 @@ class Model:
             BERT_LARGE: self._initialize_BERT,
             ROBERTA_BASE: self._initialize_RoBERTa, 
             ROBERTA_LARGE: self._initialize_RoBERTa,
-            LLAMA3: self._initialize_Ollama, 
+            LLAMA3_8B: self._initialize_Ollama, 
             LLAMA3_70B: self._initialize_Ollama, 
-            GEMMA3: self._initialize_Ollama,
+            GEMMA3_4B: self._initialize_Ollama,
             GEMMA3_27B: self._initialize_Ollama, 
-            GPT4: self._initialize_GPT, 
-            GPT4_MINI: self._initialize_GPT,
-            DEEPSEEK: self._initialize_Ollama,
-            DEEPSEEK_671B: self._initialize_DeepSeeek,
+            GPT4O: self._initialize_GPT, 
+            GPT4O_MINI: self._initialize_GPT,
+            DEEPSEEK_R1_8B: self._initialize_Ollama,
+            DEEPSEEK_R1_671B: self._initialize_DeepSeeek,
             GEMINI_2_0_FLASH: self._initialize_Gemini, 
             GEMINI_2_0_FLASH_LITE: self._initialize_Gemini,
         }
@@ -58,31 +58,67 @@ class Model:
             BERT_LARGE: self._request_BERT,
             ROBERTA_BASE: self._request_RoBERTa, 
             ROBERTA_LARGE: self._request_RoBERTa,
-            LLAMA3: self._request_ollama, 
+            LLAMA3_8B: self._request_ollama, 
             LLAMA3_70B: self._request_ollama, 
-            GEMMA3: self._request_ollama,
+            GEMMA3_4B: self._request_ollama,
             GEMMA3_27B: self._request_ollama, 
-            DEEPSEEK: self._request_ollama,
-            DEEPSEEK_671B: self._request_open_ai,
-            GPT4: self._request_open_ai, 
-            GPT4_MINI: self._request_open_ai,
+            DEEPSEEK_R1_8B: self._request_ollama,
+            DEEPSEEK_R1_671B: self._request_open_ai,
+            GPT4O: self._request_open_ai, 
+            GPT4O_MINI: self._request_open_ai,
             GEMINI_2_0_FLASH: self._request_gemini, 
             GEMINI_2_0_FLASH_LITE: self._request_gemini,
         }
-        
-    def initialize_model(self):
-        if self.model_name in self.func_initialize_model: 
-            err = self.func_initialize_model[self.model_name]()
-            return err
-        return False
+    
+    def get_predictions(self, prompt_num=PROMPT_DEFAULT):
+        self.prompt_num = prompt_num
 
-    def _generate_prediction_from_row(self, row, target_col=None, row_idx=None):
+        #BERT family model generate only with prompt 1, copy and paste files in other prompts folder otherwise
+        if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
+            self._copy_file(f"{PATH_GENERATIONS}prompt_0/{self.model_name}.csv", f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
+            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            return False
+        
+        num_row_processed, self.prediction_dic = self._get_prediction_file()
+        self.total_rows = self.template_complete_file.shape[0]
+
+        #Evaluation file is completed
+        if num_row_processed >= self.total_rows:
+            err = self._check_prediction_file_integrity()
+            if not err: 
+                logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            return err
+
+        #Evaluation file is incomplete, start from where it left
+        logger.info(f"🔁 Resuming from row {num_row_processed}")
+
+        for _, row in tqdm(
+            self.template_complete_file.iloc[num_row_processed:].iterrows(),
+            total=self.total_rows - num_row_processed,
+            desc=f"🧬 Generating with {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"
+        ):
+            response = self._generate_predictions(row)
+            if response is None:
+                return True  # Abort if request fails
+
+    def _generate_predictions(self, row, target_col=None, row_idx=None):
+        
+        #Initialize model
+        if not self.initialized and self.model_name in self.func_initialize_model: 
+            err = self.func_initialize_model[self.model_name]()
+            if not err:
+                logger.info(f"⚠️ Error initialize {MODELS_LABELS[self.model_name]}")
+                return err 
+        self.initialized = True
+            
+        #Get sentences    
         if self.prompt_num != 3:
             self.sentence = f"{row.loc[MARKED]} {MASKBERT}."
         else: 
             self.sentence = row.loc[MARKED]
         self.prompt = PROMPTS[self.prompt_num].format(self.sentence)
 
+        #Generate predictions
         try:
             response = self.send_request[self.model_name]()
             if response is None:
@@ -105,7 +141,7 @@ class Model:
             logger.error(f"Error during {context}: {e}")
             return None
     
-    def _check_generation_file_integrity(self):
+    def _check_prediction_file_integrity(self):
         prediction_df = pd.DataFrame.from_dict(self.prediction_dic)
 
         # for row_idx, row in tqdm(
@@ -119,58 +155,24 @@ class Model:
                 # if pd.isna(value) or (isinstance(value, str) and value.strip() == ""):
                 #     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] missing value at [{row_idx} - {col}]")
                 if pd.isna(value):
-                    str_val = str(row[col])
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] NULL value at [{row_idx} - {col}]")
                     response = ""
                     exit = 5
                     while response == "" and exit > 0:
-                        response = self._generate_prediction_from_row(row, target_col=col, row_idx=row_idx)
+                        response = self._generate_predictions(row, target_col=col, row_idx=row_idx)
                         if response == "":
                             logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] prompting again [{row_idx} - {col}]")
                             exit = exit -1
+                    if response == "":
+                        logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] broken pipeline at generation [{row_idx} - {col}]")
+                        return False
                 elif isinstance(value, str) and value.strip().lower() in [""]:
                     logger.info(f"⚠️ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}] EMPTY or 'none' string at [{row_idx} - {col}]")
             
-                    response = self._generate_prediction_from_row(row, target_col=col, row_idx=row_idx)
+                    response = self._generate_predictions(row, target_col=col, row_idx=row_idx)
                     if response is None:
                         return True  # Abort if request fails
         return False
-    
-    def get_predictions(self, prompt_num=PROMPT_DEFAULT):
-        self.prompt_num = prompt_num
-
-        #BERT family model generate only with prompt 1, copy and paste files in other prompts folder otherwise
-        if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
-            self.copy_file(f"{PATH_GENERATIONS}prompt_0/{self.model_name}.csv", f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
-            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
-            return False
-        
-        num_row_processed, self.prediction_dic = self._get_prediction_file()
-        self.total_rows = self.template_complete_file.shape[0]
-
-        #Evaluation file is completed
-        if num_row_processed >= self.total_rows:
-            err = self._check_generation_file_integrity()
-            if not err: 
-                logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
-            return err
-
-        #Initialize model
-        if not self.initialized:
-            err = self.initialize_model()
-            self.initialized = True
-
-        #Evaluation file is incomplete, start from where it left
-        logger.info(f"🔁 Resuming from row {num_row_processed}")
-
-        for _, row in tqdm(
-            self.template_complete_file.iloc[num_row_processed:].iterrows(),
-            total=self.total_rows - num_row_processed,
-            desc=f"🧬 Generating with {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]"
-        ):
-            response = self._generate_prediction_from_row(row)
-            if response is None:
-                return True  # Abort if request fails
         
     # === Initialization Functions ===
     def _initialize_BERT(self): 
@@ -201,8 +203,8 @@ class Model:
     
     def _initialize_Ollama(self):
         logger.info(f"🚦 Model '{self.model_name}' is testing")
-        if not self.check_ollama_server():
-            if not self.check_model_is_downloaded():
+        if not self._check_ollama_server():
+            if not self._check_model_is_downloaded():
                 return False
         return True
     
@@ -308,7 +310,7 @@ class Model:
         
     # === Utils ===
 
-    def check_ollama_server(self):
+    def _check_ollama_server(self):
         try:
             response = requests.get(f"{URL_OLLAMA_LOCAL}/tags")
             if not(response.status_code == 200):
@@ -319,11 +321,11 @@ class Model:
             logger.error(f"⚠️ Ollama server is not running")
             return True
         
-    def check_model_is_downloaded(self):
+    def _check_model_is_downloaded(self):
         try:
             # Step 1: Check if model is downloaded
             list_output = subprocess.check_output(["ollama", "list"], text=True)
-            list_output = self.clean_ollama_list(list_output)
+            list_output = self._clean_ollama_list(list_output)
             if self.model_name not in list_output:
                 print(f"❌ Model '{MODELS_LABELS(self.model_name)}' not found in Ollama. Try: ollama pull {self.model_name}")
                 return True
@@ -356,7 +358,7 @@ class Model:
             logging.error("❌ Ollama is not installed or not in PATH.")
             return True
     
-    def clean_ollama_list(self, list):
+    def _clean_ollama_list(self, list):
         #list = list.replace("NAME                  ID              SIZE      MODIFIED    ", "")
         list = list.split("\n")
         del list[0]
@@ -396,7 +398,7 @@ class Model:
         pd.DataFrame.from_dict(prediction_dic).to_csv(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
         
 
-    def copy_file(self, input_path, output_path):
+    def _copy_file(self, input_path, output_path):
         # Ensure the source file exists
         if not os.path.isfile(input_path):
             logger.error(f"Source file not found: {input_path}")

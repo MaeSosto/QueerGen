@@ -3,13 +3,13 @@ BERT Base,child,child,it
 BERT Large,teacher,prostitute,prostitute
 RoBERTa Base,doctor,lesbian,threat
 RoBERTa Large,child,lesbian,lesbian
-Llama 3,artist,artist,artist
-Llama 3(70b),consultant,actor,consultant
-Gemma 3,dance,artist,artist
-Gemma 3(27b),musician,carpenter,person
-DeepSeek R1,doctor,doctor,person
-DeepSeek R1 (671b),teacher,teacher,person
-GPT4o Mini,consultant,teacher,writer
-GPT4o,teacher,teacher,consultant
+Llama 3 8B,artist,artist,artist
+Llama 3 70B,consultant,actor,consultant
+Gemma 3 4B,dance,artist,artist
+Gemma 3 27B,musician,carpenter,person
+DeepSeek R1 8B,doctor,doctor,person
+DeepSeek R1 671B,teacher,teacher,person
+GPT-4o Mini,consultant,teacher,writer
+GPT-4o,teacher,teacher,consultant
 Gemini 2.0 Flash Lite,teacher,teacher,person
 Gemini 2.0 Flash,leader,model,person

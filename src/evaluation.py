@@ -48,7 +48,7 @@ class Evaluation:
         
         if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
             self.copy_file(f"{PATH_EVALUATIONS}prompt_0/{self.model_name}.csv", f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
-            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
+            logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]")
             return False
         
         os.makedirs(f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/", exist_ok=True)
@@ -233,6 +233,7 @@ class Evaluation:
                     scores_df[key].append(item[key])
             for cat in PERSPECTIVE_CATEGORIES:
                 self.df_to_check[f"{PERSPECTIVE} {cat}"] = scores_df[cat]
+            self.df_to_check[PERSPECTIVE] = self.df_to_check[[f"{PERSPECTIVE} {cat}" for cat in PERSPECTIVE_CATEGORIES]].mean(axis=1)
             return False
         except Exception as e:
             logger.error("_get_perspective_scores: "+str(e))

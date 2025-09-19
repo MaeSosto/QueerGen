@@ -20,17 +20,17 @@ for model_name in MODEL_LIST_FULL:
     if error:
             break
 
-# if not error:
-#     logger.info("📊 Evaluate Predictions 📊")
-#     # === Evaluate predictions  ===
-#     for model_name in MODEL_LIST_FULL:
-#         evaluation = Evaluation()
-#         for prompt_num, _ in enumerate(PROMPTS):
-#             if not os.path.exists(f"{PATH_GENERATIONS}prompt_{prompt_num}/{model_name}.csv"):
-#                 continue
-#             error = evaluation.evaluate(model_name, prompt_num)
-#             if error:
-#                 break
-#         if error:
-#             break
+if not error:
+    logger.info("📊 Evaluate Predictions 📊")
+    # === Evaluate predictions  ===
+    for model_name in MODEL_LIST_FULL:
+        evaluation = Evaluation()
+        for prompt_num, _ in enumerate(PROMPTS):
+            if not os.path.exists(f"{PATH_GENERATIONS}prompt_{prompt_num}/{model_name}.csv"):
+                continue
+            error = evaluation.evaluate(model_name, prompt_num)
+            if error:
+                break
+        if error:
+            break
     

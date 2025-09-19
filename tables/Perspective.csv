@@ -11,30 +11,30 @@ RoBERTa Base,Queer,0.072,0.004,0.101
 RoBERTa Large,Unmarked,0.025,0.005,0.024
 RoBERTa Large,Non Queer,0.078,0.007,0.108
 RoBERTa Large,Queer,0.083,0.005,0.111
-DeepSeek R1,Unmarked,0.032,0.012,0.058
-DeepSeek R1,Non Queer,0.037,0.003,0.05
-DeepSeek R1,Queer,0.038,0.002,0.054
-DeepSeek R1 (671b),Unmarked,0.023,0.006,0.032
-DeepSeek R1 (671b),Non Queer,0.027,0.002,0.035
-DeepSeek R1 (671b),Queer,0.026,0.002,0.036
-Gemma 3,Unmarked,0.036,0.011,0.057
-Gemma 3,Non Queer,0.03,0.003,0.043
-Gemma 3,Queer,0.028,0.002,0.035
-Gemma 3(27b),Unmarked,0.031,0.01,0.05
-Gemma 3(27b),Non Queer,0.035,0.003,0.043
-Gemma 3(27b),Queer,0.03,0.002,0.035
-Llama 3,Unmarked,0.029,0.007,0.034
-Llama 3,Non Queer,0.032,0.003,0.043
-Llama 3,Queer,0.029,0.001,0.033
-Llama 3(70b),Unmarked,0.03,0.01,0.052
-Llama 3(70b),Non Queer,0.025,0.002,0.034
-Llama 3(70b),Queer,0.025,0.001,0.028
-GPT4o,Unmarked,0.025,0.008,0.043
-GPT4o,Non Queer,0.023,0.002,0.028
-GPT4o,Queer,0.024,0.001,0.033
-GPT4o Mini,Unmarked,0.032,0.011,0.056
-GPT4o Mini,Non Queer,0.031,0.003,0.05
-GPT4o Mini,Queer,0.026,0.002,0.037
+DeepSeek R1 671B,Unmarked,0.023,0.006,0.032
+DeepSeek R1 671B,Non Queer,0.027,0.002,0.035
+DeepSeek R1 671B,Queer,0.026,0.002,0.036
+DeepSeek R1 8B,Unmarked,0.032,0.012,0.058
+DeepSeek R1 8B,Non Queer,0.037,0.003,0.05
+DeepSeek R1 8B,Queer,0.038,0.002,0.054
+Gemma 3 27B,Unmarked,0.031,0.01,0.05
+Gemma 3 27B,Non Queer,0.035,0.003,0.043
+Gemma 3 27B,Queer,0.03,0.002,0.035
+Gemma 3 4B,Unmarked,0.036,0.011,0.057
+Gemma 3 4B,Non Queer,0.03,0.003,0.043
+Gemma 3 4B,Queer,0.028,0.002,0.035
+Llama 3 70B,Unmarked,0.03,0.01,0.052
+Llama 3 70B,Non Queer,0.025,0.002,0.034
+Llama 3 70B,Queer,0.025,0.001,0.028
+Llama 3 8B,Unmarked,0.029,0.007,0.034
+Llama 3 8B,Non Queer,0.032,0.003,0.043
+Llama 3 8B,Queer,0.029,0.001,0.033
+GPT-4o,Unmarked,0.025,0.008,0.043
+GPT-4o,Non Queer,0.023,0.002,0.028
+GPT-4o,Queer,0.024,0.001,0.033
+GPT-4o Mini,Unmarked,0.032,0.011,0.056
+GPT-4o Mini,Non Queer,0.031,0.003,0.05
+GPT-4o Mini,Queer,0.026,0.002,0.037
 Gemini 2.0 Flash,Unmarked,0.039,0.013,0.063
 Gemini 2.0 Flash,Non Queer,0.032,0.003,0.047
 Gemini 2.0 Flash,Queer,0.026,0.001,0.032
