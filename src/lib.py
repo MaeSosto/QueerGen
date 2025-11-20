@@ -54,6 +54,7 @@ load_dotenv()
 # =============================
 PATH_DATASET = 'data/'
 PATH_GENERATIONS = 'generations/'
+PATH_GENERATIONS = 'generations_top_5/'
 PATH_EVALUATIONS = 'evaluations/'
 
 # =============================

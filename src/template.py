@@ -4,6 +4,7 @@ TEMPLATE_PATH = PATH_DATASET + 'templates.csv'
 SUBJECT_PATH = PATH_DATASET + 'subjects.csv'
 MARKER_PATH = PATH_DATASET + 'markers.csv'
 TEMPLATE_PATH_COMPLETE = PATH_DATASET + 'template_complete.csv'
+TEMPLATE_PATH_TOP5 = PATH_DATASET + 'template_top_5.csv'
 ADJ = 'adj'
 
 class Template:
@@ -58,5 +59,24 @@ class Template:
             df = pd.DataFrame(data_list, columns=[TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED])
             df.to_csv(TEMPLATE_PATH_COMPLETE, index_label='index')
         logger.info("📝 Template ready!")
-        
+
+def sample_from_dataset():
+    # Load the original CSV
+    df = pd.read_csv(TEMPLATE_PATH_COMPLETE)
+
+    # Filter by type
+    df_unmarked = df[df[TYPE] == UNMARKED]
+    df_queer = df[df[TYPE] == QUEER]
+    df_nonqueer = df[df[TYPE] == NONQUEER]
+
+    # Sample 100 from each group
+    sample_unmarked = df_unmarked
+    sample_queer = df_queer.sample(n=100, random_state=42)
+    sample_nonqueer = df_nonqueer.sample(n=100, random_state=42)
+
+    # Concatenate the samples
+    df_final = pd.concat([sample_unmarked, sample_queer, sample_nonqueer], ignore_index=True)
+
+    # Save to a new CSV
+    df_final.to_csv(TEMPLATE_PATH_TOP5, index=False)
     

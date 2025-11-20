@@ -7,7 +7,8 @@ echo "📦 Upgrading pip..."
 pip install --upgrade pip
 
 echo "🔧 Installing base libraries..."
-for pkg in torch pandas tqdm unidecode surprisal transformers python-dotenv; do
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+for pkg in pandas tqdm unidecode surprisal transformers python-dotenv; do
     echo "   → Installing $pkg..."
     pip install "$pkg" || { echo "❌ Failed to install $pkg"; exit 1; }
 done
