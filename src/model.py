@@ -11,7 +11,6 @@ from transformers import logging
 logging.set_verbosity_error()
 
 # === Constants ===
-NUM_PREDICTION = 1
 URL_OLLAMA_LOCAL = "http://localhost:11434/api"
 URL_DEEPSEEK = "https://api.deepseek.com"
 
@@ -31,9 +30,11 @@ MODEL_NAME = {
         
 class Model:
     
-    def __init__(self, model_name):
+    def __init__(self, model_name, num_predictions = 1):
+        self.num_predictions = num_predictions
         self.model_name = model_name
-        self.template_complete_file = pd.read_csv(PATH_DATASET + 'template_complete.csv')
+        self.template_complete_file = pd.read_csv(TEMPLATE_PATH_COMPLETE if num_predictions==1 else TEMPLATE_PATH_TOP5)
+        self.path_generations = PATH_GENERATIONS if num_predictions == 1 else PATH_GENERATIONS_TOP5
         self.initialized = False
 
         self.func_initialize_model = {
@@ -70,14 +71,15 @@ class Model:
             GEMINI_2_0_FLASH_LITE: self._request_gemini,
         }
     
-    def get_predictions(self, prompt_num=PROMPT_DEFAULT):
+    def get_predictions(self, prompt_num=1):
         self.prompt_num = prompt_num
 
         #BERT family model generate only with prompt 1, copy and paste files in other prompts folder otherwise
-        if prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
-            self._copy_file(f"{PATH_GENERATIONS}prompt_0/{self.model_name}.csv", f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
+        if self.num_predictions == 1 and prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
+            self._copy_file(f"{self.path_generations}prompt_0/{self.model_name}.csv", f"{self.path_generations}prompt_{self.prompt_num}/{self.model_name}.csv")
             logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}] complete")
             return False
+        
         
         num_row_processed, self.prediction_dic = self._get_prediction_file()
         self.total_rows = self.template_complete_file.shape[0]
@@ -106,9 +108,9 @@ class Model:
         #Initialize model
         if not self.initialized and self.model_name in self.func_initialize_model: 
             err = self.func_initialize_model[self.model_name]()
-            if not err:
+            if err:
                 logger.info(f"⚠️ Error initialize {MODELS_LABELS[self.model_name]}")
-                return err 
+                return not err 
         self.initialized = True
             
         #Get sentences    
@@ -217,7 +219,7 @@ class Model:
         return False
     
     def _get_prediction_file(self):
-        prediction_file_path = f'{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv'
+        prediction_file_path = f'{self.path_generations}prompt_{self.prompt_num}/{self.model_name}.csv' if self.num_predictions == 1 else f'{self.path_generations+self.model_name}.csv'
         if os.path.exists(prediction_file_path): #If file exist read file
             prediction_file = pd.read_csv(prediction_file_path)
             num_row_processed = prediction_file.shape[0]
@@ -240,9 +242,9 @@ class Model:
             with torch.no_grad():
                 output = self.client(tokens_tensor)
                 probs = torch.nn.functional.softmax(output[0][0, masked_index], dim=-1)
-                _, top_k_indices = torch.topk(probs, NUM_PREDICTION, sorted=True)
+                _, top_k_indices = torch.topk(probs, self.num_predictions, sorted=True)
             
-            return self.tokenizer.convert_ids_to_tokens(top_k_indices)[0]
+            return self.tokenizer.convert_ids_to_tokens(top_k_indices.tolist())
         except Exception as X:
             logger.error(f"_request_BERT: {X}")
             return None
@@ -259,54 +261,70 @@ class Model:
             with torch.no_grad():
                 output = self.client(tokens_tensor)
                 probs = torch.nn.functional.softmax(output[0][0, masked_index], dim=-1)
-                _, top_k_indices = torch.topk(probs, NUM_PREDICTION, sorted=True)
+                _, top_k_indices = torch.topk(probs, self.num_predictions, sorted=True)
             
-            return self.tokenizer.convert_ids_to_tokens(top_k_indices)[0].replace('Ġ', '')
+            tokens = self.tokenizer.convert_ids_to_tokens(top_k_indices)
+            return [t.replace('Ġ', '') for t in tokens]
         except Exception as X:
             logger.error(f"_request_RoBERTa: {X}")
             return None
     
     def _request_ollama(self):
-        try:
-            response = requests.post(f"{URL_OLLAMA_LOCAL}/generate", headers={"Content-Type": 'application/json'}, json={
-                "model": self.model_name,
-                "prompt": self.prompt,
-                "messages": [{"role": "user", "content": self.prompt}],
-                "options": {"temperature": 0},
-                "stream": False
-            })
-            response = response.json()['response']
-            if response == None or response == "":
-                logger.error(f"_request_ollama: {response}")
+        preds = []
+        for _ in range(self.num_predictions):
+            try:
+                response = requests.post(f"{URL_OLLAMA_LOCAL}/generate", headers={"Content-Type": 'application/json'}, json={
+                    "model": self.model_name,
+                    "prompt": self.prompt,
+                    "messages": [{"role": "user", "content": self.prompt}],
+                    "options": {"temperature": 0.0 if self.num_predictions == 1 else 0.5},
+                    "stream": False
+                })
+                response = response.json()['response']
+                if response == None or response == "":
+                    logger.error(f"_request_ollama: {response}")
+                    return None
+                response = self._clean_response(response)
+                preds.append(response)
+            
+            except Exception as X:
+                logger.error(f"_request_ollama: {response['text']}")
                 return None
-            response = self._clean_response(response)
-            return response
-        
-        except Exception as X:
-            logger.error(f"_request_ollama: {response['text']}")
-            return None
+        return preds[0] if self.num_predictions == 1 else preds
 
     def _request_gemini(self):
         #time.sleep(2.5)
-        try:
-            return self._clean_response(self.client.generate_content(self.prompt).text).lower()
-        except Exception as X:
-            logger.error(f"_request_gemini: {X}")
-            return None
+        preds = []
+        for _ in range(self.num_predictions):
+            try:
+                preds.append(self._clean_response(self.client.generate_content(self.prompt.text.lower(),
+                        generation_config={
+                            "temperature": 0.0 if self.num_predictions == 1 else 0.5,
+                            "max_output_tokens": 100,
+                        })
+                ))
+            except Exception as X:
+                logger.error(f"_request_gemini: {X}")
+                return None
+        return preds[0] if self.num_predictions == 1 else preds
 
     def _request_open_ai(self):
         logger.setLevel(logging.ERROR)
-        try:
-            completion = self.client.chat.completions.create(
-                model=self.model_name, store=True,
-                messages=[{"role": "user", "content": self.prompt}],
-                temperature=0
-            )
-            logger.setLevel(logging.INFO)
-            return self._clean_response(completion.choices[0].message.content)
-        except Exception as X:
-            logger.error(f"_request_open_ai: {X}")
-            return None
+        preds = []
+        for _ in range(self.num_predictions):
+            try:
+                completion = self.client.chat.completions.create(
+                    model=self.model_name, store=True,
+                    messages=[{"role": "user", "content": self.prompt}],
+                    temperature= 0.0 if self.num_predictions == 1 else 0.5
+                )
+                logger.setLevel(logging.INFO)
+                preds.append(self._clean_response(completion.choices[0].message.content))
+
+            except Exception as X:
+                logger.error(f"_request_open_ai: {X}")
+                return None
+        return preds[0] if self.num_predictions == 1 else preds
         
     # === Utils ===
 
@@ -394,9 +412,13 @@ class Model:
         return str(response)
     
     def _save_csv(self, prediction_dic):
-        os.makedirs(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/", exist_ok=True)
-        pd.DataFrame.from_dict(prediction_dic).to_csv(f"{PATH_GENERATIONS}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
-        
+        if self.num_predictions == 1:
+            os.makedirs(f"{self.path_generations}prompt_{self.prompt_num}/", exist_ok=True)
+            pd.DataFrame.from_dict(prediction_dic).to_csv(f"{self.path_generations}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
+        else: 
+            os.makedirs(f"{self.path_generations+self.prompt_num}/", exist_ok=True)
+            pd.DataFrame.from_dict(prediction_dic).to_csv(f"{self.path_generations+self.model_name}.csv", index_label='index')
+            
 
     def _copy_file(self, input_path, output_path):
         # Ensure the source file exists

@@ -1,10 +1,4 @@
 from src.lib import *
-
-TEMPLATE_PATH = PATH_DATASET + 'templates.csv'
-SUBJECT_PATH = PATH_DATASET + 'subjects.csv'
-MARKER_PATH = PATH_DATASET + 'markers.csv'
-TEMPLATE_PATH_COMPLETE = PATH_DATASET + 'template_complete.csv'
-TEMPLATE_PATH_TOP5 = PATH_DATASET + 'template_top_5.csv'
 ADJ = 'adj'
 
 class Template:
@@ -61,7 +55,10 @@ class Template:
         logger.info("📝 Template ready!")
 
 def sample_from_dataset():
-    # Load the original CSV
+    import random
+    import pandas as pd
+
+    # Load dataset
     df = pd.read_csv(TEMPLATE_PATH_COMPLETE)
 
     # Filter by type
@@ -69,14 +66,38 @@ def sample_from_dataset():
     df_queer = df[df[TYPE] == QUEER]
     df_nonqueer = df[df[TYPE] == NONQUEER]
 
-    # Sample 100 from each group
-    sample_unmarked = df_unmarked
-    sample_queer = df_queer.sample(n=100, random_state=42)
-    sample_nonqueer = df_nonqueer.sample(n=100, random_state=42)
+    # ---- Ensure UNMARKED baseline is 100 ----
+    if len(df_unmarked) != 100:
+        raise ValueError(f"UNMARKED baseline must be exactly 100 rows (found {len(df_unmarked)}).")
 
-    # Concatenate the samples
-    df_final = pd.concat([sample_unmarked, sample_queer, sample_nonqueer], ignore_index=True)
+    # For each UNMARKED, sample 1 QUEER and 1 NONQUEER with same TEMPLATE+SUBJECT
+    sampled_queer_rows = []
+    sampled_nonqueer_rows = []
 
-    # Save to a new CSV
+    for _, row in df_unmarked.iterrows():
+        template = row["template"]
+        subject = row["subject"]
+
+        # Filter QUEER and NONQUEER with same template+subject
+        queer_group = df_queer[
+            (df_queer["template"] == template) &
+            (df_queer["subject"] == subject)
+        ]
+        nonqueer_group = df_nonqueer[
+            (df_nonqueer["template"] == template) &
+            (df_nonqueer["subject"] == subject)
+        ]
+
+        # Sample one randomly
+        sampled_queer_rows.append(queer_group.sample(n=1, random_state=random.randint(0, 10000)))
+        sampled_nonqueer_rows.append(nonqueer_group.sample(n=1, random_state=random.randint(0, 10000)))
+
+    # Concatenate all sampled rows
+    sample_queer = pd.concat(sampled_queer_rows, ignore_index=True)
+    sample_nonqueer = pd.concat(sampled_nonqueer_rows, ignore_index=True)
+
+    # Final dataset
+    df_final = pd.concat([df_unmarked, sample_queer, sample_nonqueer], ignore_index=True)
+
+    # Save
     df_final.to_csv(TEMPLATE_PATH_TOP5, index=False)
-    
