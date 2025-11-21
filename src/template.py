@@ -1,4 +1,6 @@
 from src.lib import *
+import random
+
 ADJ = 'adj'
 
 class Template:
@@ -55,49 +57,48 @@ class Template:
         logger.info("📝 Template ready!")
 
 def sample_from_dataset():
-    import random
-    import pandas as pd
+    if not os.path.exists(TEMPLATE_PATH_SAMPLE):
+        # Load dataset
+        df = pd.read_csv(TEMPLATE_PATH_COMPLETE)
 
-    # Load dataset
-    df = pd.read_csv(TEMPLATE_PATH_COMPLETE)
+        # Filter by type
+        df_unmarked = df[df[TYPE] == UNMARKED]
+        df_queer = df[df[TYPE] == QUEER]
+        df_nonqueer = df[df[TYPE] == NONQUEER]
 
-    # Filter by type
-    df_unmarked = df[df[TYPE] == UNMARKED]
-    df_queer = df[df[TYPE] == QUEER]
-    df_nonqueer = df[df[TYPE] == NONQUEER]
+        # ---- Ensure UNMARKED baseline is 100 ----
+        if len(df_unmarked) != 100:
+            raise ValueError(f"UNMARKED baseline must be exactly 100 rows (found {len(df_unmarked)}).")
 
-    # ---- Ensure UNMARKED baseline is 100 ----
-    if len(df_unmarked) != 100:
-        raise ValueError(f"UNMARKED baseline must be exactly 100 rows (found {len(df_unmarked)}).")
+        # For each UNMARKED, sample 1 QUEER and 1 NONQUEER with same TEMPLATE+SUBJECT
+        sampled_queer_rows = []
+        sampled_nonqueer_rows = []
 
-    # For each UNMARKED, sample 1 QUEER and 1 NONQUEER with same TEMPLATE+SUBJECT
-    sampled_queer_rows = []
-    sampled_nonqueer_rows = []
+        for _, row in df_unmarked.iterrows():
+            template = row["template"]
+            subject = row["subject"]
 
-    for _, row in df_unmarked.iterrows():
-        template = row["template"]
-        subject = row["subject"]
+            # Filter QUEER and NONQUEER with same template+subject
+            queer_group = df_queer[
+                (df_queer["template"] == template) &
+                (df_queer["subject"] == subject)
+            ]
+            nonqueer_group = df_nonqueer[
+                (df_nonqueer["template"] == template) &
+                (df_nonqueer["subject"] == subject)
+            ]
 
-        # Filter QUEER and NONQUEER with same template+subject
-        queer_group = df_queer[
-            (df_queer["template"] == template) &
-            (df_queer["subject"] == subject)
-        ]
-        nonqueer_group = df_nonqueer[
-            (df_nonqueer["template"] == template) &
-            (df_nonqueer["subject"] == subject)
-        ]
+            # Sample one randomly
+            sampled_queer_rows.append(queer_group.sample(n=1, random_state=random.randint(0, 10000)))
+            sampled_nonqueer_rows.append(nonqueer_group.sample(n=1, random_state=random.randint(0, 10000)))
 
-        # Sample one randomly
-        sampled_queer_rows.append(queer_group.sample(n=1, random_state=random.randint(0, 10000)))
-        sampled_nonqueer_rows.append(nonqueer_group.sample(n=1, random_state=random.randint(0, 10000)))
+        # Concatenate all sampled rows
+        sample_queer = pd.concat(sampled_queer_rows, ignore_index=True)
+        sample_nonqueer = pd.concat(sampled_nonqueer_rows, ignore_index=True)
 
-    # Concatenate all sampled rows
-    sample_queer = pd.concat(sampled_queer_rows, ignore_index=True)
-    sample_nonqueer = pd.concat(sampled_nonqueer_rows, ignore_index=True)
+        # Final dataset
+        df_final = pd.concat([df_unmarked, sample_queer, sample_nonqueer], ignore_index=True)
 
-    # Final dataset
-    df_final = pd.concat([df_unmarked, sample_queer, sample_nonqueer], ignore_index=True)
-
-    # Save
-    df_final.to_csv(TEMPLATE_PATH_TOP5, index=False)
+        # Save
+        df_final.to_csv(TEMPLATE_PATH_SAMPLE, index=False)
+        logger.info("📝 Template sample ready!")

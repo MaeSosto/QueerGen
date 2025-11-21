@@ -30,11 +30,11 @@ MODEL_NAME = {
         
 class Model:
     
-    def __init__(self, model_name, num_predictions = 1):
+    def __init__(self, model_name, num_predictions):
         self.num_predictions = num_predictions
         self.model_name = model_name
-        self.template_complete_file = pd.read_csv(TEMPLATE_PATH_COMPLETE if num_predictions==1 else TEMPLATE_PATH_TOP5)
-        self.path_generations = PATH_GENERATIONS if num_predictions == 1 else PATH_GENERATIONS_TOP5
+        self.template_complete_file = pd.read_csv(TEMPLATE_PATH_COMPLETE if num_predictions==1 else TEMPLATE_PATH_SAMPLE)
+        self.path_generations = PATH_GENERATIONS+"/" if num_predictions == 1 else PATH_GENERATIONS +'_top_'+str(num_predictions)+"/"
         self.initialized = False
 
         self.func_initialize_model = {
@@ -110,7 +110,7 @@ class Model:
             err = self.func_initialize_model[self.model_name]()
             if err:
                 logger.info(f"⚠️ Error initialize {MODELS_LABELS[self.model_name]}")
-                return not err 
+                return None 
         self.initialized = True
             
         #Get sentences    
@@ -132,7 +132,7 @@ class Model:
             else:
                 # Used in get_predictions
                 for key in [TEMPLATE, SUBJECT, MARKER, TYPE, CATEGORY, UNMARKED, MARKED]:
-                    self.prediction_dic[key].append(row[key])
+                    self.prediction_dic[key].append(str(row[key]))
                 self.prediction_dic[PREDICTION].append(response)
 
             self._save_csv(self.prediction_dic)
@@ -177,6 +177,16 @@ class Model:
         return False
         
     # === Initialization Functions ===
+    def get_API_KEY(self, key):
+        if not os.path.exists(".env"):
+            logger.error(f"⚠️ File \'.env\' is missing")
+            return ""
+        api_key = os.getenv(key)
+        if api_key is None or api_key == "":
+            logger.error(f"⚠️ {key} is missing")
+            return ""
+        return api_key
+    
     def _initialize_BERT(self): 
         val = MODEL_NAME[self.model_name]
         self.client, self.tokenizer = BertForMaskedLM.from_pretrained(val), BertTokenizer.from_pretrained(val)
@@ -187,21 +197,19 @@ class Model:
         return False
     
     def _initialize_Gemini(self): 
-        api_key = os.getenv('GENAI_API_KEY')
-        if api_key is None:
-            logger.error(f"⚠️ GENAI_API_KEY is missing")
-            return True
-        genai.configure(api_key=api_key) 
-        self.client, self.tokenizer = genai.GenerativeModel(self.model_name), None
-        return False
+        api_key = self.get_API_KEY('GENAI_API_KEY')
+        if api_key != "":
+            genai.configure(api_key=api_key) 
+            self.client, self.tokenizer = genai.GenerativeModel(self.model_name), None
+            return False
+        return True
     
     def _initialize_GPT(self): 
-        api_key = os.getenv('OPENAI_API_KEY')
-        if api_key is None:
-            logger.error(f"⚠️ OPENAI_API_KEY is missing")
-            return True
-        self.client, self.tokenizer = OpenAI(api_key=api_key), None
-        return False
+        api_key = self.get_API_KEY('OPENAI_API_KEY')
+        if api_key != "":
+            self.client, self.tokenizer = OpenAI(api_key=api_key), None
+            return False
+        return True
     
     def _initialize_Ollama(self):
         logger.info(f"🚦 Model '{self.model_name}' is testing")
@@ -211,12 +219,11 @@ class Model:
         return True
     
     def _initialize_DeepSeeek(self): 
-        api_key = os.getenv('DEEPSEEK_API_KEY')
-        if api_key is None:
-            logger.error(f"⚠️ DEEPSEEK_API_KEY is missing")
-            return True
-        self.client, self.tokenizer = OpenAI(api_key=api_key, base_url=URL_DEEPSEEK), None
-        return False
+        api_key = self.get_API_KEY('DEEPSEEK_API_KEY')
+        if api_key != "":
+            self.client, self.tokenizer = OpenAI(api_key=api_key, base_url=URL_DEEPSEEK), None
+            return False
+        return True
     
     def _get_prediction_file(self):
         prediction_file_path = f'{self.path_generations}prompt_{self.prompt_num}/{self.model_name}.csv' if self.num_predictions == 1 else f'{self.path_generations+self.model_name}.csv'
@@ -273,13 +280,16 @@ class Model:
         preds = []
         for _ in range(self.num_predictions):
             try:
-                response = requests.post(f"{URL_OLLAMA_LOCAL}/generate", headers={"Content-Type": 'application/json'}, json={
+                config = {
                     "model": self.model_name,
                     "prompt": self.prompt,
                     "messages": [{"role": "user", "content": self.prompt}],
-                    "options": {"temperature": 0.0 if self.num_predictions == 1 else 0.5},
                     "stream": False
-                })
+                } 
+                if self.num_predictions == 1:
+                    config["options"]= {"temperature": 0.0}
+                    
+                response = requests.post(f"{URL_OLLAMA_LOCAL}/generate", headers={"Content-Type": 'application/json'}, json=config)
                 response = response.json()['response']
                 if response == None or response == "":
                     logger.error(f"_request_ollama: {response}")
@@ -297,27 +307,34 @@ class Model:
         preds = []
         for _ in range(self.num_predictions):
             try:
-                preds.append(self._clean_response(self.client.generate_content(self.prompt.text.lower(),
-                        generation_config={
-                            "temperature": 0.0 if self.num_predictions == 1 else 0.5,
-                            "max_output_tokens": 100,
-                        })
-                ))
+                config = {"max_output_tokens": 10}
+                if self.num_predictions == 1: 
+                    config["temperature"]= 0.0
+                    
+                preds.append(self._clean_response(self.client.generate_content(self.prompt, generation_config=config).text))
             except Exception as X:
                 logger.error(f"_request_gemini: {X}")
                 return None
         return preds[0] if self.num_predictions == 1 else preds
 
     def _request_open_ai(self):
+        # logging.getLogger("openai").setLevel(logging.ERROR)
+        # logging.getLogger("httpx").setLevel(logging.ERROR)
         logger.setLevel(logging.ERROR)
         preds = []
         for _ in range(self.num_predictions):
             try:
-                completion = self.client.chat.completions.create(
-                    model=self.model_name, store=True,
-                    messages=[{"role": "user", "content": self.prompt}],
-                    temperature= 0.0 if self.num_predictions == 1 else 0.5
-                )
+                if self.num_predictions == 1:
+                    completion = self.client.chat.completions.create(
+                        model=self.model_name, store=True,
+                        messages=[{"role": "user", "content": self.prompt}],
+                        temperature= 0.0
+                    )
+                else:
+                    completion = self.client.chat.completions.create(
+                        model=self.model_name, store=True,
+                        messages=[{"role": "user", "content": self.prompt}]
+                    )
                 logger.setLevel(logging.INFO)
                 preds.append(self._clean_response(completion.choices[0].message.content))
 
@@ -416,7 +433,7 @@ class Model:
             os.makedirs(f"{self.path_generations}prompt_{self.prompt_num}/", exist_ok=True)
             pd.DataFrame.from_dict(prediction_dic).to_csv(f"{self.path_generations}prompt_{self.prompt_num}/{self.model_name}.csv", index_label='index')
         else: 
-            os.makedirs(f"{self.path_generations+self.prompt_num}/", exist_ok=True)
+            os.makedirs(f"{self.path_generations}", exist_ok=True)
             pd.DataFrame.from_dict(prediction_dic).to_csv(f"{self.path_generations+self.model_name}.csv", index_label='index')
             
 

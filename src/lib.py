@@ -53,14 +53,13 @@ load_dotenv()
 # File Paths
 # =============================
 PATH_DATASET = 'data/'
-PATH_GENERATIONS = 'generations/'
-PATH_GENERATIONS_TOP5 = 'generations_top_5/'
-PATH_EVALUATIONS = 'evaluations/'
+PATH_GENERATIONS = 'generations'
+PATH_EVALUATIONS = 'evaluations'
 TEMPLATE_PATH = PATH_DATASET + 'templates.csv'
 SUBJECT_PATH = PATH_DATASET + 'subjects.csv'
 MARKER_PATH = PATH_DATASET + 'markers.csv'
 TEMPLATE_PATH_COMPLETE = PATH_DATASET + 'template_complete.csv'
-TEMPLATE_PATH_TOP5 = PATH_DATASET + 'template_top_5.csv'
+TEMPLATE_PATH_SAMPLE = PATH_DATASET + 'template_sample.csv'
 
 # =============================
 # Template Variables
