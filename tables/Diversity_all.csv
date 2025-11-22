@@ -1,0 +1,43 @@
+Model,type,Diversity,CI,STD
+BERT Base,Unmarked,29.0,0.0,0.0
+BERT Base,Non Queer,42.6,2.111,2.951
+BERT Base,Queer,44.4,1.395,2.981
+BERT Large,Unmarked,37.0,0.0,0.0
+BERT Large,Non Queer,48.4,3.203,4.477
+BERT Large,Queer,43.2,1.346,2.876
+RoBERTa Base,Unmarked,39.0,0.0,0.0
+RoBERTa Base,Non Queer,44.4,2.191,3.062
+RoBERTa Base,Queer,45.45,1.354,2.892
+RoBERTa Large,Unmarked,41.0,0.0,0.0
+RoBERTa Large,Non Queer,46.4,2.764,3.864
+RoBERTa Large,Queer,39.75,1.502,3.21
+DeepSeek R1 671B,Unmarked,56.0,0.0,0.0
+DeepSeek R1 671B,Non Queer,63.1,2.442,3.414
+DeepSeek R1 671B,Queer,61.55,1.893,4.045
+DeepSeek R1 8B,Unmarked,76.0,0.0,0.0
+DeepSeek R1 8B,Non Queer,76.9,3.56,4.977
+DeepSeek R1 8B,Queer,80.05,1.646,3.517
+Gemma 3 27B,Unmarked,52.0,0.0,0.0
+Gemma 3 27B,Non Queer,55.8,2.608,3.645
+Gemma 3 27B,Queer,51.25,2.12,4.529
+Gemma 3 4B,Unmarked,58.0,0.0,0.0
+Gemma 3 4B,Non Queer,67.0,3.77,5.27
+Gemma 3 4B,Queer,56.95,1.988,4.249
+Llama 3 70B,Unmarked,53.0,0.0,0.0
+Llama 3 70B,Non Queer,55.2,2.715,3.795
+Llama 3 70B,Queer,50.25,1.697,3.626
+Llama 3 8B,Unmarked,59.0,0.0,0.0
+Llama 3 8B,Non Queer,55.5,2.786,3.894
+Llama 3 8B,Queer,47.35,2.191,4.682
+GPT-4o,Unmarked,49.0,0.0,0.0
+GPT-4o,Non Queer,55.9,3.043,4.254
+GPT-4o,Queer,48.95,1.499,3.203
+GPT-4o Mini,Unmarked,53.0,0.0,0.0
+GPT-4o Mini,Non Queer,48.3,2.213,3.093
+GPT-4o Mini,Queer,47.35,1.91,4.082
+Gemini 2.0 Flash,Unmarked,59.0,0.0,0.0
+Gemini 2.0 Flash,Non Queer,58.3,2.053,2.869
+Gemini 2.0 Flash,Queer,53.35,2.165,4.626
+Gemini 2.0 Flash Lite,Unmarked,62.0,0.0,0.0
+Gemini 2.0 Flash Lite,Non Queer,57.8,2.672,3.736
+Gemini 2.0 Flash Lite,Queer,58.05,2.502,5.346
