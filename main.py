@@ -17,8 +17,7 @@ error = False
 #=== Generate predictions ===
 logger.info("🧬 Generate Predictions 🧬")
 for model_name in [
-    BERT_BASE, BERT_LARGE, ROBERTA_BASE, ROBERTA_LARGE, LLAMA3_8B,
-    LLAMA3_70B, GEMMA3_4B, GEMMA3_27B, DEEPSEEK_R1_8B, DEEPSEEK_R1_671B,
+DEEPSEEK_R1_671B,
     GPT4O_MINI, GPT4O, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH
 ]:
     model = Model(model_name, NUM_PREDICTION)
