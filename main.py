@@ -1,6 +1,7 @@
 from src.template import *
 from src.model import *
 from src.evaluation import *
+from graphs import *
 
 NUM_PREDICTION = 5
 
@@ -16,10 +17,7 @@ error = False
 
 #=== Generate predictions ===
 logger.info("🧬 Generate Predictions 🧬")
-for model_name in [
-DEEPSEEK_R1_671B,
-    GPT4O_MINI, GPT4O, GEMINI_2_0_FLASH_LITE, GEMINI_2_0_FLASH
-]:
+for model_name in MODEL_LIST_FULL:
     model = Model(model_name, NUM_PREDICTION)
     if error:
         break
@@ -52,4 +50,4 @@ if not error:
             if error:
                 break
 
-    
+graphs(NUM_PREDICTION)
