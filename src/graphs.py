@@ -11,26 +11,17 @@ from scipy import stats
 import random
 import numpy as np
 from scipy.stats import f_oneway
-from evaluate import load
-import torch
-from transformers import BertTokenizer, BertForMaskedLM
 from transformers import logging
 logging.set_verbosity_error()
 
 def graphs(NUM_PREDICTION):
 
     # === Constants and Configuration ===
-    PATH_GRAPHS_NUM =  "graphs_top_"+str(NUM_PREDICTION)+"/"
-    PATH_TABLES_NUM =  "tables_top_"+str(NUM_PREDICTION)+"/"
-    PATH_GRAPHS = 'graphs/' if NUM_PREDICTION == 1 else PATH_GRAPHS_NUM
-    PATH_TABLES = 'tables/' if NUM_PREDICTION == 1 else PATH_TABLES_NUM
+    PATH_GRAPHS = 'graphs/' if NUM_PREDICTION == 1 else "graphs_top_"+str(NUM_PREDICTION)+"/"
+    PATH_TABLES = 'tables/' if NUM_PREDICTION == 1 else "tables_top_"+str(NUM_PREDICTION)+"/"
     
     os.makedirs(PATH_GRAPHS, exist_ok=True)
-    os.makedirs(PATH_TABLES, exist_ok=True)
-    os.makedirs(PATH_GRAPHS_NUM, exist_ok=True)
-    os.makedirs(PATH_TABLES_NUM, exist_ok=True)
-    
-    
+    os.makedirs(PATH_TABLES, exist_ok=True)  
 
     MLM_MODELS = "bertModels"
     OPEN_MODELS = "openModels"
@@ -77,9 +68,7 @@ def graphs(NUM_PREDICTION):
     }
 
     COLOR = 'color'
-    LINESTYLE = 'linestyle'
     LABEL = 'label'
-    PATTERN = 'pattern'
     PERSPECTIVE_MAP = {
         TOXICITY:         {LABEL: "Toxicity", COLOR: PALETTE_ALL[1]},
         SEVERE_TOXICITY:  {LABEL: "Severe Toxicity", COLOR: PALETTE_ALL[3]},
@@ -157,7 +146,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout
         os.makedirs(f"{PATH_GRAPHS}{metric}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{metric}/{img_name}.png")
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
 
     def apply_ci(group, metric):
         mean, std, ci = compute_mean_ci(group[metric].dropna())
@@ -304,7 +294,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout(rect=[0,0,1,0.95])
         os.makedirs(f"{PATH_GRAPHS}{metric}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{metric}/models_focus.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     def metric_bar_aggregated(all_outputs, metric):
@@ -342,7 +333,8 @@ def graphs(NUM_PREDICTION):
         os.makedirs(f"{PATH_GRAPHS}{metric}/", exist_ok=True)
         plt.tight_layout()
         plt.savefig(f"{PATH_GRAPHS}{metric}/aggregated.png", bbox_inches="tight")
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     metric_configs = [
@@ -366,15 +358,11 @@ def graphs(NUM_PREDICTION):
     # Save grouped CSVs and generate individual model metric graphs
     for metric, dfs in all_outputs.items():
         df_metric = pd.concat(dfs)
-        df_metric.to_csv(os.path.join(PATH_TABLES, f"{metric}_all.csv"), index=False)
-        metric_bar_graph_compact(df_metric, metric)  # existing per-model graph
+        df_metric["Model"] = pd.Categorical(df_metric["Model"], categories=[MODELS_LABELS[lbl] for lbl in MODEL_LIST_FULL], ordered=True)
+        df_metric = df_metric.sort_values(["Model", "type"]).reset_index(drop=True)
+        df_metric.to_csv(PATH_TABLES + metric + "_all.csv", index=False)
+        metric_bar_graph_compact(df_metric, metric)
         metric_bar_aggregated(all_outputs, metric)
-
-    # Save grouped CSVs and generate metric graphs
-    for metric, dfs in all_outputs.items():
-        # Concatenate all grouped results for this metric
-        df_metric = pd.concat(dfs)
-        df_metric.to_csv(os.path.join(PATH_TABLES, f"{metric}_all.csv"), index=False)
 
     # %% [markdown]
     # # Regard Graph
@@ -448,7 +436,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         os.makedirs(f"{PATH_GRAPHS}{REGARD}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{REGARD}/all.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     def prepare_regard_data(models, prompt_num=PROMPT_DEFAULT):
@@ -539,7 +528,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(f"{PATH_GRAPHS}{VADER}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{VADER}/{MARKER}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     def plot_regard_chart(combined_df, marker_type_pairs):
@@ -590,7 +580,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(f"{PATH_GRAPHS}{REGARD}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{REGARD}/{MARKER}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
 
     def plot_stacked_toxicity_bar_chart(combined_df, marker_type_pairs):
@@ -647,7 +638,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(f"{PATH_GRAPHS}{PERSPECTIVE}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{PERSPECTIVE}/{MARKER}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
 
     def plot_lexical_diversity_chart(combined_df, marker_type_pairs):
@@ -692,7 +684,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(f"{PATH_GRAPHS}{DIVERSITY}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{DIVERSITY}/{MARKER}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     def prepare_marker_data(models, prompt_num=PROMPT_DEFAULT):
@@ -755,7 +748,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(f"{PATH_GRAPHS}{VADER}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{VADER}/{TEMPLATE}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     def plot_regard_chart(combined_df, marker_type_pairs):
@@ -796,7 +790,8 @@ def graphs(NUM_PREDICTION):
 
         os.makedirs(f"{PATH_GRAPHS}{REGARD}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{REGARD}/{TEMPLATE}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
 
     def plot_stacked_toxicity_bar_chart(combined_df, marker_type_pairs):
@@ -843,7 +838,8 @@ def graphs(NUM_PREDICTION):
 
         os.makedirs(f"{PATH_GRAPHS}{PERSPECTIVE}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{PERSPECTIVE}/{TEMPLATE}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
 
     def plot_lexical_diversity_chart(combined_df, marker_type_pairs):
@@ -876,7 +872,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(f"{PATH_GRAPHS}{DIVERSITY}/", exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}{DIVERSITY}/{TEMPLATE}_chart.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
         plt.close()
         
     def prepare_marker_data(models, prompt_num=PROMPT_DEFAULT):
@@ -1010,7 +1007,8 @@ def graphs(NUM_PREDICTION):
         plt.tight_layout()
         os.makedirs(PATH_GRAPHS, exist_ok=True)
         plt.savefig(f"{PATH_GRAPHS}prompt.png", bbox_inches='tight')
-        if PLT_SHOW: plt.show()
+        if PLT_SHOW: 
+            plt.show()
 
 
     prompt_comparison(MODEL_LIST_FULL)

@@ -1,15 +1,16 @@
 from src.template import *
 from src.model import *
 from src.evaluation import *
-from graphs import *
+from src.graphs import *
 
-NUM_PREDICTION = 5
+#CHANGE THE FOLLOWING FLAG ACCORDING ON THE REQUIRED NUMBER OF PREDICTIONS
+NUM_PREDICTION = 1
 
 # === Generate template ===
 template = Template()
 template.create_template()
 
-#Sample 300 items if more than 1
+#Sample 300 items (100 of each subj cat) if more than 1 prediction
 if NUM_PREDICTION > 1:
     sample_from_dataset() 
     
@@ -34,8 +35,8 @@ for model_name in MODEL_LIST_FULL:
             break
 
 if not error:
-    logger.info("📊 Evaluate Predictions 📊")
     # === Evaluate predictions  ===
+    logger.info("📊 Evaluate Predictions 📊")
     for model_name in MODEL_LIST_FULL:
         evaluation = Evaluation(model_name, NUM_PREDICTION)
         if NUM_PREDICTION == 1:

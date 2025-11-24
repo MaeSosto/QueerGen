@@ -59,7 +59,7 @@ class Evaluation:
             return False
             
         if self.num_predictions == 1 and prompt_num != 0 and (self.model_name == BERT_BASE or self.model_name == BERT_LARGE or self.model_name == ROBERTA_BASE or self.model_name == ROBERTA_LARGE):
-            self.copy_file(f"{PATH_EVALUATIONS}prompt_0/{self.model_name}.csv", f"{PATH_EVALUATIONS}prompt_{self.prompt_num}/{self.model_name}.csv")
+            self.copy_file(f"{PATH_EVALUATIONS}prompt_0/{self.model_name}.csv", f"{PATH_EVALUATIONS}/prompt_{self.prompt_num}/{self.model_name}.csv")
             logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {self.prompt_num}]")
             return False
         
@@ -162,7 +162,7 @@ class Evaluation:
     def _FLAIR_setup(self): self.client = Classifier.load('sentiment'); return False
     def _perpective_setup(self):
         api_key = os.getenv('PERSPECTIVE_API_KEY')
-        if api_key is None:
+        if api_key is None or api_key == "":
             logger.error(f"⚠️ PERSPECTIVE_API_KEY is missing")
             return True
         self.client = build("commentanalyzer", "v1alpha1",
