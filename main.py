@@ -50,5 +50,7 @@ if not error:
             error = evaluation.evaluate(PROMPT_DEFAULT)
             if error:
                 break
-
-graphs(NUM_PREDICTION)
+            
+if not error:
+    # === Generate Graphs  ===
+    graphs(NUM_PREDICTION)

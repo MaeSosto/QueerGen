@@ -228,7 +228,7 @@ def graphs(NUM_PREDICTION):
         #display(grouped)
         return df_combined, grouped
 
-    def metric_bar_graph_compact(data, metric):
+    def model_focus(data, metric):
         models_per_row = 7  # adjust if too crowded
 
         g = sns.FacetGrid(
@@ -298,10 +298,7 @@ def graphs(NUM_PREDICTION):
             plt.show()
         plt.close()
         
-    def metric_bar_aggregated(all_outputs, metric):
-        # Combine all data for the metric
-        df = pd.concat(all_outputs[metric])
-
+    def model_aggregated(df):
         # Aggregate across models
         agg_df = df.groupby(TYPE, observed=True).apply(
             lambda g: pd.Series({
@@ -361,8 +358,8 @@ def graphs(NUM_PREDICTION):
         df_metric["Model"] = pd.Categorical(df_metric["Model"], categories=[MODELS_LABELS[lbl] for lbl in MODEL_LIST_FULL], ordered=True)
         df_metric = df_metric.sort_values(["Model", "type"]).reset_index(drop=True)
         df_metric.to_csv(PATH_TABLES + metric + "_all.csv", index=False)
-        metric_bar_graph_compact(df_metric, metric)
-        metric_bar_aggregated(all_outputs, metric)
+        model_focus(df_metric, metric)
+        model_aggregated(df_metric)
 
     # %% [markdown]
     # # Regard Graph

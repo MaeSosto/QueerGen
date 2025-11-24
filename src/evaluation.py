@@ -79,20 +79,22 @@ class Evaluation:
                 if key in self.initialize_tools:
                     err = self.initialize_tools[key]()
                     if err:
-                        break
+                        return True
                 self.key = key
                 if key == REGARD and not any(f"{key} {cat}" in self.df_to_check.columns for cat in REGARD_CATEGORIES):
                     if start_evaluation: logger.info(f"📊 Evaluating {self.model_name} [prompt {prompt_num}]"); start_evaluation = False
                     logger.info(f"  🧮 Calculating {key} scores...")
                     res = score_function()
-                    if res: break
+                    if res: 
+                        return True
                     self.save_csv()
                 elif key == PERSPECTIVE and not any(f"{key} {cat}" in self.df_to_check.columns for cat in PERSPECTIVE_CATEGORIES):
                     if start_evaluation: 
                         logger.info(f"📊 Evaluating {self.model_name} [prompt {prompt_num}]"); start_evaluation = False
                     logger.info(f"  🧮 Calculating {key} scores...")
                     res = score_function()
-                    if res: break
+                    if res: 
+                        return True
                     self.save_csv()
                 elif key != REGARD and key != PERSPECTIVE and key not in self.df_to_check.columns:
                     if start_evaluation: logger.info(f"📊 Evaluating {self.model_name} [prompt {prompt_num}]"); start_evaluation = False
@@ -100,7 +102,7 @@ class Evaluation:
                     score_function()
                     self.save_csv()
                     
-        if not (err and res): #No Error
+        if not err: #No Error
             logger.info(f"✅ {MODELS_LABELS[self.model_name]} [prompt {int(self.prompt_num)}]")
             return False
         return True #Error
